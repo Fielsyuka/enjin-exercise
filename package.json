@@ -1,7 +1,8 @@
 {
   "name": "my-app",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.tsx",
+  "homepage": "https://fielsyuka.github.io/enjin-exercise/",
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode development",
@@ -11,9 +12,11 @@
     "check-types": "tsc --noEmit",
     "eslint": "eslint \"./src/**/*.{ts,tsx}\"",
     "eslint:fix": "eslint src/**/*.{ts,tsx} --fix",
-    "format": "prettier --write \"./src/**/*.{js,ts,tsx,json}\""
+    "format": "prettier --write \"./src/**/*.{js,ts,tsx,json}\"",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build"
   },
-  "browserlisdt": [
+  "browserslist": [
     "defaults"
   ],
   "dependencies": {
@@ -38,6 +41,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "fork-ts-checker-webpack-plugin": "^6.5.0",
+    "gh-pages": "^3.2.3",
     "html-webpack-plugin": "^5.5.0",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
