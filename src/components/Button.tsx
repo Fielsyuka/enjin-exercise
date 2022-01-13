@@ -6,13 +6,16 @@ type Props = {
 }
 
 export const Button: React.FC<Props> = ({ children }) => {
-  return <ButtonPrimary>{children}</ButtonPrimary>
+  return <SButton>{children}</SButton>
 }
 
-const ButtonPrimary = styled.button.attrs({
+const SButton = styled.button.attrs({
   type: 'button',
 })`
   appearance: none;
   padding: 1em;
-  background-color: #eee;
+  border: none;
+  box-shadow: none;
+  background-color: #0f0f0f;
+  color: #fff;
 `
