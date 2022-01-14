@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { memo } from 'react'
 import styled from 'styled-components'
 
 type Props = {
+  onClick: () => void
   children?: string
 }
 
-export const Button: React.FC<Props> = ({ children }) => {
-  return <SButton>{children}</SButton>
+const Button: React.VFC<Props> = props => {
+  const { onClick, children } = props
+  console.log('rendered Button')
+  return <SButton onClick={onClick}>{children}</SButton>
 }
 
 const SButton = styled.button.attrs({
@@ -19,3 +22,5 @@ const SButton = styled.button.attrs({
   background-color: #0f0f0f;
   color: #fff;
 `
+
+export default memo(Button)
