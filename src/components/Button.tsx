@@ -17,10 +17,16 @@ const SButton = styled.button.attrs({
 })`
   appearance: none;
   padding: 1em;
-  border: none;
+  border: 1px solid #0f0f0f;
   box-shadow: none;
   background-color: #0f0f0f;
   color: #fff;
+  text-align: center;
+
+  :hover:not(:disabled) {
+    background-color: #fff;
+    color: #0f0f0f;
+  }
 `
 
 export default memo(Button)

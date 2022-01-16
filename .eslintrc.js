@@ -20,6 +20,10 @@ module.exports = {
     // { onClick?(): void } のような props type をうまく判定できないので off
     // 同じことが TS で検知できる
     'react/prop-types': 'off',
+    // https://github.com/typescript-eslint/typescript-eslint/blob/cc70e4fbadd0b15fd6af913a2e1e2ddd346fa558/packages/eslint-plugin/docs/rules/no-unused-vars.md
+    // note you must disable the base rule as it can report incorrect errors
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['warn', { varsIgnorePattern: '_$' }],
   },
   settings: {
     react: {
