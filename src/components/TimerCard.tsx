@@ -1,36 +1,33 @@
-import React, { memo, useState, useCallback } from 'react'
+import React, { memo, useState, FC, useEffect } from 'react'
 import styled from 'styled-components'
 import { SCircleButton } from './SButton'
 
-const TimerCard = () => {
+const TimerCard: FC<{ id: number }> = () => {
   let timerId: NodeJS.Timer
   const [time, setTime] = useState(0)
   const [isRunning, setRunning] = useState(false)
 
-  const stopTimer = useCallback(() => {
-    console.log('stop: ' + timerId)
-    setRunning(false)
-    if (!timerId) {
+  useEffect(() => {
+    if (isRunning) {
+      timerId = setInterval(() => {
+        console.log('start: ' + timerId)
+        setTime(prev => prev + 1)
+      }, 1000)
+    } else {
       return
+      // clearInterval(timerId)
+      // console.log('stop: ' + timerId) //ここでundefinedになるのはなぜ？？？？？？
     }
-    clearInterval(timerId)
-  }, [])
-
-  const startTimer = useCallback(() => {
-    setRunning(true)
-    timerId = setInterval(() => {
-      console.log('start: ' + timerId)
-      setTime(oldVal => oldVal + 1)
-    }, 1000)
-  }, [])
+    return () => clearInterval(timerId)
+  }, [isRunning])
 
   return (
     <STimerCard>
       <p>{time}</p>
-      <SCircleButton onClick={startTimer} disabled={isRunning}>
+      <SCircleButton onClick={() => setRunning(true)} disabled={isRunning}>
         ▶︎
       </SCircleButton>
-      <SCircleButton onClick={stopTimer} disabled={!isRunning}>
+      <SCircleButton onClick={() => setRunning(false)} disabled={!isRunning}>
         ■
       </SCircleButton>
     </STimerCard>
