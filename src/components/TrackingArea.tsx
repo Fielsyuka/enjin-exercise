@@ -3,9 +3,11 @@ import React, { memo, useState } from 'react'
 import styled from 'styled-components'
 import TimerCard from './TimerCard'
 import AddCardBox from './AddCardBox'
-// import { SButton } from './SButton'
+import { SOverlay } from './SOverlay'
+import { SButton } from './SButton'
 
 const TrackingArea = () => {
+  const [addMode, setAddMode] = useState(false) // eslint-disable-line
   const [cardList, setCardList] = useState([
     {
       id: 0,
@@ -57,7 +59,13 @@ const TrackingArea = () => {
           )
         })}
       {/* <SButton onClick={() => deleteCard(0)}>Remove Card</SButton> */}
-      <AddCardBox onSubmit={el => addCard(el)} />
+      <SButton onClick={() => setAddMode(true)}>Add Card</SButton>
+      {addMode && (
+        <>
+          <AddCardBox onSubmit={el => addCard(el)} />
+          <SOverlay onClick={() => setAddMode(false)} />
+        </>
+      )}
     </STrackingWrap>
   )
 }
@@ -66,5 +74,5 @@ export default memo(TrackingArea)
 const STrackingWrap = styled.div`
   position: relative;
   height: 100%;
-  padding: 40px;
+  padding: 0;
 `

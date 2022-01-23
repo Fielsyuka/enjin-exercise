@@ -24,16 +24,25 @@ body {
 }
 
 .appWrap {
-  display: flex;
   height: 100%;
+  @media screen and (min-width: 960px) {
+    display: flex;
+
+  }
 }
 
 .pomodoro {
-  width: 50%;
+  height: 100%;
   background-color: ${color.primary};
+  @media screen and (min-width: 960px) {
+    width: 50%;
+  }
 }
 
 .timeTrack {
-  width: 50%;
+  height: 100%;
+  @media screen and (min-width: 960px) {
+    width: 50%;
+  }
 }
 `

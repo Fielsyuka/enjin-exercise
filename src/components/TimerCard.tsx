@@ -2,6 +2,8 @@ import React, { memo, useState, FC, useEffect } from 'react'
 import styled from 'styled-components'
 import { SCircleButton } from './SButton'
 import { color } from '../theme/GlobalColor'
+import { PlayIcon as _PlayIcon } from './Icon'
+import { StopIcon as _StopIcon } from './Icon'
 
 const formatTime = (i: number | string) => {
   if (i < 10) {
@@ -54,36 +56,47 @@ const TimerCard: FC<Props> = props => {
       <SBody>
         <STime>{printTime(time)}</STime>
         {isRunning ? (
-          <SCircleButton onClick={() => setRunning(false)}>■</SCircleButton>
+          <SCircleButton onClick={() => setRunning(false)}>
+            <StopIcon />
+          </SCircleButton>
         ) : (
-          <SCircleButton onClick={() => setRunning(true)}>▶︎</SCircleButton>
+          <SCircleButton onClick={() => setRunning(true)}>
+            <PlayIcon />
+          </SCircleButton>
         )}
       </SBody>
     </STimerCard>
   )
 }
 
+const PlayIcon = styled(_PlayIcon)`
+  fill: ${color.accent};
+`
+
+const StopIcon = styled(_StopIcon)`
+  fill: ${color.accent};
+`
 const STimerCard = styled.div`
-  margin: 1em auto;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
   padding: 1em;
-  border: 2px solid #c1c1c1;
-  border-radius: 8px;
-  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #c1c1c1;
   background-color: #fff;
   &.is-active {
-    border-color: ${color.accent};
+    background-color: ${color.accent};
+    color: #fff;
+    ${StopIcon} {
+      fill: #fff;
+    }
   }
 `
 const SHead = styled.div`
-  padding-bottom: 0.5em;
   font-size: 1em;
-  /* text-align: center; */
-  border-bottom: 1px solid #707070;
 `
 const SBody = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 1em;
 `
 const STitle = styled.h3`
   margin: 0;
@@ -103,8 +116,7 @@ const STag = styled.li`
 `
 const STime = styled.p`
   display: inline-block;
-  margin: 0 1em 0 0;
-  color: ${color.accent};
-  font-size: 2.4rem;
+  margin: 0 1em;
+  font-size: 1.125em;
 `
 export default memo(TimerCard)

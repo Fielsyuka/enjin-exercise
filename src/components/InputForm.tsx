@@ -5,18 +5,20 @@ import { color } from '../theme/GlobalColor'
 type Props = {
   id: string
   value?: string
-  onChange?(value: string): void
+  name?: string
+  onChange?(e: React.ChangeEvent<HTMLInputElement>): void
 }
 
 export const InputForm: React.VFC<Props> = props => {
   console.log('input is rendered')
-  const { id, value, onChange } = props
+  const { id, value, name, onChange } = props
   return (
     <SInput
       type="text"
       id={id}
+      name={name}
       value={value}
-      onChange={e => onChange?.(e.currentTarget.value)}
+      onChange={e => onChange?.(e)}
     />
   )
 }

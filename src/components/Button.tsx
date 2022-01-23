@@ -15,11 +15,9 @@ const Button: React.VFC<Props> = props => {
 const SButton = styled.button.attrs({
   type: 'button',
 })`
+  cursor: pointer
+  display: inline-block;
   appearance: none;
-  padding: 1em;
-  border: 1px solid #0f0f0f;
-  box-shadow: none;
-  background-color: #0f0f0f;
   color: #fff;
   text-align: center;
 

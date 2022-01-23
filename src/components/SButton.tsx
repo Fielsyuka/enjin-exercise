@@ -7,10 +7,6 @@ export const SButton = styled.button.attrs({
   cursor: pointer;
   appearance: none;
   margin: 0;
-  padding: 0.5em 1em;
-  border: 1px solid #0f0f0f;
-  box-shadow: none;
-  background-color: #0f0f0f;
   color: #fff;
   text-align: center;
 
@@ -30,14 +26,13 @@ export const SCircleButton = styled.button.attrs({
 })`
   cursor: pointer;
   appearance: none;
-  width: 3em;
-  height: 3em;
+  width: 32px;
+  height: 32px;
   margin: 0;
-  padding: 0.5em 1em;
-  border: 1px solid #0f0f0f;
-  border-radius: 50%;
+  padding: 0;
   box-shadow: none;
-  background-color: #0f0f0f;
+  border: none;
+  background: none;
   color: #fff;
   text-align: center;
 `
