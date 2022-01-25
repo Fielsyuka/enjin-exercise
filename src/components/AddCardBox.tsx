@@ -1,8 +1,9 @@
 import React, { memo, useState } from 'react'
 import styled from 'styled-components'
-// import color from '../theme/GlobalColor'
-import { InputForm } from './InputForm'
+// import { color } from '../theme/GlobalColor'
 import { SButton } from './SButton'
+import InputText from './InputText'
+import InputTag from './InputTag'
 
 type Props = {
   onSubmit(task: object): void
@@ -28,12 +29,28 @@ const AddCardBox: React.VFC<Props> = props => {
     })
   }
 
+  // const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+  //   console.log(e.currentTarget)
+  //   e.currentTarget.classList.add('is-focus')
+  // }
+
+  // const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  //   e.currentTarget.classList.remove('is-focus')
+  // }
+
+  const addCard = () => {
+    if (task.title === '' || task.tag === '') {
+      return
+    }
+    onSubmit(task)
+  }
+
   return (
     <>
       <SBox>
         <div className="row">
-          <label htmlFor="title">プロジェクト/タスク</label>
-          <InputForm
+          <label htmlFor="title">タイムトラック名</label>
+          <InputText
             id="title"
             name="title"
             onChange={e => handleChange(e)}
@@ -42,20 +59,24 @@ const AddCardBox: React.VFC<Props> = props => {
         </div>
         <div className="row">
           <label htmlFor="tag">タグ</label>
-          <InputForm
+          <InputTag
             id="tag"
             name="tag"
-            onChange={e => handleChange(e)}
+            autoComplete="off"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChange(e)
+            }
             value={task.tag}
           />
         </div>
-        <SButton onClick={() => onSubmit(task)}>Add Task</SButton>
+        <SButton onClick={() => addCard()}>Add Task</SButton>
       </SBox>
     </>
   )
 }
 
 const SBox = styled.div`
+  overflow: auto;
   position: absolute;
   top: 0;
   right: 0;
@@ -69,14 +90,15 @@ const SBox = styled.div`
   box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.1);
   z-index: 20;
   .row {
-    display: flex;
+    margin-bottom: 1em;
+    /* display: flex; */
   }
 
   label {
     display: block;
-    flex-shrink: 0;
-    width: 30%;
-    margin-bottom: 0.5em;
+    width: 100%;
+    margin-bottom: 0.25em;
+    font-size: 0.875em;
   }
 `
 

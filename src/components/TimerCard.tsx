@@ -71,16 +71,20 @@ const TimerCard: FC<Props> = props => {
 
 const PlayIcon = styled(_PlayIcon)`
   fill: ${color.accent};
+  width: 40px;
+  height: 40px;
 `
 
 const StopIcon = styled(_StopIcon)`
   fill: ${color.accent};
+  width: 40px;
+  height: 40px;
 `
 const STimerCard = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0;
-  padding: 1em;
+  padding: 1em 1.5em;
   border-bottom: 1px solid #c1c1c1;
   background-color: #fff;
   &.is-active {

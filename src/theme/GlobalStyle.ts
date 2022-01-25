@@ -3,18 +3,27 @@ import 'normalize.css'
 import { color } from './GlobalColor'
 
 export const GlobalStyle = createGlobalStyle`
+
+html {
+  -webkit-text-size-adjust: 100%;
+  box-sizing: border-box;
+  height: 100%;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
 *,
 *:before,
 *:after {
-  box-sizing: border-box;
-}
-
-html {
-  height: 100%;
+  box-sizing: inherit;
 }
 
 body {
+  text-rendering: optimizelegibility;
+  font-feature-settings: "pkna";
   height: 100%;
+  color: rgb(28, 28, 28);
+  font: 1em / 1.5 "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", 游ゴシック, "Yu Gothic", 游ゴシック体, yugothic, "Meiryo UI", メイリオ, meiryo, sans-serif;
 }
 
 #app {

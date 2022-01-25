@@ -1,5 +1,6 @@
 // import React from 'react'
 import styled from 'styled-components'
+import { color } from '../theme/GlobalColor'
 
 export const SButton = styled.button.attrs({
   type: 'button',
@@ -7,6 +8,8 @@ export const SButton = styled.button.attrs({
   cursor: pointer;
   appearance: none;
   margin: 0;
+  background-color: ${color.accent};
+  border: 1px solid ${color.accent};
   color: #fff;
   text-align: center;
 
@@ -26,8 +29,8 @@ export const SCircleButton = styled.button.attrs({
 })`
   cursor: pointer;
   appearance: none;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   margin: 0;
   padding: 0;
   box-shadow: none;
