@@ -1,5 +1,9 @@
-import React, { memo } from 'react'
-import { SInputWrap, SInput } from './SInputWrap'
+// InputText
+// input自体はappearance:noneでSInputWrapにスタイル適用
+// valueは親コンポーネントで管理
+
+import React from 'react'
+import { SInputWrap, SInput } from './styled/SInputWrap'
 
 type Props = {
   id: string
@@ -20,13 +24,15 @@ const InputText: React.VFC<Props> = props => {
     }
   }
 
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.currentTarget.classList.remove('is-focus')
+  }
+
   return (
     <SInputWrap
       tabIndex={-1}
       onFocus={(e: React.FocusEvent<HTMLInputElement>) => handleFocus(e)}
-      onBlur={(e: React.FocusEvent<HTMLInputElement>) =>
-        e.currentTarget.classList.remove('is-focus')
-      }
+      onBlur={(e: React.FocusEvent<HTMLInputElement>) => handleBlur(e)}
     >
       <SInput
         type="text"
@@ -40,4 +46,4 @@ const InputText: React.VFC<Props> = props => {
   )
 }
 
-export default memo(InputText)
+export default InputText

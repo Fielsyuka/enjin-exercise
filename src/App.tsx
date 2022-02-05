@@ -1,6 +1,7 @@
 import React, { memo } from 'react'
 import VideoFrame from './components/VideoFrame'
 import TrackingArea from './components/TrackingArea'
+import { TagListProvider } from './components/providers/TagListProvider'
 
 const App = () => {
   return (
@@ -9,9 +10,11 @@ const App = () => {
         <div className="pomodoro">
           <VideoFrame />
         </div>
-        <div className="timeTrack">
-          <TrackingArea />
-        </div>
+        <TagListProvider>
+          <div className="timeTrack">
+            <TrackingArea />
+          </div>
+        </TagListProvider>
       </div>
     </>
   )

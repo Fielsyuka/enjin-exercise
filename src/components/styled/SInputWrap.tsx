@@ -1,22 +1,25 @@
 import styled from 'styled-components'
-import { color } from '../theme/GlobalColor'
+import { color } from '../../theme/GlobalColor'
 
 export const SInputWrap = styled.div`
+  overflow-x: auto;
   cursor: text;
-  padding: 0.25em 0.5em;
-  border-bottom: solid 1px #ccc;
-  &:hover,
-  &.is-focus {
-    border-color: ${color.accent};
-  }
-  &.is-focus {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0.5rem 1.5rem;
+  border-top: solid 1px ${color.grayBorder};
+  border-bottom: solid 1px ${color.grayBorder};
+  background-color: #fff;
+  /* &.is-focus {
+    border-color: ${color.primary};
     outline: solid 1px transparent;
-    background-color: ${color.formElBg};
-  }
+  } */
 `
 export const SInput = styled.input`
   appearance: none;
   width: 100%;
+  min-width: 8em;
   margin: 0;
   padding: 0;
   border: 0;

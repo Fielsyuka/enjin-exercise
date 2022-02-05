@@ -2,24 +2,25 @@
 import React, { memo, useState } from 'react'
 import styled from 'styled-components'
 import TimerCard from './TimerCard'
-import AddCardBox from './AddCardBox'
-import { SOverlay } from './SOverlay'
+import EditCardBox from './EditCardBox'
+import { SOverlay } from './styled/SOverlay'
 import { PlusIcon as _PlusIcon } from './Icon'
+import type { TCard } from './types/TCard'
 
 const TrackingArea = () => {
   const [addMode, setAddMode] = useState(false) // eslint-disable-line
-  const [cardList, setCardList] = useState([
+  const [cardList, setCardList] = useState<TCard[]>([
     {
       id: 0,
       title: 'トップページコーディング',
-      tag: ['Project A'],
+      relatedTag: [],
       time: 0,
       isRunning: false,
     },
     {
       id: 1,
       title: '下層コーディング',
-      tag: ['Project A'],
+      relatedTag: [{ id: 0, name: 'Project A', color: 'tagPink' }],
       time: 0,
       isRunning: false,
     },
@@ -28,18 +29,10 @@ const TrackingArea = () => {
   // TimerCardのisRunningが変化した時に親へ時間と状態を伝えてもらう
 
   // リストデータ整形とセット
-  const addCard = (el: object) => {
+  const addCard = (card: TCard) => {
     setAddMode(false)
     setCardList(prev => {
-      const initial = {
-        id: prev.length,
-        title: '',
-        tag: [],
-        time: 0,
-        isRunning: false,
-      }
-      const newItem = { ...initial, ...el }
-      return [...prev, newItem]
+      return [...prev, card]
     })
   }
 
@@ -56,7 +49,12 @@ const TrackingArea = () => {
       {cardList &&
         cardList.map((el, index) => {
           return (
-            <TimerCard id={index} key={index} title={el.title} tag={el.tag} />
+            <TimerCard
+              id={index}
+              key={index}
+              title={el.title}
+              relatedTag={el.relatedTag}
+            />
           )
         })}
       {/* <SButton onClick={() => deleteCard(0)}>Remove Card</SButton> */}
@@ -66,7 +64,7 @@ const TrackingArea = () => {
       </SButtonAdd>
       {addMode && (
         <>
-          <AddCardBox onSubmit={el => addCard(el)} />
+          <EditCardBox onSubmit={el => addCard(el)} mode="add" />
           <SOverlay onClick={() => setAddMode(false)} />
         </>
       )}

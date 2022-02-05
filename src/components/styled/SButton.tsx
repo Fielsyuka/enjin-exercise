@@ -1,6 +1,6 @@
 // import React from 'react'
 import styled from 'styled-components'
-import { color } from '../theme/GlobalColor'
+import { color } from '../../theme/GlobalColor'
 
 export const SButton = styled.button.attrs({
   type: 'button',

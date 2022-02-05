@@ -15,6 +15,7 @@ module.exports = {
   },
   plugins: ['eslint-plugin-react', 'eslint-plugin-react-hooks'],
   rules: {
+    '@typescript-eslint/no-explicit-any': 'off',
     // Prettier とバッティングするので off
     'no-extra-semi': 'off',
     // { onClick?(): void } のような props type をうまく判定できないので off

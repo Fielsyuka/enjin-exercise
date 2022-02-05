@@ -1,9 +1,11 @@
-import React, { memo, useState, FC, useEffect } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { SCircleButton } from './SButton'
+import { SCircleButton } from './styled/SButton'
 import { color } from '../theme/GlobalColor'
 import { PlayIcon as _PlayIcon } from './Icon'
 import { StopIcon as _StopIcon } from './Icon'
+import { STag } from './styled/STag'
+import type { TTag } from './types/TTag'
 
 const formatTime = (i: number | string) => {
   if (i < 10) {
@@ -23,16 +25,14 @@ const printTime = (i: number) => {
 type Props = {
   id: number
   title: string
-  tag: Array<string>
-  // children: React.ReactNode
+  relatedTag: TTag[]
 }
 
-const TimerCard: FC<Props> = props => {
+const TimerCard: React.VFC<Props> = props => {
   let tick: NodeJS.Timer
-  const { id, title, tag } = props
+  const { id, title, relatedTag } = props
   const [time, setTime] = useState(0)
   const [isRunning, setRunning] = useState(false)
-  // const [isRunning, setRunning] = useState(false)
 
   useEffect(() => {
     if (isRunning) {
@@ -50,7 +50,16 @@ const TimerCard: FC<Props> = props => {
       <SHead>
         <STitle>{title}</STitle>
         <STagCrowd>
-          <STag>#{tag}</STag>
+          {relatedTag &&
+            relatedTag.map((tag, index) => {
+              return (
+                <li key={index}>
+                  <STag data-id={tag.id} className={tag.color}>
+                    {tag.name}
+                  </STag>
+                </li>
+              )
+            })}
         </STagCrowd>
       </SHead>
       <SBody>
@@ -111,16 +120,16 @@ const STagCrowd = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-`
-const STag = styled.li`
-  display: inline-block;
-  margin: 0.5em 1em 0 0;
-  color: #808080;
-  font-size: 0.875em;
+  li {
+    display: inline-block;
+    margin: 0.5em 0.5em 0 0;
+    color: #808080;
+    font-size: 0.875em;
+  }
 `
 const STime = styled.p`
   display: inline-block;
   margin: 0 1em;
-  font-size: 1.125em;
+  font-size: 1em;
 `
 export default memo(TimerCard)
