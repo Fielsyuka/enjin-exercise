@@ -92,7 +92,12 @@ const EditCardBox: React.VFC<Props> = props => {
           />
         </div>
 
-        <SButton onClick={() => addCard()}>Add Card</SButton>
+        <SButton
+          onClick={() => addCard()}
+          disabled={card.title !== '' ? false : true}
+        >
+          Add Card
+        </SButton>
       </SBox>
     </>
   )

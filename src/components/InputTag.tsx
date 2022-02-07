@@ -36,7 +36,22 @@ const InputTag: React.VFC<Props> = props => {
   }
 
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key !== 'Enter' || composing) {
+    if (e.key !== 'Enter' || composing || value == '') {
+      return
+    }
+    const newTag: TTag = {
+      id: Date.now(),
+      name: value,
+      color: 'tagDefault',
+    }
+    setTagList(prev => {
+      return [newTag, ...prev]
+    })
+    onEnter(newTag)
+  }
+
+  const pressEnter = () => {
+    if (value == '') {
       return
     }
     const newTag: TTag = {
@@ -68,6 +83,7 @@ const InputTag: React.VFC<Props> = props => {
           onCompositionStart={() => setComposing(true)}
           onCompositionEnd={() => setComposing(false)}
           onKeyDown={e => handleEnter(e)}
+          onBlur={pressEnter}
         />
       </SInputWrap>
     </>

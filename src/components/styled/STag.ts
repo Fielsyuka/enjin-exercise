@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import { color } from '../../theme/GlobalColor'
 
 export const STag = styled.div`
-  /* cursor: pointer; */
   appearance: none;
   display: inline-flex;
   flex-shrink: 0;

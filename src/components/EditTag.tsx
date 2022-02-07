@@ -9,6 +9,7 @@ import { color } from '../theme/GlobalColor'
 import InputTag from './InputTag'
 import TagList from './TagList'
 import AddTag from './AddTag'
+import { SInputWrap } from './styled/SInputWrap'
 import { STagDelete } from './styled/STag'
 import { TTag } from './types/TTag'
 
@@ -31,7 +32,7 @@ const EditTag: React.VFC<Props> = props => {
   }, [])
 
   return (
-    <>
+    <SEditTagWrap>
       <InputTag
         id="tag"
         name="tagId"
@@ -61,10 +62,17 @@ const EditTag: React.VFC<Props> = props => {
       ) : (
         <AddTag value={tag} />
       )}
-    </>
+    </SEditTagWrap>
   )
 }
 
+const SEditTagWrap = styled.div`
+  &:focus-within {
+    > ${SInputWrap} {
+      border-color: ${color.primary};
+    }
+  }
+`
 const STagListTtl = styled.p`
   margin: 1em 0 0;
   padding: 0 1.5rem 0.4rem;

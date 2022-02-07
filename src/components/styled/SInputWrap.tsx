@@ -11,10 +11,9 @@ export const SInputWrap = styled.div`
   border-top: solid 1px ${color.grayBorder};
   border-bottom: solid 1px ${color.grayBorder};
   background-color: #fff;
-  /* &.is-focus {
+  &:focus-within {
     border-color: ${color.primary};
-    outline: solid 1px transparent;
-  } */
+  }
 `
 export const SInput = styled.input`
   appearance: none;
