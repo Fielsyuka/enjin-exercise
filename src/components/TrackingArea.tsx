@@ -1,14 +1,27 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { getTodayDate } from '../utils/utils'
-import { TrackingHeader } from './TrackingHeader'
+import { useTagFilter } from './hooks/useTagFIlter'
+import { useDateFilter } from './hooks/useDateFilter'
+import TrackingHeader from './TrackingHeader'
 import TimerCard from './TimerCard'
 import EditCardBox from './EditCardBox'
 import { SOverlay } from './styled/SOverlay'
 import { PlusIcon as _PlusIcon } from './Icon'
 import type { TCard } from './types/TCard'
 
+const today = getTodayDate()
+
 const TrackingArea = () => {
+  console.log('TrackingArea is rendered')
+
+  /**--- カスタムフック ---**/
+  // タグフィルター
+  const { checkedTags, handleCheckTag, filterCardsByTag } = useTagFilter()
+
+  // 日付フィルター
+  const { handleArchive, filterCardsByDate } = useDateFilter()
+
   /**--- State ---**/
   // カードリスト（JSONへ切り出す予定のデータ）
   const [cardList, setCardList] = useState<TCard[]>([
@@ -32,7 +45,7 @@ const TrackingArea = () => {
       ],
       time: 0,
       isRunning: false,
-      dateStart: getTodayDate(),
+      dateStart: today,
     },
     {
       id: 2,
@@ -60,73 +73,21 @@ const TrackingArea = () => {
       ],
       time: 0,
       isRunning: false,
-      dateStart: getTodayDate(),
+      dateStart: today,
     },
   ])
 
   // カードの追加または編集モード
   const [addMode, setAddMode] = useState<boolean>(false)
 
-  // アーカイブモード
-  const [archiveMode, setArchiveMode] = useState<boolean>(false)
-
   // アクティブなカード
   // const [activeCardId, setActiveCardId] = useState<number>()
 
-  // タグフィルター
-  const [tagFilterValue, setTagFilterValue] = useState<number[]>([])
-
-  /**--- 定数 ---**/
-  // カードリストを日付でフィルター
-  const dateFilterdCards = archiveMode
-    ? cardList
-    : cardList.filter(({ dateStart }) => dateStart >= getTodayDate())
-
-  // カードリストをタグでフィルター
-  const tagFilterdCards = dateFilterdCards.filter(({ relatedTag }) =>
-    tagFilterValue.some(id => relatedTag.some(tag => tag.id == id)),
-  )
-
-  // 最終的に表示するカード
-  const cards = tagFilterdCards.length > 0 ? tagFilterdCards : dateFilterdCards
+  /**--- 定数・変数 ---**/
+  const filterdCards = filterCardsByDate(cardList, today)
+  const cards = filterCardsByTag(filterdCards)
 
   /**--- 関数 ---**/
-  /**
-   * アーカイブモードの変更
-   *
-   * @param archive アーカイブを指定しているか
-   */
-  const handleFilterToday = (archive: boolean): void => {
-    archive ? setArchiveMode(true) : setArchiveMode(false)
-  }
-
-  /**
-   * フィルターでクリックされたタグをtagFilterValueに追加または削除
-   *
-   * @param checked タグがcheckされているか
-   * @param id クリックされたタグのid
-   */
-  const handleFilterTag = (checked: boolean, id: number): void => {
-    if (checked) {
-      // フィルター追加
-      setTagFilterValue(prev => {
-        if (prev.includes(id)) {
-          return [...prev]
-        } else {
-          return [...prev, id]
-        }
-      })
-    } else {
-      // フィルター解除
-      setTagFilterValue(prev => {
-        const index = prev.findIndex(val => val === id)
-        const newArr = [...prev]
-        newArr.splice(index, 1)
-        return newArr
-      })
-    }
-  }
-
   // カードの追加と編集モードの終了
   const addCard = (card: TCard) => {
     setAddMode(false)
@@ -146,8 +107,9 @@ const TrackingArea = () => {
   return (
     <STrackingWrap>
       <TrackingHeader
-        onSelectTag={(checked, id) => handleFilterTag(checked, id)}
-        onSelectArchive={archive => handleFilterToday(archive)}
+        checkedTags={checkedTags}
+        handleCheckTag={handleCheckTag}
+        handleArchive={handleArchive}
       />
       <SButtonAdd onClick={() => setAddMode(true)}>
         <SPlusIcon />

@@ -3,27 +3,31 @@ import { TagListContext } from './providers/TagListProvider'
 import { STagCheck } from './styled/STag'
 
 type Props = {
-  onSelectTag(checked: boolean, id: number): void
-  onSelectArchive(archive: boolean): void
+  checkedTags: number[]
+  handleCheckTag(id: number): void
+  handleArchive(archive: boolean): void
 }
 
-export const TrackingHeader: React.VFC<Props> = props => {
-  const { onSelectTag, onSelectArchive } = props
+const TrackingHeader: React.VFC<Props> = props => {
+  console.log('TrackingHeader is rendered')
+  const { checkedTags, handleCheckTag, handleArchive } = props
   const { tagList } = useContext(TagListContext)
+
   return (
     <header>
-      <button onClick={() => onSelectArchive(false)}>今日</button>
-      <button onClick={() => onSelectArchive(true)}>全て</button>
+      <button onClick={() => handleArchive(false)}>今日</button>
+      <button onClick={() => handleArchive(true)}>全て</button>
       <p>フィルター</p>
       {tagList.map((tag, index) => {
         return (
           <STagCheck key={index}>
             <input
               type="checkbox"
-              onChange={e => onSelectTag(e.target.checked, tag.id)}
+              onChange={() => handleCheckTag(tag.id)}
               value={tag.name}
               name={tag.name}
               id={tag.name}
+              checked={checkedTags.includes(tag.id)}
             />
             <label htmlFor={tag.name} className={tag.color}>
               {tag.name}
@@ -34,3 +38,5 @@ export const TrackingHeader: React.VFC<Props> = props => {
     </header>
   )
 }
+
+export default TrackingHeader
