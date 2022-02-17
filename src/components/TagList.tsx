@@ -1,7 +1,3 @@
-// TagList
-// グローバルに定義されたタグ一覧を出力（ボタン形式）
-// 選択したタグのオブジェクトを親コンポーネントへ返す
-
 import React, { memo, useContext } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'

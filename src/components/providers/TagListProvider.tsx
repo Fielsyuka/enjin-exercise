@@ -13,12 +13,12 @@ export const TagListProvider = (props: any) => {
   const [tagList, setTagList] = useState<TTag[]>([
     {
       id: 0,
-      name: 'TAG1',
+      name: 'Project A',
       color: 'primary',
     },
     {
       id: 1,
-      name: 'TAG2',
+      name: 'Project B',
       color: 'tagPink',
     },
   ])

@@ -1,5 +1,5 @@
 export type TTag = {
-  id: number | string
+  id: number
   name: string
   color: string
 }

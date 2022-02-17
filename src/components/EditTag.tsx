@@ -1,11 +1,7 @@
-// EditTag
-// タグを新規追加:contextに追加＆親へrelatedTagを伝える
-//
-
-import React, { useState, useCallback } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
-// import { TagListContext } from './providers/TagListProvider'
+import { TagListContext } from './providers/TagListProvider'
 import InputTag from './InputTag'
 import TagList from './TagList'
 import AddTag from './AddTag'
@@ -24,12 +20,28 @@ const EditTag: React.VFC<Props> = props => {
 
   const { relatedTag, onChooseTag, onRemoveTag } = props
 
+  // InputTagで入力中の値
   const [tag, setTag] = useState('')
 
-  const addNewTag = useCallback(tag => {
+  // 登録済みのタグリスト
+  const { setTagList } = useContext(TagListContext)
+
+  // タグの入力が終わったら、タグリストに新しく追加、inputを空にする、追加したタグを親へ通知
+  const handleEnter = () => {
+    if (tag == '') {
+      return
+    }
+    const newTag: TTag = {
+      id: Date.now(),
+      name: tag,
+      color: 'tagDefault',
+    }
+    setTagList(prev => {
+      return [newTag, ...prev]
+    })
     setTag('')
-    onChooseTag(tag)
-  }, [])
+    onChooseTag(newTag)
+  }
 
   return (
     <SEditTagWrap>
@@ -39,7 +51,7 @@ const EditTag: React.VFC<Props> = props => {
         value={tag}
         autoComplete="off"
         onChange={e => setTag(e.currentTarget.value)}
-        onEnter={tag => addNewTag(tag)}
+        onEnter={() => handleEnter()}
       >
         {relatedTag.length > 0
           ? Array.from(relatedTag).map((tag, index) => {

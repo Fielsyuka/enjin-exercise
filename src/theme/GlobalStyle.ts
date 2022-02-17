@@ -49,6 +49,7 @@ body {
 }
 
 .timeTrack {
+  overflow: auto;
   height: 100%;
   @media screen and (min-width: 960px) {
     width: 50%;

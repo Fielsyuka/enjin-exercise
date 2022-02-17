@@ -1,12 +1,6 @@
-// InputText
-// input自体はappearance:noneでSInputWrapにスタイル適用
-// valueは親コンポーネントで管理
-
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { TagListContext } from './providers/TagListProvider'
 import { SInputWrap, SInput } from './styled/SInputWrap'
-import type { TTag } from './types/TTag'
 
 type Props = {
   id: string
@@ -14,16 +8,19 @@ type Props = {
   name?: string
   autoComplete?: string
   onChange(e: React.ChangeEvent<HTMLInputElement>): void
-  onEnter(tag: TTag): void
+  onEnter(): void
   children?: React.ReactNode
 }
 
 const InputTag: React.VFC<Props> = props => {
   console.log('inputTag is rendered')
+
   const { id, value, name, autoComplete, onChange, onEnter, children } = props
-  const { setTagList } = useContext(TagListContext)
+
+  // 日本語変換の監視
   const [composing, setComposing] = useState(false)
 
+  // SInputWrapにfocusしたらinputにfocusする
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.currentTarget.classList.add('is-focus')
     if (e.currentTarget === e.target) {
@@ -31,38 +28,17 @@ const InputTag: React.VFC<Props> = props => {
     }
   }
 
+  // focus外す
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     e.currentTarget.classList.remove('is-focus')
   }
 
+  // 入力が終わりEnterしたら親へ通知
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key !== 'Enter' || composing || value == '') {
       return
     }
-    const newTag: TTag = {
-      id: Date.now(),
-      name: value,
-      color: 'tagDefault',
-    }
-    setTagList(prev => {
-      return [newTag, ...prev]
-    })
-    onEnter(newTag)
-  }
-
-  const pressEnter = () => {
-    if (value == '') {
-      return
-    }
-    const newTag: TTag = {
-      id: Date.now(),
-      name: value,
-      color: 'tagDefault',
-    }
-    setTagList(prev => {
-      return [newTag, ...prev]
-    })
-    onEnter(newTag)
+    onEnter()
   }
 
   return (
@@ -83,7 +59,7 @@ const InputTag: React.VFC<Props> = props => {
           onCompositionStart={() => setComposing(true)}
           onCompositionEnd={() => setComposing(false)}
           onKeyDown={e => handleEnter(e)}
-          onBlur={pressEnter}
+          onBlur={onEnter}
         />
       </SInputWrap>
     </>

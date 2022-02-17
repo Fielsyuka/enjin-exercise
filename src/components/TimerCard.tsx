@@ -26,18 +26,19 @@ type Props = {
   id: number
   title: string
   relatedTag: TTag[]
+  dateStart: Date
 }
 
 const TimerCard: React.VFC<Props> = props => {
   let tick: NodeJS.Timer
-  const { id, title, relatedTag } = props
+  const { id, title, relatedTag, dateStart } = props
   const [time, setTime] = useState(0)
   const [isRunning, setRunning] = useState(false)
 
   useEffect(() => {
     if (isRunning) {
       tick = setInterval(() => {
-        setTime(prev => prev + 10)
+        setTime(prev => prev + 1)
       }, 1000)
     } else {
       clearInterval(tick)
@@ -61,6 +62,9 @@ const TimerCard: React.VFC<Props> = props => {
               )
             })}
         </STagCrowd>
+        <p>
+          {dateStart.getMonth() + 1}/{dateStart.getDate()}
+        </p>
       </SHead>
       <SBody>
         <STime>{printTime(time)}</STime>

@@ -1,7 +1,7 @@
-import React, { memo, useMemo, useState, useCallback } from 'react'
+import React, { useMemo, useState, useCallback } from 'react'
 import styled from 'styled-components'
+import { getTodayDate } from '../utils/utils'
 import { color } from '../theme/GlobalColor'
-// import { TagListContext } from './providers/TagListProvider'
 import InputText from './InputText'
 import EditTag from './EditTag'
 import { SButton } from './styled/SButton'
@@ -16,8 +16,9 @@ type Props = {
 const EditCardBox: React.VFC<Props> = props => {
   console.log('Editcardbox is rendered')
 
-  // const context = useContext(TagListContext)
   const { mode, onSubmit } = props
+
+  // タイムスタンプでカードのIDを作成
   const cardId = useMemo(() => {
     if (mode === 'add') {
       return Date.now()
@@ -26,21 +27,29 @@ const EditCardBox: React.VFC<Props> = props => {
     }
   }, [])
 
+  // 新しく追加するカード
   const [card, setCard] = useState<TCard>({
     id: cardId,
     title: '',
     time: 0,
     relatedTag: [],
     isRunning: false,
+    dateStart: getTodayDate(),
   })
 
-  const handleChange = useCallback(e => {
+  // inputの値が変化したらinputのnameに応じたkeyを更新（今はtitleしかないけど）
+  const handleChangeInput = useCallback(e => {
     const target = e.target
     setCard(prev => {
       return { ...prev, [target.name]: target.value }
     })
   }, [])
 
+  /**
+   * 選択されたタグがrelatedTagになければ追加
+   *
+   * @param tag EditTag > TagListから選択したタグobject
+   */
   const handleChooseTag = (tag: TTag) => {
     tag &&
       setCard(prev => {
@@ -52,6 +61,11 @@ const EditCardBox: React.VFC<Props> = props => {
       })
   }
 
+  /**
+   * 選択されたタグをrelatedTagから削除
+   *
+   * @param tag EditTag > InputTag > STagDelete
+   */
   const handleRemoveTag = (tag: TTag) => {
     tag &&
       setCard(prev => {
@@ -62,6 +76,7 @@ const EditCardBox: React.VFC<Props> = props => {
       })
   }
 
+  // カード追加（親へ渡す）
   const addCard = () => {
     if (card.title === '') {
       return
@@ -79,7 +94,7 @@ const EditCardBox: React.VFC<Props> = props => {
             name="title"
             autoComplete="on"
             value={card.title}
-            onChange={e => handleChange(e)}
+            onChange={e => handleChangeInput(e)}
           />
         </div>
 
@@ -131,4 +146,4 @@ const SBox = styled.div`
   }
 `
 
-export default memo(EditCardBox)
+export default EditCardBox
