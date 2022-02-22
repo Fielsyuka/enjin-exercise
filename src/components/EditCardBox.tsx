@@ -5,8 +5,8 @@ import { color } from '../theme/GlobalColor'
 import InputText from './InputText'
 import EditTag from './EditTag'
 import { SButton } from './styled/SButton'
-import type { TCard } from './types/TCard'
-import type { TTag } from './types/TTag'
+import type { TCard } from '../types/TCard'
+import type { TTag } from '../types/TTag'
 
 type Props = {
   mode: string

@@ -1,5 +1,5 @@
-import React, { memo } from 'react'
-import VideoFrame from './components/VideoFrame'
+import React from 'react'
+import PomodoroArea from './components/PomodoroArea'
 import TrackingArea from './components/TrackingArea'
 import { TagListProvider } from './components/providers/TagListProvider'
 
@@ -8,7 +8,7 @@ const App = () => {
     <>
       <div className="appWrap">
         <div className="pomodoro">
-          <VideoFrame />
+          <PomodoroArea />
         </div>
         <TagListProvider>
           <div className="timeTrack">
@@ -20,4 +20,4 @@ const App = () => {
   )
 }
 
-export default memo(App)
+export default App

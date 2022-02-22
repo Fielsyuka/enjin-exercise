@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react'
-import type { TTag } from '../types/TTag'
+import type { TTag } from '../../types/TTag'
 
 type TTagContext = {
   tagList: TTag[]

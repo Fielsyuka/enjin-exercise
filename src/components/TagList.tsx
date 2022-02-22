@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
 import { TagListContext } from './providers/TagListProvider'
 import { STag } from './styled/STag'
-import type { TTag } from './types/TTag'
+import type { TTag } from '../types/TTag'
 
 type Props = {
   onChooseTag(el: TTag): void

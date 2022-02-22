@@ -7,7 +7,7 @@ import TagList from './TagList'
 import AddTag from './AddTag'
 import { SInputWrap } from './styled/SInputWrap'
 import { STagDelete } from './styled/STag'
-import { TTag } from './types/TTag'
+import { TTag } from '../types/TTag'
 
 type Props = {
   relatedTag: TTag[]

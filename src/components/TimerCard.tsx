@@ -5,22 +5,8 @@ import { color } from '../theme/GlobalColor'
 import { PlayIcon as _PlayIcon } from './Icon'
 import { StopIcon as _StopIcon } from './Icon'
 import { STag } from './styled/STag'
-import type { TTag } from './types/TTag'
-
-const formatTime = (i: number | string) => {
-  if (i < 10) {
-    i = '0' + i
-  }
-  return i
-}
-
-const printTime = (i: number) => {
-  const hour = formatTime(Math.floor(i / 3600))
-  const minute = formatTime(Math.floor(i / 60))
-  const sec = formatTime(i % 60)
-  const time = `${hour}:${minute}:${sec}`
-  return time
-}
+import type { TTag } from '../types/TTag'
+import { printTime } from '../utils/utils'
 
 type Props = {
   id: number
@@ -30,6 +16,7 @@ type Props = {
 }
 
 const TimerCard: React.VFC<Props> = props => {
+  console.log('Timercard is rendered')
   let tick: NodeJS.Timer
   const { id, title, relatedTag, dateStart } = props
   const [time, setTime] = useState(0)

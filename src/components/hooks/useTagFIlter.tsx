@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import type { TCard } from '../types/TCard'
+import type { TCard } from '../../types/TCard'
 
 export const useTagFilter = () => {
   // チェックされたタグ格納

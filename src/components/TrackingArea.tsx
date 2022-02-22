@@ -8,7 +8,7 @@ import TimerCard from './TimerCard'
 import EditCardBox from './EditCardBox'
 import { SOverlay } from './styled/SOverlay'
 import { PlusIcon as _PlusIcon } from './Icon'
-import type { TCard } from './types/TCard'
+import type { TCard } from '../types/TCard'
 
 const today = getTodayDate()
 
@@ -136,7 +136,6 @@ const TrackingArea = () => {
     </STrackingWrap>
   )
 }
-export default TrackingArea
 
 const STrackingWrap = styled.div`
   position: relative;
@@ -169,3 +168,5 @@ const SPlusIcon = styled(_PlusIcon)`
   height: 16px;
   margin-right: 1em;
 `
+
+export default TrackingArea
