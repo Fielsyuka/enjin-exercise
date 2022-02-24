@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect, useRef } from 'react'
+import styled from 'styled-components'
 import { pomodoroStatus } from '../constants/constants'
-// import { formatTime } from '../utils/utils'
+import { printTime } from '../utils/utils'
 
 type Props = {
   status: string
@@ -15,10 +16,8 @@ const PomodoroTimer: React.VFC<Props> = props => {
   const [timer, setTimer] = useState(timeSetting)
   const timeRef = useRef(timer)
 
-  let tick: NodeJS.Timer
-
   useEffect(() => {
-    tick = setInterval(() => {
+    const tick: NodeJS.Timer = setInterval(() => {
       if (status == pomodoroStatus.stop) {
         return
       }
@@ -33,7 +32,7 @@ const PomodoroTimer: React.VFC<Props> = props => {
       console.log('clear')
       clearInterval(tick)
     }
-  }, [timeSetting])
+  }, [status])
 
   useEffect(() => {
     timeRef.current = timer
@@ -41,13 +40,28 @@ const PomodoroTimer: React.VFC<Props> = props => {
 
   useEffect(() => {
     setTimer(timeSetting)
-  }, [timeSetting])
+  }, [timeSetting, status])
 
   return (
     <>
-      <p>{timer}</p>
+      <STimerCount>{printTime(timer, 'minutes')}</STimerCount>
     </>
   )
 }
+
+const STimerCount = styled.p`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 0.5rem 1rem;
+  border: 2px solid #fff;
+  border-radius: 16px;
+  color: #fff;
+  font-size: 8rem;
+  text-align: center;
+`
 
 export default memo(PomodoroTimer)

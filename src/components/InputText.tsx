@@ -8,14 +8,14 @@ import { SInputWrap, SInput } from './styled/SInputWrap'
 type Props = {
   id: string
   value?: string
-  name?: string
   autoComplete?: string
+  placeholder?: string
   onChange?(e: React.ChangeEvent<HTMLInputElement>): void
 }
 
 const InputText: React.VFC<Props> = props => {
   console.log('input is rendered')
-  const { id, value, name, autoComplete, onChange } = props
+  const { id, value, autoComplete, placeholder, onChange } = props
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.currentTarget.classList.add('is-focus')
@@ -37,8 +37,8 @@ const InputText: React.VFC<Props> = props => {
       <SInput
         type="text"
         id={id}
-        name={name}
         value={value}
+        placeholder={placeholder}
         onChange={e => onChange?.(e)}
         autoComplete={autoComplete}
       />

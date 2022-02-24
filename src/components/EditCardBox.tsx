@@ -41,7 +41,7 @@ const EditCardBox: React.VFC<Props> = props => {
   const handleChangeInput = useCallback(e => {
     const target = e.target
     setCard(prev => {
-      return { ...prev, [target.name]: target.value }
+      return { ...prev, [target.id]: target.value }
     })
   }, [])
 
@@ -91,7 +91,6 @@ const EditCardBox: React.VFC<Props> = props => {
           <label htmlFor="title">タイトル</label>
           <InputText
             id="title"
-            name="title"
             autoComplete="on"
             value={card.title}
             onChange={e => handleChangeInput(e)}
@@ -135,14 +134,8 @@ const SBox = styled.div`
   .row {
     margin-bottom: 1em;
   }
-
   label {
-    display: block;
-    width: 100%;
-    margin-bottom: 0.5em;
     padding: 0 1.5rem;
-    color: ${color.grayText};
-    font-size: 0.75em;
   }
 `
 

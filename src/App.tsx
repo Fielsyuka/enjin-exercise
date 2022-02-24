@@ -1,21 +1,19 @@
 import React from 'react'
-import PomodoroArea from './components/PomodoroArea'
-import TrackingArea from './components/TrackingArea'
+import Header from './components/Header'
+import Pomodoro from './components/Pomodoro'
+import TimeTrack from './components/TimeTrack'
 import { TagListProvider } from './components/providers/TagListProvider'
 
 const App = () => {
   return (
     <>
-      <div className="appWrap">
-        <div className="pomodoro">
-          <PomodoroArea />
-        </div>
+      <Header />
+      <main className="main">
+        <Pomodoro />
         <TagListProvider>
-          <div className="timeTrack">
-            <TrackingArea />
-          </div>
+          <TimeTrack />
         </TagListProvider>
-      </div>
+      </main>
     </>
   )
 }

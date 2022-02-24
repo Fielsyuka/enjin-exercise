@@ -8,6 +8,7 @@ export const SButton = styled.button.attrs({
   cursor: pointer;
   appearance: none;
   margin: 0;
+  padding: 0.5rem 1.5rem;
   background-color: ${color.accent};
   border: 1px solid ${color.accent};
   color: #fff;
@@ -15,7 +16,32 @@ export const SButton = styled.button.attrs({
 
   :hover:not(:disabled) {
     background-color: #fff;
-    color: #0f0f0f;
+    color: ${color.accent};
+  }
+
+  :disabled {
+    background-color: #eee;
+    border: #c4c4c4;
+  }
+`
+
+export const SButtonRadius = styled.button.attrs({
+  type: 'button',
+})`
+  cursor: pointer;
+  appearance: none;
+  margin: 0;
+  padding: 0.5rem 1.5rem;
+  background-color: ${color.accent};
+  border: 1px solid ${color.accent};
+  border-radius: 50px;
+  color: #fff;
+  text-align: center;
+  font-size: 1.5rem;
+
+  :hover:not(:disabled) {
+    background-color: #fff;
+    color: ${color.accent};
   }
 
   :disabled {

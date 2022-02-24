@@ -23,11 +23,19 @@ export const formatTime = (i: number | string) => {
  * 経過秒数をhh:mm:ssの時間表記に変換
  *
  * @param i 秒数
+ * @param type 時間（hour）または分(minutes)
  */
-export const printTime = (i: number) => {
-  const hour = formatTime(Math.floor(i / 3600))
-  const minute = formatTime(Math.floor(i / 60))
-  const sec = formatTime(i % 60)
-  const time = `${hour}:${minute}:${sec}`
+export const printTime = (i: number, type: string) => {
+  let time
+  if (type == 'hour') {
+    const hour = formatTime(Math.floor(i / 3600))
+    const minute = formatTime(Math.floor(i / 60))
+    const sec = formatTime(i % 60)
+    time = `${hour}:${minute}:${sec}`
+  } else if (type == 'minutes') {
+    const minute = formatTime(Math.floor(i / 60))
+    const sec = formatTime(i % 60)
+    time = `${minute}:${sec}`
+  }
   return time
 }

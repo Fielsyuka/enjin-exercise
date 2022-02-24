@@ -12,8 +12,8 @@ import type { TCard } from '../types/TCard'
 
 const today = getTodayDate()
 
-const TrackingArea = () => {
-  console.log('TrackingArea is rendered')
+const TimeTrack = () => {
+  console.log('TimeTrack is rendered')
 
   /**--- カスタムフック ---**/
   // タグフィルター
@@ -105,7 +105,7 @@ const TrackingArea = () => {
   // }, [])
 
   return (
-    <STrackingWrap>
+    <div id="timeTrack" className="timeTrack mainContent js-switchScreen">
       <TrackingHeader
         checkedTags={checkedTags}
         handleCheckTag={handleCheckTag}
@@ -133,15 +133,9 @@ const TrackingArea = () => {
           <SOverlay onClick={() => setAddMode(false)} />
         </>
       )}
-    </STrackingWrap>
+    </div>
   )
 }
-
-const STrackingWrap = styled.div`
-  position: relative;
-  height: 100%;
-  padding: 0;
-`
 
 const SButtonAdd = styled.button.attrs({
   type: 'button',
@@ -169,4 +163,4 @@ const SPlusIcon = styled(_PlusIcon)`
   margin-right: 1em;
 `
 
-export default TrackingArea
+export default TimeTrack

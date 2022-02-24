@@ -9,4 +9,5 @@ export const color = {
   red: '#DF2935',
   tagDefault: '#878787',
   tagPink: '#FCC0C0',
+  navBg: '#4E7592',
 }

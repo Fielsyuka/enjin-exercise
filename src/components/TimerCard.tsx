@@ -54,7 +54,7 @@ const TimerCard: React.VFC<Props> = props => {
         </p>
       </SHead>
       <SBody>
-        <STime>{printTime(time)}</STime>
+        <STime>{printTime(time, 'hour')}</STime>
         {isRunning ? (
           <SCircleButton onClick={() => setRunning(false)}>
             <StopIcon />
