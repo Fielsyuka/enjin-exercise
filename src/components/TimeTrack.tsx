@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import { getTodayDate } from '../utils/utils'
 import { useTagFilter } from './hooks/useTagFIlter'
 import { useDateFilter } from './hooks/useDateFilter'
-import TrackingHeader from './TrackingHeader'
+import TimeTrackHeader from './TimeTrackHeader'
 import TimerCard from './TimerCard'
 import EditCardBox from './EditCardBox'
 import { SOverlay } from './styled/SOverlay'
+import { SGrid, SGridItem } from './styled/SGrid'
 import { PlusIcon as _PlusIcon } from './Icon'
 import type { TCard } from '../types/TCard'
 
@@ -92,7 +93,7 @@ const TimeTrack = () => {
   const addCard = (card: TCard) => {
     setAddMode(false)
     setCardList(prev => {
-      return [...prev, card]
+      return [card, ...prev]
     })
   }
 
@@ -106,27 +107,32 @@ const TimeTrack = () => {
 
   return (
     <div id="timeTrack" className="timeTrack mainContent js-switchScreen">
-      <TrackingHeader
+      <TimeTrackHeader
         checkedTags={checkedTags}
         handleCheckTag={handleCheckTag}
         handleArchive={handleArchive}
       />
-      <SButtonAdd onClick={() => setAddMode(true)}>
-        <SPlusIcon />
-        タイムトラックを追加する
-      </SButtonAdd>
-      {cards &&
-        cards.map((card, index) => {
-          return (
-            <TimerCard
-              id={index}
-              key={index}
-              title={card.title}
-              relatedTag={card.relatedTag}
-              dateStart={card.dateStart}
-            />
-          )
-        })}
+      <SGrid>
+        <SGridItem>
+          <SButtonAdd onClick={() => setAddMode(true)}>
+            <SPlusIcon />
+            新規追加
+          </SButtonAdd>
+        </SGridItem>
+        {cards &&
+          cards.map((card, index) => {
+            return (
+              <SGridItem key={index}>
+                <TimerCard
+                  id={index}
+                  title={card.title}
+                  relatedTag={card.relatedTag}
+                  dateStart={card.dateStart}
+                />
+              </SGridItem>
+            )
+          })}
+      </SGrid>
       {addMode && (
         <>
           <EditCardBox mode="add" onSubmit={el => addCard(el)} />
@@ -143,18 +149,14 @@ const SButtonAdd = styled.button.attrs({
   appearance: none;
   cursor: pointer;
   display: flex;
-  justify-content: center;
   align-items: center;
-  /* position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0; */
+  justify-content: center;
   width: 100%;
-  padding: 1.5em;
-  border: 0;
-  /* box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.2); */
-  background-color: #ebebeb;
-  text-align: center;
+  margin: 0;
+  padding: 32px 16px;
+  border-radius: 8px;
+  border: 2px dashed #777;
+  background-color: transparent;
 `
 
 const SPlusIcon = styled(_PlusIcon)`

@@ -1,9 +1,12 @@
 import React, { memo, useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { SCircleButton } from './styled/SButton'
+import { SButtonBase } from './styled/SButton'
 import { color } from '../theme/GlobalColor'
-import { PlayIcon as _PlayIcon } from './Icon'
-import { StopIcon as _StopIcon } from './Icon'
+import {
+  PlayIcon as _PlayIcon,
+  StopIcon as _StopIcon,
+  TimeIcon as _TimeIcon,
+} from './Icon'
 import { STag } from './styled/STag'
 import type { TTag } from '../types/TTag'
 import { printTime } from '../utils/utils'
@@ -35,9 +38,8 @@ const TimerCard: React.VFC<Props> = props => {
 
   return (
     <STimerCard data-id={id} className={isRunning ? 'is-active' : ''}>
-      <SHead>
-        <STitle>{title}</STitle>
-        <STagCrowd>
+      <div className="head">
+        <ul className="tagCrowd">
           {relatedTag &&
             relatedTag.map((tag, index) => {
               return (
@@ -48,79 +50,109 @@ const TimerCard: React.VFC<Props> = props => {
                 </li>
               )
             })}
-        </STagCrowd>
+        </ul>
+        <h3 className="title">{title}</h3>
         <p>
           {dateStart.getMonth() + 1}/{dateStart.getDate()}
         </p>
-      </SHead>
-      <SBody>
-        <STime>{printTime(time, 'hour')}</STime>
+      </div>
+      <div className="body">
+        <p className="time">
+          <TimeIcon />
+          {printTime(time, 'hour')}
+        </p>
+      </div>
+      <div className="buttons">
         {isRunning ? (
-          <SCircleButton onClick={() => setRunning(false)}>
+          <SButtonBase onClick={() => setRunning(false)}>
             <StopIcon />
-          </SCircleButton>
+          </SButtonBase>
         ) : (
-          <SCircleButton onClick={() => setRunning(true)}>
+          <SButtonBase onClick={() => setRunning(true)}>
             <PlayIcon />
-          </SCircleButton>
+          </SButtonBase>
         )}
-      </SBody>
+      </div>
     </STimerCard>
   )
 }
 
 const PlayIcon = styled(_PlayIcon)`
   fill: ${color.accent};
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
 `
 
 const StopIcon = styled(_StopIcon)`
   fill: ${color.accent};
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
 `
+
+const TimeIcon = styled(_TimeIcon)`
+  fill: ${color.grayIcon};
+  width: 22px;
+  height: 25px;
+  margin-right: 8px;
+`
+
 const STimerCard = styled.div`
+  position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+  width: 100%;
   margin: 0;
-  padding: 1em 1.5em;
-  border-bottom: 1px solid #c1c1c1;
+  padding: 16px;
+  border-radius: 8px;
   background-color: #fff;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.16);
   &.is-active {
-    background-color: ${color.accent};
+    background-color: ${color.secondary};
     color: #fff;
-    ${StopIcon} {
+    ${TimeIcon} {
       fill: #fff;
     }
   }
-`
-const SHead = styled.div`
-  font-size: 1em;
-`
-const SBody = styled.div`
-  display: flex;
-  align-items: center;
-`
-const STitle = styled.h3`
-  margin: 0;
-  font-size: 1em;
-  line-height: 1.2;
-`
-const STagCrowd = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  li {
-    display: inline-block;
-    margin: 0.5em 0.5em 0 0;
-    color: #808080;
-    font-size: 0.875em;
+
+  .head {
+    font-size: 1em;
+    .title {
+      margin: 0;
+      font-size: 0.875rem;
+      line-height: 1.2;
+    }
+    .tagCrowd {
+      list-style: none;
+      margin: 0 0 1rem;
+      padding: 0;
+      li {
+        display: inline-block;
+        margin: 0 0.5em 0 0;
+        color: #808080;
+        font-size: 0.875em;
+      }
+    }
+  }
+  .body {
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+    .time {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 100%;
+      margin: 0;
+      font-size: 1rem;
+      text-align: right;
+    }
+  }
+  .buttons {
+    position: absolute;
+    top: 16px;
+    right: 16px;
   }
 `
-const STime = styled.p`
-  display: inline-block;
-  margin: 0 1em;
-  font-size: 1em;
-`
+
 export default memo(TimerCard)

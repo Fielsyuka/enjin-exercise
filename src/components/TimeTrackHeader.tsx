@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
+import styled from 'styled-components'
 import { TagListContext } from './providers/TagListProvider'
-import { STagCheck } from './styled/STag'
+import { SCheckBox } from './styled/SCheckBox'
 
 type Props = {
   checkedTags: number[]
@@ -8,19 +9,18 @@ type Props = {
   handleArchive(archive: boolean): void
 }
 
-const TrackingHeader: React.VFC<Props> = props => {
-  console.log('TrackingHeader is rendered')
+const TimeTrackHeader: React.VFC<Props> = props => {
+  console.log('TimeTrackHeader is rendered')
   const { checkedTags, handleCheckTag, handleArchive } = props
   const { tagList } = useContext(TagListContext)
 
   return (
-    <header>
+    <STimeTrackHeader>
       <button onClick={() => handleArchive(false)}>今日</button>
       <button onClick={() => handleArchive(true)}>全て</button>
-      <p>フィルター</p>
       {tagList.map((tag, index) => {
         return (
-          <STagCheck key={index}>
+          <SCheckBox key={index}>
             <input
               type="checkbox"
               onChange={() => handleCheckTag(tag.id)}
@@ -32,11 +32,17 @@ const TrackingHeader: React.VFC<Props> = props => {
             <label htmlFor={tag.name} className={tag.color}>
               {tag.name}
             </label>
-          </STagCheck>
+          </SCheckBox>
         )
       })}
-    </header>
+    </STimeTrackHeader>
   )
 }
 
-export default TrackingHeader
+const STimeTrackHeader = styled.div`
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #ccc;
+`
+
+export default TimeTrackHeader

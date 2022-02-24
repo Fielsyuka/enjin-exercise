@@ -4,12 +4,15 @@ import { color } from './GlobalColor'
 
 export const GlobalStyle = createGlobalStyle`
 
+/* Base
+----------------------------------------*/
 html {
   -webkit-text-size-adjust: 100%;
   box-sizing: border-box;
   height: 100%;
   overflow-y: scroll;
   scroll-behavior: smooth;
+  font-size: 100%;
 }
 
 *,
@@ -26,7 +29,8 @@ body {
   font: 1em / 1.5 "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", 游ゴシック, "Yu Gothic", 游ゴシック体, yugothic, "Meiryo UI", メイリオ, meiryo, sans-serif;
 }
 
-/* Common */
+/* Common
+----------------------------------------*/
 label {
   display: block;
   width: 100%;
@@ -36,21 +40,32 @@ label {
   font-size: 0.75em;
 }
 
-/* Layout */
+/* Layout
+----------------------------------------*/
 #app {
   overflow: hidden;
   display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
   width: 100%;
   height: 100%;
   margin: 0;
+  @media screen and (min-width: 768px){
+    flex-direction: row;
+  }
 }
 
 /* Header */
 .header {
-  width: 96px;
-  height: 100%;
+  flex-shrink: 0;
+  width: 100%;
+  height: auto;
   background-color: ${color.navBg};
   z-index: 10;
+  @media screen and (min-width: 768px){
+    width: auto;
+    height: 100%;
+  }
 }
 
 /* Main */
@@ -58,78 +73,51 @@ label {
   overflow: auto;
   position: relative;
   height: 100%;
-  width: calc(100% - 96px);
+  width: 100%;
 }
 
 .mainContent {
-  padding: 40px;
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  margin: 0;
+  padding: 40px 24px;
+  z-index: 1;
+  @media screen and (min-width: 768px){
+    padding: 40px;
+  }
+  &.is-active {
+    z-index: 2;
+  }
 }
 
 /* Pomodoro */
 .pomodoro {
-  overflow: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  margin: 0;
+
 }
 
 .pomodoro__timer {
-  overflow: auto;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  margin: 0;
-  padding: 24px;
+  justify-content: center; */
   background-color: ${color.primary};
-  &.is-active {
-    z-index: 2;
-  }
 }
 
 .pomodoro__setting {
-  overflow: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0;
-  height: 100%;
-  padding: 24px;
   background-color: ${color.grayBg};
-  z-index: 1;
-  &.is-active {
-    z-index: 2;
-  }
 }
 
 /* TimeTrack */
 .timeTrack {
-  overflow: auto;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  background-color: #fff;
-   z-index: 1;
-   &.is-active {
-    z-index: 2;
-  }
+  background-color: ${color.grayBg};
 }
 
-/* Utility */
+/* Utility
+----------------------------------------*/
 .flex {
   display: flex;
   align-items: center;
@@ -151,5 +139,12 @@ label {
 	border: 0;
 	white-space: nowrap;
 	clip-path: inset(50%);
+}
+
+.hidden-sp {
+  display: none;
+  @media screen and (min-width: 640px) {
+    display: inline-block;
+  }
 }
 `

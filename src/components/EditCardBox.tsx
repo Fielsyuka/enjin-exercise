@@ -123,7 +123,7 @@ const SBox = styled.div`
   top: 0;
   right: 0;
   bottom: 0;
-  width: 80%;
+  width: 50%;
   min-width: 320px;
   height: 100%;
   margin: 0;

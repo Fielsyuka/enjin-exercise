@@ -1,7 +1,6 @@
 import React, { useState, memo } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
-// import InputText from './InputText'
 import { SButton } from './styled/SButton'
 
 const BGMSetting = () => {
@@ -24,13 +23,6 @@ const BGMSetting = () => {
       <label htmlFor="bgm">YoutubeのURLから作業用BGMを読み込みます。</label>
       <div className="flex">
         <SInput id="bgm" value={url} onChange={handleChange} />
-        {/* <InputText
-          id="bgm"
-          value={url}
-          autoComplete="true"
-          placeholder="https://www.youtube.com/watch?v=2qIyQeXXi24"
-          onChange={handleChange}
-        /> */}
         <SButton onClick={handleClick}>Load</SButton>
       </div>
       {id && (
@@ -48,7 +40,7 @@ const BGMSetting = () => {
 const SInput = styled.input.attrs({
   type: 'text',
 })`
-  width: 400px;
+  width: 460px;
   max-width: 100%;
   padding: 0.5rem;
   color: inherit;
@@ -60,6 +52,7 @@ const SInput = styled.input.attrs({
 const SIframe = styled.iframe`
   aspect-ratio: 16 / 9;
   width: 100%;
+  max-width: 600px;
   margin: 24px 0;
 `
 

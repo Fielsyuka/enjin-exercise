@@ -50,18 +50,16 @@ export const SButtonRadius = styled.button.attrs({
   }
 `
 
-export const SCircleButton = styled.button.attrs({
+export const SButtonBase = styled.button.attrs({
   type: 'button',
 })`
   cursor: pointer;
   appearance: none;
-  width: 40px;
-  height: 40px;
   margin: 0;
   padding: 0;
   box-shadow: none;
   border: none;
   background: none;
-  color: #fff;
+  color: inherit;
   text-align: center;
 `
