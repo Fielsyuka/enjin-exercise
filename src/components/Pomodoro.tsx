@@ -38,6 +38,8 @@ const Pomodoro = () => {
         id="pomodoroTimer"
         className="pomodoro__timer mainContent js-switchScreen"
       >
+        {status == pomodoroStatus.work && <p>Workig</p>}
+        {status == pomodoroStatus.break && <p>Breaking</p>}
         <PomodoroTimer
           status={status}
           timeSetting={timeSetting}

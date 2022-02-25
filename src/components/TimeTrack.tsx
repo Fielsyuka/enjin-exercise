@@ -1,109 +1,27 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { getTodayDate } from '../utils/utils'
-import { useTagFilter } from './hooks/useTagFIlter'
-import { useDateFilter } from './hooks/useDateFilter'
+import { useCards } from './hooks/useCards'
 import TimeTrackHeader from './TimeTrackHeader'
 import TimerCard from './TimerCard'
 import EditCardBox from './EditCardBox'
 import { SOverlay } from './styled/SOverlay'
 import { SGrid, SGridItem } from './styled/SGrid'
 import { PlusIcon as _PlusIcon } from './Icon'
-import type { TCard } from '../types/TCard'
-
-const today = getTodayDate()
 
 const TimeTrack = () => {
   console.log('TimeTrack is rendered')
 
-  /**--- カスタムフック ---**/
-  // タグフィルター
-  const { checkedTags, handleCheckTag, filterCardsByTag } = useTagFilter()
-
-  // 日付フィルター
-  const { handleArchive, filterCardsByDate } = useDateFilter()
-
-  /**--- State ---**/
-  // カードリスト（JSONへ切り出す予定のデータ）
-  const [cardList, setCardList] = useState<TCard[]>([
-    {
-      id: 0,
-      title: 'トップページコーディング',
-      relatedTag: [],
-      time: 0,
-      isRunning: false,
-      dateStart: new Date('December 17, 2021 00:00:00'),
-    },
-    {
-      id: 1,
-      title: '下層コーディング',
-      relatedTag: [
-        {
-          id: 0,
-          name: 'Project A',
-          color: 'primary',
-        },
-      ],
-      time: 0,
-      isRunning: false,
-      dateStart: today,
-    },
-    {
-      id: 2,
-      title: 'CSS設計',
-      relatedTag: [
-        {
-          id: 1,
-          name: 'Project B',
-          color: 'tagPink',
-        },
-      ],
-      time: 0,
-      isRunning: false,
-      dateStart: new Date('January 10, 2022 00:00:00'),
-    },
-    {
-      id: 3,
-      title: 'ミーティング',
-      relatedTag: [
-        {
-          id: 1,
-          name: 'Project B',
-          color: 'tagPink',
-        },
-      ],
-      time: 0,
-      isRunning: false,
-      dateStart: today,
-    },
-  ])
-
-  // カードの追加または編集モード
-  const [addMode, setAddMode] = useState<boolean>(false)
-
-  // アクティブなカード
-  // const [activeCardId, setActiveCardId] = useState<number>()
-
-  /**--- 定数・変数 ---**/
-  const filterdCards = filterCardsByDate(cardList, today)
-  const cards = filterCardsByTag(filterdCards)
-
-  /**--- 関数 ---**/
-  // カードの追加と編集モードの終了
-  const addCard = (card: TCard) => {
-    setAddMode(false)
-    setCardList(prev => {
-      return [card, ...prev]
-    })
-  }
-
-  // const deleteCard = useCallback(id => {
-  //   setCardList(prev => {
-  //     const newList = [...prev]
-  //     newList.splice(id, 1)
-  //     return newList
-  //   })
-  // }, [])
+  const {
+    cards,
+    checkedTags,
+    handleCheckTag,
+    handleArchive,
+    handleRunning,
+    updateTime,
+    addCard,
+    addMode,
+    setAddMode,
+  } = useCards()
 
   return (
     <div id="timeTrack" className="timeTrack mainContent js-switchScreen">
@@ -124,10 +42,14 @@ const TimeTrack = () => {
             return (
               <SGridItem key={index}>
                 <TimerCard
-                  id={index}
+                  id={card.id as string}
                   title={card.title}
                   relatedTag={card.relatedTag}
+                  time={card.time}
+                  isRunning={card.isRunning}
                   dateStart={card.dateStart}
+                  updateTime={updateTime}
+                  handleRunning={handleRunning}
                 />
               </SGridItem>
             )

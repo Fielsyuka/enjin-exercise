@@ -106,16 +106,24 @@ const EditCardBox: React.VFC<Props> = props => {
           />
         </div>
 
-        <SButton
-          onClick={() => addCard()}
-          disabled={card.title !== '' ? false : true}
-        >
-          Add Card
-        </SButton>
+        <SButtonWrap>
+          <SButton
+            onClick={() => addCard()}
+            disabled={card.title !== '' ? false : true}
+          >
+            完了
+          </SButton>
+        </SButtonWrap>
       </SBox>
     </>
   )
 }
+
+const SButtonWrap = styled.div`
+  margin-top: 40px;
+  margin-right: 1.5rem;
+  text-align: right;
+`
 
 const SBox = styled.div`
   overflow: auto;

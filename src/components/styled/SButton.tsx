@@ -20,7 +20,7 @@ export const SButton = styled.button.attrs({
   }
 
   :disabled {
-    background-color: #eee;
+    background-color: #b5b5b5;
     border: #c4c4c4;
   }
 `

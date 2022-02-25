@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { memo, useCallback } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
 import { TrackingIcon as _TrackingIcon } from './Icon'
@@ -173,4 +173,4 @@ const PomodoroIcon = styled(_PomodoroIcon)`
   height: 27px;
 `
 
-export default Header
+export default memo(Header) //memoしてもcontext使ってるので再レンダーされる？

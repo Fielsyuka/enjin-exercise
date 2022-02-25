@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react'
+import React, { memo, useEffect } from 'react'
 import styled from 'styled-components'
 import { SButtonBase } from './styled/SButton'
 import { color } from '../theme/GlobalColor'
@@ -12,23 +12,35 @@ import type { TTag } from '../types/TTag'
 import { printTime } from '../utils/utils'
 
 type Props = {
-  id: number
+  id: number | string
   title: string
   relatedTag: TTag[]
+  time: number
+  isRunning: boolean
   dateStart: Date
+  updateTime(cardId: number | string): void
+  handleRunning(cardId: number | string, running: boolean): void
 }
 
 const TimerCard: React.VFC<Props> = props => {
-  console.log('Timercard is rendered')
+  const {
+    id,
+    title,
+    relatedTag,
+    time,
+    isRunning,
+    dateStart,
+    updateTime,
+    handleRunning,
+  } = props
+
+  // console.log('Timercard is rendered: ', id)
   let tick: NodeJS.Timer
-  const { id, title, relatedTag, dateStart } = props
-  const [time, setTime] = useState(0)
-  const [isRunning, setRunning] = useState(false)
 
   useEffect(() => {
     if (isRunning) {
       tick = setInterval(() => {
-        setTime(prev => prev + 1)
+        updateTime(id)
       }, 1000)
     } else {
       clearInterval(tick)
@@ -64,11 +76,11 @@ const TimerCard: React.VFC<Props> = props => {
       </div>
       <div className="buttons">
         {isRunning ? (
-          <SButtonBase onClick={() => setRunning(false)}>
+          <SButtonBase onClick={() => handleRunning(id, false)}>
             <StopIcon />
           </SButtonBase>
         ) : (
-          <SButtonBase onClick={() => setRunning(true)}>
+          <SButtonBase onClick={() => handleRunning(id, true)}>
             <PlayIcon />
           </SButtonBase>
         )}

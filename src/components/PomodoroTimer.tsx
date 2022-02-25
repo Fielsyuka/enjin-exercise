@@ -61,6 +61,7 @@ const STimerCount = styled.p`
   border-radius: 16px;
   color: #fff;
   font-size: 8rem;
+  font-weight: bold;
   text-align: center;
 `
 
