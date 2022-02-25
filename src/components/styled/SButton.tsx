@@ -37,7 +37,7 @@ export const SButtonRadius = styled.button.attrs({
   border-radius: 50px;
   color: #fff;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1rem;
 
   :hover:not(:disabled) {
     background-color: #fff;

@@ -86,6 +86,7 @@ label {
   height: 100%;
   margin: 0;
   padding: 40px 24px;
+  background-color: ${color.grayBg};
   z-index: 1;
   @media screen and (min-width: 768px){
     padding: 40px;
@@ -96,24 +97,20 @@ label {
 }
 
 /* Pomodoro */
-.pomodoro {
-
-}
-
 .pomodoro__timer {
   /* display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center; */
-  background-color: ${color.primary};
+  /* background-color: ${color.primary}; */
 }
 
 .pomodoro__setting {
-  background-color: ${color.grayBg};
+
 }
 
 /* TimeTrack */
 .timeTrack {
-  background-color: ${color.grayBg};
 }
 
 /* Utility

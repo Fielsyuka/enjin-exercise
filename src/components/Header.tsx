@@ -5,7 +5,14 @@ import { TrackingIcon as _TrackingIcon } from './Icon'
 import { SettingIcon as _SettingIcon } from './Icon'
 import { PomodoroIcon as _PomodoroIcon } from './Icon'
 
-const Header = () => {
+type Props = {
+  status: string
+}
+
+const Header: React.VFC<Props> = props => {
+  const { status } = props
+  console.log(status)
+
   // ナビゲーションクリックで画面切り替え
   const handleSwitchScreen = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -49,7 +56,7 @@ const Header = () => {
               <a
                 href="#pomodoroTimer"
                 onClick={handleSwitchScreen}
-                className="js-navSwitchTrigger"
+                className={status + ' js-navSwitchTrigger'}
               >
                 <PomodoroIcon />
                 <span className="spHidden">Pomodoro</span>
@@ -71,6 +78,24 @@ const Header = () => {
     </>
   )
 }
+
+const TrackingIcon = styled(_TrackingIcon)`
+  fill: #fff;
+  width: 24px;
+  height: 24px;
+`
+
+const SettingIcon = styled(_SettingIcon)`
+  fill: #fff;
+  width: 24px;
+  height: 24px;
+`
+
+const PomodoroIcon = styled(_PomodoroIcon)`
+  fill: #fff;
+  width: 24px;
+  height: 27px;
+`
 
 const SNav = styled.nav`
   width: 100%;
@@ -134,6 +159,18 @@ const SNav = styled.nav`
             }
           }
         }
+        &.isWorking {
+          color: ${color.working};
+          ${PomodoroIcon} {
+            fill: ${color.working};
+          }
+        }
+        &.isBreaking {
+          color: ${color.breaking};
+          ${PomodoroIcon} {
+            fill: ${color.breaking};
+          }
+        }
       }
     }
     .spHidden {
@@ -153,24 +190,6 @@ const SNav = styled.nav`
       }
     }
   }
-`
-
-const TrackingIcon = styled(_TrackingIcon)`
-  fill: #fff;
-  width: 24px;
-  height: 24px;
-`
-
-const SettingIcon = styled(_SettingIcon)`
-  fill: #fff;
-  width: 24px;
-  height: 24px;
-`
-
-const PomodoroIcon = styled(_PomodoroIcon)`
-  fill: #fff;
-  width: 24px;
-  height: 27px;
 `
 
 export default memo(Header) //memoしてもcontext使ってるので再レンダーされる？

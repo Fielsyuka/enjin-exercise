@@ -3,7 +3,6 @@ import { getTodayDate } from '../../utils/utils'
 import type { TCard } from '../../types/TCard'
 
 const today = getTodayDate()
-
 export const useCards = () => {
   /**--- State ---**/
   // カードリスト
@@ -80,22 +79,6 @@ export const useCards = () => {
   }, [])
 
   /**
-   * カードリストを日付でフィルター
-   *
-   * @param cards TCardの配列
-   * @param date 絞り込むDate
-   * @return フィルター後のcards
-   */
-  const filterCardsByDate = useCallback(
-    (cards: TCard[], date: Date) => {
-      return archiveMode
-        ? cards
-        : cards.filter(({ dateStart }) => dateStart >= date)
-    },
-    [cardList, archiveMode],
-  )
-
-  /**
    * チェックしたタグの名前がcheckedTagsにあれば追加、無ければ削除
    *
    * @param tagId タグのid
@@ -116,25 +99,6 @@ export const useCards = () => {
       }
     },
     [checkedTags],
-  )
-
-  /**
-   * カードリストをtagFilterValueでフィルター
-   *
-   * @param cards TCardの配列
-   * @return フィルター後のcards
-   */
-  const filterCardsByTag = useCallback(
-    (cards: TCard[]) => {
-      if (checkedTags.length > 0) {
-        return cards.filter(({ relatedTag }) =>
-          checkedTags.some(id => relatedTag.some(tag => tag.id == id)),
-        )
-      } else {
-        return cards
-      }
-    },
-    [cardList, checkedTags],
   )
 
   /**
@@ -185,6 +149,41 @@ export const useCards = () => {
       return [card, ...prev]
     })
   }, [])
+
+  /**
+   * カードリストを日付でフィルター
+   *
+   * @param cards TCardの配列
+   * @param date 絞り込むDate
+   * @return フィルター後のcards
+   */
+  const filterCardsByDate = useCallback(
+    (cards: TCard[], date: Date) => {
+      return archiveMode
+        ? cards
+        : cards.filter(({ dateStart }) => dateStart.getDate() == date.getDate())
+    },
+    [cardList, archiveMode],
+  )
+
+  /**
+   * カードリストをtagFilterValueでフィルター
+   *
+   * @param cards TCardの配列
+   * @return フィルター後のcards
+   */
+  const filterCardsByTag = useCallback(
+    (cards: TCard[]) => {
+      if (checkedTags.length > 0) {
+        return cards.filter(({ relatedTag }) =>
+          checkedTags.some(id => relatedTag.some(tag => tag.id == id)),
+        )
+      } else {
+        return cards
+      }
+    },
+    [cardList, checkedTags],
+  )
 
   /**--- カードのフィルター ---**/
   const filterdCards = filterCardsByDate(cardList, today)

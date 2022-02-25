@@ -1,15 +1,34 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
+import { pomodoroStatus } from './constants/constants'
 import Header from './components/Header'
 import Pomodoro from './components/Pomodoro'
 import TimeTrack from './components/TimeTrack'
 import { TagListProvider } from './components/providers/TagListProvider'
 
 const App = () => {
+  const [status, setStatus] = useState(pomodoroStatus.stop)
+
+  const onChangeStatus = useCallback(status => {
+    setStatus(status)
+  }, [])
+
+  // タイマーのカウントが0になったらworkとbreakを切り替える
+  const onCountOver = useCallback(() => {
+    setStatus(prev => {
+      return prev == pomodoroStatus.break
+        ? pomodoroStatus.work
+        : pomodoroStatus.break
+    })
+  }, [])
   return (
     <>
-      <Header />
+      <Header status={status} />
       <main className="main">
-        <Pomodoro />
+        <Pomodoro
+          status={status}
+          onChangeStatus={onChangeStatus}
+          onCountOver={onCountOver}
+        />
         <TagListProvider>
           <TimeTrack />
         </TagListProvider>

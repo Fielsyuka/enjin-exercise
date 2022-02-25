@@ -119,6 +119,9 @@ const STimerCard = styled.div`
   border-radius: 8px;
   background-color: #fff;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.16);
+  @media screen and (min-width: 640px) {
+    min-height: 170px;
+  }
   &.is-active {
     background-color: ${color.secondary};
     color: #fff;

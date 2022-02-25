@@ -11,4 +11,6 @@ export const color = {
   tagDefault: '#878787',
   tagPink: '#FCC0C0',
   navBg: '#4E7592',
+  working: '#09BC8A',
+  breaking: '#F17105',
 }

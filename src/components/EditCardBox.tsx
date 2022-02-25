@@ -131,14 +131,18 @@ const SBox = styled.div`
   top: 0;
   right: 0;
   bottom: 0;
-  width: 50%;
-  min-width: 320px;
-  height: 100%;
-  margin: 0;
+  left: 0;
+  width: 90%;
+  height: 90%;
+  margin: auto;
   padding: 24px 0;
   background-color: ${color.grayBg};
   box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.1);
   z-index: 20;
+  @media screen and (min-width: 768px) {
+    width: 50%;
+    min-width: 320px;
+  }
   .row {
     margin-bottom: 1em;
   }

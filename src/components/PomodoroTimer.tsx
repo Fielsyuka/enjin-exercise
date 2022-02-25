@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import { color } from '../theme/GlobalColor'
 import { pomodoroStatus } from '../constants/constants'
 import { printTime } from '../utils/utils'
 
@@ -44,7 +45,9 @@ const PomodoroTimer: React.VFC<Props> = props => {
 
   return (
     <>
-      <STimerCount>{printTime(timer, 'minutes')}</STimerCount>
+      <STimerCount className={status}>
+        {printTime(timer, 'minutes')}
+      </STimerCount>
     </>
   )
 }
@@ -53,16 +56,32 @@ const STimerCount = styled.p`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80%;
+  width: 100%;
   max-width: 600px;
-  margin: 40px auto;
-  padding: 0.5rem 1rem;
-  border: 2px solid #fff;
+  margin: 64px auto;
+  padding: 40px 16px;
+  border: 4px solid ${color.accent};
   border-radius: 16px;
-  color: #fff;
-  font-size: 8rem;
+  background-color: #fff;
+  color: ${color.accent};
+  font-size: 56px;
   font-weight: bold;
   text-align: center;
+  line-height: 1;
+  @media screen and (min-width: 768px) {
+    margin: 24px auto 56px;
+    font-size: 72px;
+  }
+  &.isWorking {
+    padding: 32px 16px 110px;
+    border-color: ${color.working};
+    color: ${color.working};
+  }
+  &.isBreaking {
+    padding: 32px 16px 110px;
+    border-color: ${color.breaking};
+    color: ${color.breaking};
+  }
 `
 
 export default memo(PomodoroTimer)

@@ -1,22 +1,25 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
+import { color } from '../theme/GlobalColor'
 import { pomodoroSettings, pomodoroStatus } from '../constants/constants'
 import PomodoroTimer from './PomodoroTimer'
 import PomodoroSetting from './PomodoroSetting'
 import { SButtonRadius } from './styled/SButton'
+import {
+  WorkingIcon as _WorkingIcon,
+  BreakingIcon as _BreakingIcon,
+} from './Icon'
 
-const Pomodoro = () => {
+type Props = {
+  status: string
+  onChangeStatus(status: string): void
+  onCountOver(): void
+}
+const Pomodoro: React.VFC<Props> = props => {
   console.log('Pomodoro is rendered')
-  const [status, setStatus] = useState(pomodoroStatus.stop)
+  const { status, onChangeStatus, onCountOver } = props
+  // const [status, setStatus] = useState(pomodoroStatus.stop)
   const [timeSetting, setTimeSetting] = useState<number>(pomodoroSettings.work)
-
-  // タイマーのカウントが0になったら呼び出す、workとbreakを切り替える
-  const handleStatusChange = useCallback(() => {
-    setStatus(prev => {
-      return prev == pomodoroStatus.break
-        ? pomodoroStatus.work
-        : pomodoroStatus.break
-    })
-  }, [])
 
   // statusに合わせてタイマーの時間を変更
   useEffect(() => {
@@ -33,27 +36,32 @@ const Pomodoro = () => {
   }, [status])
 
   return (
-    <div className="pomodoro">
+    <>
       <div
         id="pomodoroTimer"
         className="pomodoro__timer mainContent js-switchScreen"
       >
-        {status == pomodoroStatus.work && <p>Workig</p>}
-        {status == pomodoroStatus.break && <p>Breaking</p>}
-        <PomodoroTimer
-          status={status}
-          timeSetting={timeSetting}
-          onCountOver={handleStatusChange}
-        />
+        <SPomodoroTimerWrap>
+          {/* <SPomodoroMessage>
+          </SPomodoroMessage> */}
+          <PomodoroTimer
+            status={status}
+            timeSetting={timeSetting}
+            onCountOver={onCountOver}
+          />
+          {/* {status == pomodoroStatus.stop && <p>今日もがんばろう！</p>} */}
+          {status == pomodoroStatus.work && <WorkingIcon className="icon" />}
+          {status == pomodoroStatus.break && <BreakingIcon className="icon" />}
+        </SPomodoroTimerWrap>
         <div className="algn-c">
           {(status == pomodoroStatus.work ||
             status == pomodoroStatus.break) && (
-            <SButtonRadius onClick={() => setStatus(pomodoroStatus.stop)}>
+            <SButtonRadius onClick={() => onChangeStatus(pomodoroStatus.stop)}>
               リセット
             </SButtonRadius>
           )}
           {status == pomodoroStatus.stop && (
-            <SButtonRadius onClick={() => setStatus(pomodoroStatus.work)}>
+            <SButtonRadius onClick={() => onChangeStatus(pomodoroStatus.work)}>
               スタート
             </SButtonRadius>
           )}
@@ -65,8 +73,38 @@ const Pomodoro = () => {
       >
         <PomodoroSetting />
       </div>
-    </div>
+    </>
   )
 }
+
+const WorkingIcon = styled(_WorkingIcon)`
+  width: 56px;
+  height: 48px;
+  fill: ${color.working};
+`
+const BreakingIcon = styled(_BreakingIcon)`
+  width: 56px;
+  height: 56px;
+  fill: ${color.breaking};
+`
+
+const SPomodoroTimerWrap = styled.div`
+  position: relative;
+  text-align: center;
+  .icon {
+    position: absolute;
+    right: 0;
+    bottom: 32px;
+    left: 0;
+    margin: auto;
+    @media screen and (max-width: 767.98px) {
+      transform: scale(0.75);
+    }
+  }
+`
+
+// const SPomodoroMessage = styled.div`
+//   height: 56px;
+// `
 
 export default Pomodoro
