@@ -12,7 +12,7 @@ const App = () => {
     setStatus(status)
   }, [])
 
-  // タイマーのカウントが0になったらworkとbreakを切り替える
+  // ポモドーロのカウントが0になったらworkとbreakを切り替える
   const onCountOver = useCallback(() => {
     setStatus(prev => {
       return prev == pomodoroStatus.break
@@ -23,14 +23,14 @@ const App = () => {
   return (
     <>
       <Header status={status} />
-      <main className="main">
+      <main className={status + ' main'}>
         <Pomodoro
           status={status}
           onChangeStatus={onChangeStatus}
           onCountOver={onCountOver}
         />
         <TagListProvider>
-          <TimeTrack />
+          <TimeTrack status={status} />
         </TagListProvider>
       </main>
     </>

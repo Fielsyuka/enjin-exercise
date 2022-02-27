@@ -1,6 +1,6 @@
 export const pomodoroSettings = {
-  work: 15,
-  break: 7,
+  work: 10,
+  break: 5,
 }
 
 export const pomodoroStatus = {

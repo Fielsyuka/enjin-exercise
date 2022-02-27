@@ -31,14 +31,38 @@ body {
 
 /* Common
 ----------------------------------------*/
+.appTitle {
+  position: relative;
+  margin: 40px 1em 1em;
+  color: #fff;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+  text-align: center;
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: ${color.accent};
+  }
+}
+
+h3 {
+  margin-top: 0;
+}
+
 label {
   display: block;
-  width: 100%;
   margin-bottom: 0.5em;
   padding: 0;
   color: ${color.grayText};
   font-size: 0.75em;
 }
+
 
 /* Layout
 ----------------------------------------*/
@@ -85,7 +109,7 @@ label {
   right: 0;
   height: 100%;
   margin: 0;
-  padding: 40px 24px;
+  padding: 56px 24px 40px;
   background-color: ${color.grayBg};
   z-index: 1;
   @media screen and (min-width: 768px){
@@ -96,21 +120,31 @@ label {
   }
 }
 
-/* Pomodoro */
-.pomodoro__timer {
-  /* display: flex;
-  flex-direction: column;
+.main.isBreaking >.timeTrack:after {
+  content: "BREAK TIME!";
+  overflow: hidden;
+  display: flex;
   align-items: center;
-  justify-content: center; */
-  /* background-color: ${color.primary}; */
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0,0,0,0.6);
+  margin: auto;
+  color: #fff;
+  font-size: 9vw;
+  font-size: bold;
+  z-index: 2;
 }
 
-.pomodoro__setting {
-
-}
-
-/* TimeTrack */
-.timeTrack {
+.pomodoroTimer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
 }
 
 /* Utility

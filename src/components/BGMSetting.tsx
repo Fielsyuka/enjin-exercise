@@ -25,22 +25,24 @@ const BGMSetting = () => {
         <SInput id="bgm" value={url} onChange={handleChange} />
         <SButton onClick={handleClick}>Load</SButton>
       </div>
-      {id && (
-        <SIframe
-          src={`https://www.youtube.com/embed/${id}?autoplay=1`}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></SIframe>
-      )}
+      <SworkBgmWrap>
+        {id && (
+          <SIframe
+            src={`https://www.youtube.com/embed/${id}?autoplay=1`}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></SIframe>
+        )}
+      </SworkBgmWrap>
     </>
   )
 }
 const SInput = styled.input.attrs({
   type: 'text',
 })`
-  width: 460px;
+  width: 510px;
   max-width: 100%;
   padding: 0.5rem;
   color: inherit;
@@ -49,11 +51,19 @@ const SInput = styled.input.attrs({
   background-color: #fff;
 `
 
-const SIframe = styled.iframe`
+const SworkBgmWrap = styled.div`
   aspect-ratio: 16 / 9;
   width: 100%;
   max-width: 600px;
   margin: 24px 0;
+  border: 1px dashed ${color.grayBorder};
+  background: #fff;
+`
+
+const SIframe = styled.iframe`
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  max-width: 600px;
 `
 
 export default memo(BGMSetting)

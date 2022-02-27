@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { color } from '../theme/GlobalColor'
 import { useCards } from './hooks/useCards'
 import TimeTrackHeader from './TimeTrackHeader'
 import TimerCard from './TimerCard'
@@ -8,31 +9,41 @@ import { SOverlay } from './styled/SOverlay'
 import { SGrid, SGridItem } from './styled/SGrid'
 import { PlusIcon as _PlusIcon } from './Icon'
 
-const TimeTrack = () => {
+type Props = {
+  status: string
+}
+
+const TimeTrack: React.VFC<Props> = props => {
   console.log('TimeTrack is rendered')
+
+  const { status } = props
 
   const {
     cards,
-    checkedTags,
+    editMode,
+    cardEditing,
+    updateTime,
+    updateCard,
+    setEditMode,
+    archiveMode,
+    handleEditCard,
     handleCheckTag,
     handleArchive,
     handleRunning,
-    updateTime,
-    addCard,
-    addMode,
-    setAddMode,
+    checkedTags,
   } = useCards()
 
   return (
-    <div id="timeTrack" className="timeTrack mainContent js-switchScreen">
+    <section id="timeTrack" className="timeTrack mainContent js-switchScreen">
       <TimeTrackHeader
+        archiveMode={archiveMode}
         checkedTags={checkedTags}
         handleCheckTag={handleCheckTag}
         handleArchive={handleArchive}
       />
       <SGrid>
         <SGridItem>
-          <SButtonAdd onClick={() => setAddMode(true)}>
+          <SButtonAdd onClick={() => handleEditCard()}>
             <SPlusIcon />
             新規追加
           </SButtonAdd>
@@ -50,18 +61,23 @@ const TimeTrack = () => {
                   dateStart={card.dateStart}
                   updateTime={updateTime}
                   handleRunning={handleRunning}
+                  status={status}
+                  onClickEdit={handleEditCard}
                 />
               </SGridItem>
             )
           })}
       </SGrid>
-      {addMode && (
+      {editMode && (
         <>
-          <EditCardBox mode="add" onSubmit={el => addCard(el)} />
-          <SOverlay onClick={() => setAddMode(false)} />
+          <EditCardBox
+            cardEditing={cardEditing}
+            onSubmit={el => updateCard(el)}
+          />
+          <SOverlay onClick={() => setEditMode(false)} />
         </>
       )}
-    </div>
+    </section>
   )
 }
 
@@ -79,6 +95,7 @@ const SButtonAdd = styled.button.attrs({
   border-radius: 8px;
   border: 2px dashed #777;
   background-color: transparent;
+  color: ${color.accent};
 `
 
 const SPlusIcon = styled(_PlusIcon)`

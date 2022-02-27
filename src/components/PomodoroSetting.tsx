@@ -6,6 +6,7 @@ import BGMSetting from './BGMSetting'
 const PomodoroSetting = () => {
   return (
     <>
+      <h3>BGM</h3>
       <BGMSetting />
     </>
   )

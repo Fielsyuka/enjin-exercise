@@ -40,6 +40,7 @@ const Header: React.VFC<Props> = props => {
   return (
     <>
       <header id="header" className="header">
+        <h1 className="appTitle">TIME TRACK APP</h1>
         <SNav>
           <ul>
             <li>
@@ -52,11 +53,11 @@ const Header: React.VFC<Props> = props => {
                 <span className="spHidden">Time-tracking</span>
               </a>
             </li>
-            <li>
+            <li className={status}>
               <a
                 href="#pomodoroTimer"
                 onClick={handleSwitchScreen}
-                className={status + ' js-navSwitchTrigger'}
+                className="js-navSwitchTrigger"
               >
                 <PomodoroIcon />
                 <span className="spHidden">Pomodoro</span>
@@ -159,17 +160,17 @@ const SNav = styled.nav`
             }
           }
         }
-        &.isWorking {
-          color: ${color.working};
-          ${PomodoroIcon} {
-            fill: ${color.working};
-          }
+      }
+      &.isWorking a {
+        color: ${color.working};
+        ${PomodoroIcon} {
+          fill: ${color.working};
         }
-        &.isBreaking {
-          color: ${color.breaking};
-          ${PomodoroIcon} {
-            fill: ${color.breaking};
-          }
+      }
+      &.isBreaking a {
+        color: ${color.breaking};
+        ${PomodoroIcon} {
+          fill: ${color.breaking};
         }
       }
     }

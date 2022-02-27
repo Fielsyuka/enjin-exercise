@@ -58,27 +58,26 @@ const STimerCount = styled.p`
   justify-content: center;
   width: 100%;
   max-width: 600px;
-  margin: 64px auto;
-  padding: 40px 16px;
-  border: 4px solid ${color.accent};
+  margin: 32px auto 64px;
+  padding: 0.5em;
+  border: 2px solid ${color.accent};
   border-radius: 16px;
   background-color: #fff;
   color: ${color.accent};
   font-size: 56px;
   font-weight: bold;
   text-align: center;
+  letter-spacing: 0.02em;
   line-height: 1;
   @media screen and (min-width: 768px) {
-    margin: 24px auto 56px;
-    font-size: 72px;
+    margin: 24px auto 80px;
+    font-size: 80px;
   }
   &.isWorking {
-    padding: 32px 16px 110px;
     border-color: ${color.working};
     color: ${color.working};
   }
   &.isBreaking {
-    padding: 32px 16px 110px;
     border-color: ${color.breaking};
     color: ${color.breaking};
   }

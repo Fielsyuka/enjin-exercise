@@ -1,7 +1,8 @@
 import React, { memo, useEffect } from 'react'
 import styled from 'styled-components'
-import { SButtonBase } from './styled/SButton'
 import { color } from '../theme/GlobalColor'
+import { pomodoroStatus } from '../constants/constants'
+import { SButtonBase } from './styled/SButton'
 import {
   PlayIcon as _PlayIcon,
   StopIcon as _StopIcon,
@@ -20,6 +21,8 @@ type Props = {
   dateStart: Date
   updateTime(cardId: number | string): void
   handleRunning(cardId: number | string, running: boolean): void
+  status: string
+  onClickEdit(cardId: number | string): void
 }
 
 const TimerCard: React.VFC<Props> = props => {
@@ -32,13 +35,15 @@ const TimerCard: React.VFC<Props> = props => {
     dateStart,
     updateTime,
     handleRunning,
+    status,
+    onClickEdit,
   } = props
 
   // console.log('Timercard is rendered: ', id)
   let tick: NodeJS.Timer
 
   useEffect(() => {
-    if (isRunning) {
+    if (isRunning && status !== pomodoroStatus.break) {
       tick = setInterval(() => {
         updateTime(id)
       }, 1000)
@@ -46,7 +51,7 @@ const TimerCard: React.VFC<Props> = props => {
       clearInterval(tick)
     }
     return () => clearInterval(tick)
-  }, [isRunning])
+  }, [isRunning, status])
 
   return (
     <STimerCard data-id={id} className={isRunning ? 'is-active' : ''}>
@@ -69,6 +74,11 @@ const TimerCard: React.VFC<Props> = props => {
         </p>
       </div>
       <div className="body">
+        {!isRunning && (
+          <p className="edit" onClick={() => onClickEdit(id)}>
+            Edit
+          </p>
+        )}
         <p className="time">
           <TimeIcon />
           {printTime(time, 'hour')}
@@ -161,6 +171,12 @@ const STimerCard = styled.div`
       margin: 0;
       font-size: 1rem;
       text-align: right;
+    }
+    .edit {
+      cursor: pointer;
+      text-decoration: underline;
+      color: ${color.grayText};
+      font-size: 0.875em;
     }
   }
   .buttons {

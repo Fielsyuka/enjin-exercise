@@ -14,12 +14,12 @@ export const SButton = styled.button.attrs({
   color: #fff;
   text-align: center;
 
-  :hover:not(:disabled) {
+  &:hover:not(:disabled) {
     background-color: #fff;
     color: ${color.accent};
   }
 
-  :disabled {
+  &:disabled {
     background-color: #b5b5b5;
     border: #c4c4c4;
   }
@@ -37,14 +37,14 @@ export const SButtonRadius = styled.button.attrs({
   border-radius: 50px;
   color: #fff;
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.25rem;
 
-  :hover:not(:disabled) {
+  &:hover:not(:disabled) {
     background-color: #fff;
     color: ${color.accent};
   }
 
-  :disabled {
+  &:disabled {
     background-color: #eee;
     border: #c4c4c4;
   }

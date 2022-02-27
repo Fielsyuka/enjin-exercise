@@ -1,6 +1,5 @@
-import React, { useMemo, useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { getTodayDate } from '../utils/utils'
 import { color } from '../theme/GlobalColor'
 import InputText from './InputText'
 import EditTag from './EditTag'
@@ -9,33 +8,15 @@ import type { TCard } from '../types/TCard'
 import type { TTag } from '../types/TTag'
 
 type Props = {
-  mode: string
+  cardEditing: TCard
   onSubmit(card: TCard): void
 }
 
 const EditCardBox: React.VFC<Props> = props => {
   console.log('Editcardbox is rendered')
 
-  const { mode, onSubmit } = props
-
-  // タイムスタンプでカードのIDを作成
-  const cardId = useMemo(() => {
-    if (mode === 'add') {
-      return Date.now()
-    } else {
-      return 1
-    }
-  }, [])
-
-  // 新しく追加するカード
-  const [card, setCard] = useState<TCard>({
-    id: cardId,
-    title: '',
-    time: 0,
-    relatedTag: [],
-    isRunning: false,
-    dateStart: getTodayDate(),
-  })
+  const { cardEditing, onSubmit } = props
+  const [card, setCard] = useState(cardEditing)
 
   // inputの値が変化したらinputのnameに応じたkeyを更新（今はtitleしかないけど）
   const handleChangeInput = useCallback(e => {
@@ -147,7 +128,12 @@ const SBox = styled.div`
     margin-bottom: 1em;
   }
   label {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5em;
     padding: 0 1.5rem;
+    color: ${color.grayText};
+    font-size: 0.75em;
   }
 `
 

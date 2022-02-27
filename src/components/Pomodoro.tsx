@@ -37,21 +37,31 @@ const Pomodoro: React.VFC<Props> = props => {
 
   return (
     <>
-      <div
+      <section
         id="pomodoroTimer"
-        className="pomodoro__timer mainContent js-switchScreen"
+        className="pomodoroTimer mainContent js-switchScreen"
       >
+        <h2 className="visuallyHidden">Pomodoro</h2>
         <SPomodoroTimerWrap>
-          {/* <SPomodoroMessage>
-          </SPomodoroMessage> */}
+          <SPomodoroMessage className={status}>
+            <p className="work">
+              <span className="icon">
+                <WorkingIcon />
+              </span>
+              {pomodoroSettings.work} <span className="min">min</span>
+            </p>
+            <p className="break">
+              <span className="icon">
+                <BreakingIcon />
+              </span>
+              {pomodoroSettings.break} <span className="min">min</span>
+            </p>
+          </SPomodoroMessage>
           <PomodoroTimer
             status={status}
             timeSetting={timeSetting}
             onCountOver={onCountOver}
           />
-          {/* {status == pomodoroStatus.stop && <p>今日もがんばろう！</p>} */}
-          {status == pomodoroStatus.work && <WorkingIcon className="icon" />}
-          {status == pomodoroStatus.break && <BreakingIcon className="icon" />}
         </SPomodoroTimerWrap>
         <div className="algn-c">
           {(status == pomodoroStatus.work ||
@@ -66,45 +76,73 @@ const Pomodoro: React.VFC<Props> = props => {
             </SButtonRadius>
           )}
         </div>
-      </div>
-      <div
+      </section>
+      <section
         id="pomodoroSetting"
-        className="pomodoro__setting mainContent js-switchScreen"
+        className="pomodoroSetting mainContent js-switchScreen"
       >
+        <h2 className="visuallyHidden">Pomodoro Setting</h2>
         <PomodoroSetting />
-      </div>
+      </section>
     </>
   )
 }
 
 const WorkingIcon = styled(_WorkingIcon)`
-  width: 56px;
-  height: 48px;
-  fill: ${color.working};
+  width: 40px;
+  height: 40px;
+  fill: ${color.accent};
 `
 const BreakingIcon = styled(_BreakingIcon)`
-  width: 56px;
-  height: 56px;
-  fill: ${color.breaking};
+  width: 40px;
+  height: 40px;
+  fill: ${color.accent};
 `
 
-const SPomodoroTimerWrap = styled.div`
-  position: relative;
-  text-align: center;
-  .icon {
-    position: absolute;
-    right: 0;
-    bottom: 32px;
-    left: 0;
-    margin: auto;
-    @media screen and (max-width: 767.98px) {
-      transform: scale(0.75);
+const SPomodoroMessage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  > p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: ${color.accent};
+    margin: 0 1.5rem;
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 1;
+    @media screen and (min-width: 768px) {
+      font-size: 28px;
+    }
+    .icon {
+      display: block;
+      margin-right: 0.5em;
+    }
+    .min {
+      margin-left: 0.3em;
+      margin-bottom: -0.6em;
+      font-size: 0.6em;
+    }
+  }
+  &.isWorking .work {
+    color: ${color.working};
+    ${WorkingIcon} {
+      fill: ${color.working};
+    }
+  }
+  &.isBreaking .break {
+    color: ${color.breaking};
+    ${BreakingIcon} {
+      fill: ${color.breaking};
     }
   }
 `
 
-// const SPomodoroMessage = styled.div`
-//   height: 56px;
-// `
+const SPomodoroTimerWrap = styled.div`
+  position: relative;
+  width: 100%;
+  text-align: center;
+`
 
 export default Pomodoro
