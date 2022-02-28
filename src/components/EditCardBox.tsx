@@ -3,19 +3,21 @@ import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
 import InputText from './InputText'
 import EditTag from './EditTag'
-import { SButton } from './styled/SButton'
+import { DeleteIcon as _DeleteIcon } from './Icon'
+import { SButton, SButtonBase } from './styled/SButton'
 import type { TCard } from '../types/TCard'
 import type { TTag } from '../types/TTag'
 
 type Props = {
   cardEditing: TCard
   onSubmit(card: TCard): void
+  onDelete(id: string | number): void
 }
 
 const EditCardBox: React.VFC<Props> = props => {
   console.log('Editcardbox is rendered')
 
-  const { cardEditing, onSubmit } = props
+  const { cardEditing, onSubmit, onDelete } = props
   const [card, setCard] = useState(cardEditing)
 
   // inputの値が変化したらinputのnameに応じたkeyを更新（今はtitleしかないけど）
@@ -88,6 +90,10 @@ const EditCardBox: React.VFC<Props> = props => {
         </div>
 
         <SButtonWrap>
+          <SButtonBase onClick={() => onDelete(card.id)}>
+            <DeleteIcon />
+            <span className="visuallyHidden">Delete</span>
+          </SButtonBase>
           <SButton
             onClick={() => addCard()}
             disabled={card.title !== '' ? false : true}
@@ -100,9 +106,20 @@ const EditCardBox: React.VFC<Props> = props => {
   )
 }
 
+const DeleteIcon = styled(_DeleteIcon)`
+  width: 18px;
+  height: 24px;
+  fill: ${color.red};
+`
+
 const SButtonWrap = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  bottom: 24px;
+  right: 24px;
+  left: 24px;
   margin-top: 40px;
-  margin-right: 1.5rem;
   text-align: right;
 `
 
@@ -114,9 +131,9 @@ const SBox = styled.div`
   bottom: 0;
   left: 0;
   width: 90%;
-  height: 90%;
+  max-height: 80%;
   margin: auto;
-  padding: 24px 0;
+  padding: 32px 0 80px;
   background-color: ${color.grayBg};
   box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.1);
   z-index: 20;
@@ -131,7 +148,7 @@ const SBox = styled.div`
     display: block;
     width: 100%;
     margin-bottom: 0.5em;
-    padding: 0 1.5rem;
+    padding: 0 24px;
     color: ${color.grayText};
     font-size: 0.75em;
   }

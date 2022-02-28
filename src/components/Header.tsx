@@ -11,7 +11,6 @@ type Props = {
 
 const Header: React.VFC<Props> = props => {
   const { status } = props
-  console.log(status)
 
   // ナビゲーションクリックで画面切り替え
   const handleSwitchScreen = useCallback(
@@ -40,7 +39,7 @@ const Header: React.VFC<Props> = props => {
   return (
     <>
       <header id="header" className="header">
-        <h1 className="appTitle">TIME TRACK APP</h1>
+        <SAppTitle>TIME TRACK APP</SAppTitle>
         <SNav>
           <ul>
             <li>
@@ -97,12 +96,40 @@ const PomodoroIcon = styled(_PomodoroIcon)`
   width: 24px;
   height: 27px;
 `
-
+const SAppTitle = styled.h1`
+  display: inline-block;
+  position: relative;
+  margin: 16px auto 1em;
+  color: #fff;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  text-align: center;
+  @media screen and (min-width: 768px) {
+    margin: 40px 1em 1em;
+    font-size: 18px;
+  }
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: -0.2em;
+    left: 0;
+    width: 50%;
+    height: 2px;
+    margin: auto;
+    background: ${color.accent};
+  }
+`
 const SNav = styled.nav`
   width: 100%;
-  height: 100%;
+  border-top: 1px solid #7795ac;
   background-color: ${color.navBg};
   color: #fff;
+  @media screen and (min-width: 768px) {
+    height: 100%;
+    border: none;
+  }
 
   ul {
     list-style: none;

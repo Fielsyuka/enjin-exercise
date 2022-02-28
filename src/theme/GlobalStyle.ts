@@ -31,26 +31,6 @@ body {
 
 /* Common
 ----------------------------------------*/
-.appTitle {
-  position: relative;
-  margin: 40px 1em 1em;
-  color: #fff;
-  font-size: 1.2rem;
-  letter-spacing: 0.02em;
-  text-align: center;
-  &:after {
-    content: "";
-    display: block;
-    position: absolute;
-    right: 0;
-    bottom: -8px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: ${color.accent};
-  }
-}
-
 h3 {
   margin-top: 0;
 }
@@ -83,12 +63,13 @@ label {
 .header {
   flex-shrink: 0;
   width: 100%;
-  height: auto;
   background-color: ${color.navBg};
+  text-align: center;
   z-index: 10;
   @media screen and (min-width: 768px){
     width: auto;
     height: 100%;
+    text-align: left;
   }
 }
 
@@ -109,34 +90,47 @@ label {
   right: 0;
   height: 100%;
   margin: 0;
-  padding: 56px 24px 40px;
   background-color: ${color.grayBg};
   z-index: 1;
-  @media screen and (min-width: 768px){
-    padding: 40px;
-  }
+
   &.is-active {
     z-index: 2;
   }
 }
 
-.main.isBreaking >.timeTrack:after {
-  content: "BREAK TIME!";
+.main.isBreaking >.timeTrack{
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0,0,0,0.6);
-  margin: auto;
-  color: #fff;
-  font-size: 9vw;
-  font-size: bold;
-  z-index: 2;
+  &:after {
+    content: "BREAK TIME!";
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.6);
+    margin: auto;
+    color: #fff;
+    font-size: 9vw;
+    font-size: bold;
+    z-index: 2;
+     @media screen and (min-width: 768px) {
+       /* top: 0;
+       left: 210px; */
+     }
+  }
+}
+
+.container {
+  position: relative;
+  min-height: 100%;
+  padding: 40px 24px 40px;
+  @media screen and (min-width: 768px){
+    padding: 40px;
+  }
 }
 
 .pomodoroTimer {

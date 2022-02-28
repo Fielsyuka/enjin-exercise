@@ -7,7 +7,7 @@ export const SInputWrap = styled.div`
   display: flex;
   align-items: center;
   min-height: 40px;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 24px;
   border-top: solid 1px ${color.grayBorder};
   border-bottom: solid 1px ${color.grayBorder};
   background-color: #fff;

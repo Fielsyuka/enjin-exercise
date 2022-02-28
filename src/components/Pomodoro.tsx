@@ -41,48 +41,56 @@ const Pomodoro: React.VFC<Props> = props => {
         id="pomodoroTimer"
         className="pomodoroTimer mainContent js-switchScreen"
       >
-        <h2 className="visuallyHidden">Pomodoro</h2>
-        <SPomodoroTimerWrap>
-          <SPomodoroMessage className={status}>
-            <p className="work">
-              <span className="icon">
-                <WorkingIcon />
-              </span>
-              {pomodoroSettings.work} <span className="min">min</span>
-            </p>
-            <p className="break">
-              <span className="icon">
-                <BreakingIcon />
-              </span>
-              {pomodoroSettings.break} <span className="min">min</span>
-            </p>
-          </SPomodoroMessage>
-          <PomodoroTimer
-            status={status}
-            timeSetting={timeSetting}
-            onCountOver={onCountOver}
-          />
-        </SPomodoroTimerWrap>
-        <div className="algn-c">
-          {(status == pomodoroStatus.work ||
-            status == pomodoroStatus.break) && (
-            <SButtonRadius onClick={() => onChangeStatus(pomodoroStatus.stop)}>
-              リセット
-            </SButtonRadius>
-          )}
-          {status == pomodoroStatus.stop && (
-            <SButtonRadius onClick={() => onChangeStatus(pomodoroStatus.work)}>
-              スタート
-            </SButtonRadius>
-          )}
+        <div className="container">
+          <h2 className="visuallyHidden">Pomodoro</h2>
+          <SPomodoroTimerWrap>
+            <SPomodoroMessage className={status}>
+              <p className="work">
+                <span className="icon">
+                  <WorkingIcon />
+                </span>
+                {pomodoroSettings.work} <span className="min">min</span>
+              </p>
+              <p className="break">
+                <span className="icon">
+                  <BreakingIcon />
+                </span>
+                {pomodoroSettings.break} <span className="min">min</span>
+              </p>
+            </SPomodoroMessage>
+            <PomodoroTimer
+              status={status}
+              timeSetting={timeSetting}
+              onCountOver={onCountOver}
+            />
+          </SPomodoroTimerWrap>
+          <div className="algn-c">
+            {(status == pomodoroStatus.work ||
+              status == pomodoroStatus.break) && (
+              <SButtonRadius
+                onClick={() => onChangeStatus(pomodoroStatus.stop)}
+              >
+                リセット
+              </SButtonRadius>
+            )}
+            {status == pomodoroStatus.stop && (
+              <SButtonRadius
+                onClick={() => onChangeStatus(pomodoroStatus.work)}
+              >
+                スタート
+              </SButtonRadius>
+            )}
+          </div>
         </div>
       </section>
       <section
         id="pomodoroSetting"
         className="pomodoroSetting mainContent js-switchScreen"
       >
-        <h2 className="visuallyHidden">Pomodoro Setting</h2>
-        <PomodoroSetting />
+        <div className="container">
+          <h2 className="visuallyHidden">Pomodoro Setting</h2>
+          <PomodoroSetting />
+        </div>
       </section>
     </>
   )

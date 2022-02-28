@@ -21,62 +21,66 @@ const TimeTrack: React.VFC<Props> = props => {
   const {
     cards,
     editMode,
-    cardEditing,
-    updateTime,
-    updateCard,
     setEditMode,
+    cardEditing,
     archiveMode,
-    handleEditCard,
-    handleCheckTag,
-    handleArchive,
-    handleRunning,
     checkedTags,
+    handleRunning,
+    updateTime,
+    handleEditCard,
+    updateCard,
+    deleteCard,
+    handleArchive,
+    handleCheckTag,
   } = useCards()
 
   return (
     <section id="timeTrack" className="timeTrack mainContent js-switchScreen">
-      <TimeTrackHeader
-        archiveMode={archiveMode}
-        checkedTags={checkedTags}
-        handleCheckTag={handleCheckTag}
-        handleArchive={handleArchive}
-      />
-      <SGrid>
-        <SGridItem>
-          <SButtonAdd onClick={() => handleEditCard()}>
-            <SPlusIcon />
-            新規追加
-          </SButtonAdd>
-        </SGridItem>
-        {cards &&
-          cards.map((card, index) => {
-            return (
-              <SGridItem key={index}>
-                <TimerCard
-                  id={card.id as string}
-                  title={card.title}
-                  relatedTag={card.relatedTag}
-                  time={card.time}
-                  isRunning={card.isRunning}
-                  dateStart={card.dateStart}
-                  updateTime={updateTime}
-                  handleRunning={handleRunning}
-                  status={status}
-                  onClickEdit={handleEditCard}
-                />
-              </SGridItem>
-            )
-          })}
-      </SGrid>
-      {editMode && (
-        <>
-          <EditCardBox
-            cardEditing={cardEditing}
-            onSubmit={el => updateCard(el)}
-          />
-          <SOverlay onClick={() => setEditMode(false)} />
-        </>
-      )}
+      <div className="container">
+        <TimeTrackHeader
+          archiveMode={archiveMode}
+          checkedTags={checkedTags}
+          handleCheckTag={handleCheckTag}
+          handleArchive={handleArchive}
+        />
+        <SGrid>
+          <SGridItem>
+            <SButtonAdd onClick={() => handleEditCard()}>
+              <SPlusIcon />
+              新規追加
+            </SButtonAdd>
+          </SGridItem>
+          {cards &&
+            cards.map((card, index) => {
+              return (
+                <SGridItem key={index}>
+                  <TimerCard
+                    id={card.id as string}
+                    title={card.title}
+                    relatedTag={card.relatedTag}
+                    time={card.time}
+                    isRunning={card.isRunning}
+                    dateStart={card.dateStart}
+                    updateTime={updateTime}
+                    handleRunning={handleRunning}
+                    status={status}
+                    onClickEdit={handleEditCard}
+                  />
+                </SGridItem>
+              )
+            })}
+        </SGrid>
+        {editMode && (
+          <>
+            <EditCardBox
+              cardEditing={cardEditing}
+              onSubmit={el => updateCard(el)}
+              onDelete={id => deleteCard(id)}
+            />
+            <SOverlay onClick={() => setEditMode(false)} />
+          </>
+        )}
+      </div>
     </section>
   )
 }

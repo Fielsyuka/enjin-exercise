@@ -121,7 +121,7 @@ export const useCards = () => {
   }, [])
 
   /**
-   * カードの編集・新規作成 編集対象のカードObjectをcardEditingにセット
+   * カードの編集/新規作成用 編集対象のカードObjectをcardEditingにセット
    *
    * @param cardId 編集するカードのid undefinedなら新規作成
    *
@@ -142,7 +142,12 @@ export const useCards = () => {
     [cardList],
   )
 
-  // カードの追加/更新と編集モードの終了
+  /**
+   * カードを追加または更新する
+   *
+   * @param card 新しい内容のカードObject
+   *
+   */
   const updateCard = useCallback((card: TCard) => {
     setEditMode(false)
     setCardList(prev => {
@@ -152,6 +157,25 @@ export const useCards = () => {
         newCardList[index] = card
       } else {
         newCardList.unshift(card)
+      }
+      return newCardList
+    })
+  }, [])
+
+  /**
+   * カードの削除
+   *
+   * @param cardId 編集するカードのid
+   *
+   */
+
+  const deleteCard = useCallback((cardId: number | string) => {
+    setEditMode(false)
+    setCardList(prev => {
+      const newCardList = [...prev]
+      const index = newCardList.findIndex(el => el.id === cardId)
+      if (index >= 0) {
+        newCardList.splice(index, 1)
       }
       return newCardList
     })
@@ -233,15 +257,16 @@ export const useCards = () => {
   return {
     cards,
     editMode,
-    cardEditing,
-    updateTime,
-    updateCard,
     setEditMode,
-    handleEditCard,
+    cardEditing,
     archiveMode,
     checkedTags,
-    handleCheckTag,
-    handleArchive,
     handleRunning,
+    updateTime,
+    handleEditCard,
+    updateCard,
+    deleteCard,
+    handleArchive,
+    handleCheckTag,
   }
 }

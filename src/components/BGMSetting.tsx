@@ -64,6 +64,7 @@ const SIframe = styled.iframe`
   aspect-ratio: 16 / 9;
   width: 100%;
   max-width: 600px;
+  vertical-align: middle;
 `
 
 export default memo(BGMSetting)
