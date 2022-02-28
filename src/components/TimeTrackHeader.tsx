@@ -1,11 +1,14 @@
-import React, { useContext } from 'react'
+import React, { memo } from 'react'
+// import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
-import { TagListContext } from './providers/TagListProvider'
+// import { TagListContext } from './providers/TagListProvider'
 import { SCheckBox } from './styled/SCheckBox'
+import { TTag } from '../types/TTag'
 
 type Props = {
   archiveMode: boolean
+  tagList: TTag[]
   checkedTags: number[]
   handleCheckTag(id: number): void
   handleArchive(archive: boolean): void
@@ -13,8 +16,9 @@ type Props = {
 
 const TimeTrackHeader: React.VFC<Props> = props => {
   console.log('TimeTrackHeader is rendered')
-  const { archiveMode, checkedTags, handleCheckTag, handleArchive } = props
-  const { tagList } = useContext(TagListContext)
+  const { archiveMode, tagList, checkedTags, handleCheckTag, handleArchive } =
+    props
+  // const { tagList } = useContext(TagListContext)
 
   return (
     <STimeTrackHeader>
@@ -22,14 +26,14 @@ const TimeTrackHeader: React.VFC<Props> = props => {
       <div className="row">
         <button
           className="today"
-          data-archiveMode={archiveMode}
+          data-archive-mode={archiveMode}
           onClick={() => handleArchive(false)}
         >
           今日
         </button>
         <button
           className="archive"
-          data-archiveMode={archiveMode}
+          data-archive-mode={archiveMode}
           onClick={() => handleArchive(true)}
         >
           アーカイブ
@@ -75,15 +79,15 @@ const STimeTrackHeader = styled.div`
     color: ${color.accent};
     font-family: inherit;
     font-size: inherit;
-    &.today[data-archivemode='false'] {
+    &.today[data-archive-mode='false'] {
       background-color: ${color.accent};
       color: #fff;
     }
-    &.archive[data-archivemode='true'] {
+    &.archive[data-archive-mode='true'] {
       background-color: ${color.accent};
       color: #fff;
     }
   }
 `
 
-export default TimeTrackHeader
+export default memo(TimeTrackHeader)

@@ -9,6 +9,8 @@ import type { TCard } from '../types/TCard'
 import type { TTag } from '../types/TTag'
 
 type Props = {
+  tagList: TTag[]
+  handleTagList(tag: TTag): number
   cardEditing: TCard
   onSubmit(card: TCard): void
   onDelete(id: string | number): void
@@ -17,7 +19,7 @@ type Props = {
 const EditCardBox: React.VFC<Props> = props => {
   console.log('Editcardbox is rendered')
 
-  const { cardEditing, onSubmit, onDelete } = props
+  const { tagList, handleTagList, cardEditing, onSubmit, onDelete } = props
   const [card, setCard] = useState(cardEditing)
 
   // inputの値が変化したらinputのnameに応じたkeyを更新（今はtitleしかないけど）
@@ -33,7 +35,7 @@ const EditCardBox: React.VFC<Props> = props => {
    *
    * @param tag EditTag > TagListから選択したタグobject
    */
-  const handleChooseTag = (tag: TTag) => {
+  const handleChooseTag = useCallback((tag: TTag) => {
     tag &&
       setCard(prev => {
         if (prev.relatedTag.indexOf(tag) < 0) {
@@ -42,14 +44,14 @@ const EditCardBox: React.VFC<Props> = props => {
           return { ...prev }
         }
       })
-  }
+  }, [])
 
   /**
    * 選択されたタグをrelatedTagから削除
    *
    * @param tag EditTag > InputTag > STagDelete
    */
-  const handleRemoveTag = (tag: TTag) => {
+  const handleRemoveTag = useCallback((tag: TTag) => {
     tag &&
       setCard(prev => {
         const index = prev.relatedTag.findIndex(val => val === tag)
@@ -57,7 +59,7 @@ const EditCardBox: React.VFC<Props> = props => {
         newArr.splice(index, 1)
         return { ...prev, relatedTag: newArr }
       })
-  }
+  }, [])
 
   // カード追加（親へ渡す）
   const addCard = () => {
@@ -83,6 +85,8 @@ const EditCardBox: React.VFC<Props> = props => {
         <div className="row">
           <label htmlFor="tag">タグ</label>
           <EditTag
+            tagList={tagList}
+            handleTagList={handleTagList}
             relatedTag={card.relatedTag}
             onChooseTag={tag => handleChooseTag(tag)}
             onRemoveTag={tag => handleRemoveTag(tag)}
@@ -133,7 +137,7 @@ const SBox = styled.div`
   width: 90%;
   max-height: 80%;
   margin: auto;
-  padding: 32px 0 80px;
+  padding: 32px 0;
   background-color: ${color.grayBg};
   box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.1);
   z-index: 20;

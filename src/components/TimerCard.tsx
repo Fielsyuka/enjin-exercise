@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
 import { pomodoroStatus } from '../constants/constants'
@@ -39,18 +39,20 @@ const TimerCard: React.VFC<Props> = props => {
     onClickEdit,
   } = props
 
-  // console.log('Timercard is rendered: ', id)
-  let tick: NodeJS.Timer
+  console.log('Timercard is rendered: ', id)
+
+  const tickRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     if (isRunning && status !== pomodoroStatus.break) {
-      tick = setInterval(() => {
+      const tick = setInterval(() => {
         updateTime(id)
       }, 1000)
+      tickRef.current = tick
     } else {
-      clearInterval(tick)
+      clearInterval(tickRef.current as NodeJS.Timeout)
     }
-    return () => clearInterval(tick)
+    return () => clearInterval(tickRef.current as NodeJS.Timeout)
   }, [isRunning, status])
 
   return (
@@ -175,6 +177,7 @@ const STimerCard = styled.div`
     .edit {
       cursor: pointer;
       text-decoration: underline;
+      margin: 0;
       color: ${color.grayText};
       font-size: 0.875em;
     }
@@ -187,3 +190,4 @@ const STimerCard = styled.div`
 `
 
 export default memo(TimerCard)
+// export default TimerCard

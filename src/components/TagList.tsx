@@ -1,20 +1,22 @@
-import React, { memo, useContext } from 'react'
+// import React, { memo, useContext } from 'react'
+import React, { memo } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
-import { TagListContext } from './providers/TagListProvider'
+// import { TagListContext } from './providers/TagListProvider'
 import { STag } from './styled/STag'
 import type { TTag } from '../types/TTag'
 
 type Props = {
+  tagList: TTag[]
   onChooseTag(el: TTag): void
 }
 
 const TagList: React.VFC<Props> = props => {
   console.log(' TagList is rendered')
 
-  const { onChooseTag } = props
+  const { tagList, onChooseTag } = props
 
-  const { tagList } = useContext(TagListContext)
+  // const { tagList } = useContext(TagListContext)
 
   return (
     <STagCrowd>

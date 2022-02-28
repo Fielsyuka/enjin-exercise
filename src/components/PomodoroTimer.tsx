@@ -57,7 +57,7 @@ const STimerCount = styled.p`
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   margin: 32px auto 64px;
   padding: 0.5em;
   border: 2px solid ${color.accent};
@@ -71,7 +71,7 @@ const STimerCount = styled.p`
   line-height: 1;
   @media screen and (min-width: 768px) {
     margin: 24px auto 80px;
-    font-size: 80px;
+    font-size: 100px;
   }
   &.isWorking {
     border-color: ${color.working};

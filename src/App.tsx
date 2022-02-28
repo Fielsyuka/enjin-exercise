@@ -3,7 +3,7 @@ import { pomodoroStatus } from './constants/constants'
 import Header from './components/Header'
 import Pomodoro from './components/Pomodoro'
 import TimeTrack from './components/TimeTrack'
-import { TagListProvider } from './components/providers/TagListProvider'
+// import { TagListProvider } from './components/providers/TagListProvider'
 
 const App = () => {
   const [status, setStatus] = useState(pomodoroStatus.stop)
@@ -29,9 +29,9 @@ const App = () => {
           onChangeStatus={onChangeStatus}
           onCountOver={onCountOver}
         />
-        <TagListProvider>
-          <TimeTrack status={status} />
-        </TagListProvider>
+        {/* <TagListProvider> */}
+        <TimeTrack status={status} />
+        {/* </TagListProvider> */}
       </main>
     </>
   )

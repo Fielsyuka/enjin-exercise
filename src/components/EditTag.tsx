@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react'
+// import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
-import { TagListContext } from './providers/TagListProvider'
+// import { TagListContext } from './providers/TagListProvider'
 import InputTag from './InputTag'
 import TagList from './TagList'
 import AddTag from './AddTag'
@@ -10,6 +11,8 @@ import { STagDelete } from './styled/STag'
 import { TTag } from '../types/TTag'
 
 type Props = {
+  tagList: TTag[]
+  handleTagList(tag: TTag): number
   relatedTag: TTag[]
   onChooseTag(tag: TTag): void
   onRemoveTag(tag: TTag): void
@@ -18,15 +21,15 @@ type Props = {
 const EditTag: React.VFC<Props> = props => {
   console.log(' EditTag is rendered')
 
-  const { relatedTag, onChooseTag, onRemoveTag } = props
+  const { tagList, handleTagList, relatedTag, onChooseTag, onRemoveTag } = props
 
   // InputTagで入力中の値
   const [tag, setTag] = useState('')
 
   // 登録済みのタグリスト
-  const { setTagList } = useContext(TagListContext)
+  // const { setTagList } = useContext(TagListContext)
 
-  // タグの入力が終わったら、タグリストに新しく追加、inputを空にする、追加したタグを親へ通知
+  // タグの入力が終わったら、タグリストに新しく追加、inputを空にする、追加したタグを親へ渡す
   const handleEnter = () => {
     if (tag == '') {
       return
@@ -36,11 +39,11 @@ const EditTag: React.VFC<Props> = props => {
       name: tag,
       color: 'tagDefault',
     }
-    setTagList(prev => {
-      return [newTag, ...prev]
-    })
+    const index = handleTagList(newTag)
     setTag('')
-    onChooseTag(newTag)
+
+    // 同じ名前のタグがタグリストにあればそれを選択、なければ新しいタグを選択
+    index < 0 ? onChooseTag(newTag) : onChooseTag(tagList[index])
   }
 
   return (
@@ -70,7 +73,7 @@ const EditTag: React.VFC<Props> = props => {
       </InputTag>
       <STagListTtl>タグ一覧から選択 または 新規追加</STagListTtl>
       {tag == '' ? (
-        <TagList onChooseTag={tag => onChooseTag(tag)} />
+        <TagList tagList={tagList} onChooseTag={tag => onChooseTag(tag)} />
       ) : (
         <AddTag value={tag} />
       )}

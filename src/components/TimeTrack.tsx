@@ -20,6 +20,7 @@ const TimeTrack: React.VFC<Props> = props => {
 
   const {
     cards,
+    tagList,
     editMode,
     setEditMode,
     cardEditing,
@@ -30,6 +31,7 @@ const TimeTrack: React.VFC<Props> = props => {
     handleEditCard,
     updateCard,
     deleteCard,
+    handleTagList,
     handleArchive,
     handleCheckTag,
   } = useCards()
@@ -39,6 +41,7 @@ const TimeTrack: React.VFC<Props> = props => {
       <div className="container">
         <TimeTrackHeader
           archiveMode={archiveMode}
+          tagList={tagList}
           checkedTags={checkedTags}
           handleCheckTag={handleCheckTag}
           handleArchive={handleArchive}
@@ -73,6 +76,8 @@ const TimeTrack: React.VFC<Props> = props => {
         {editMode && (
           <>
             <EditCardBox
+              tagList={tagList}
+              handleTagList={handleTagList}
               cardEditing={cardEditing}
               onSubmit={el => updateCard(el)}
               onDelete={id => deleteCard(id)}

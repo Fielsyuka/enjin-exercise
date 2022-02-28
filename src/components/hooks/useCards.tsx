@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { getTodayDate } from '../../utils/utils'
 import type { TCard } from '../../types/TCard'
+import type { TTag } from '../../types/TTag'
 
 const today = getTodayDate()
 export const useCards = () => {
@@ -56,6 +57,20 @@ export const useCards = () => {
       time: 0,
       isRunning: false,
       dateStart: today,
+    },
+  ])
+
+  // タグリスト
+  const [tagList, setTagList] = useState<TTag[]>([
+    {
+      id: 0,
+      name: 'Project A',
+      color: 'primary',
+    },
+    {
+      id: 1,
+      name: 'Project B',
+      color: 'tagPink',
     },
   ])
 
@@ -126,21 +141,18 @@ export const useCards = () => {
    * @param cardId 編集するカードのid undefinedなら新規作成
    *
    */
-  const handleEditCard = useCallback(
-    (cardId?: number | string) => {
-      const newCard = cardList.find(card => card.id == cardId) || {
-        id: Date.now(),
-        title: '',
-        time: 0,
-        relatedTag: [],
-        isRunning: false,
-        dateStart: getTodayDate(),
-      }
-      setCardEditing(newCard)
-      setEditMode(true)
-    },
-    [cardList],
-  )
+  const handleEditCard = useCallback((cardId?: number | string) => {
+    const newCard = cardList.find(card => card.id == cardId) || {
+      id: Date.now(),
+      title: '',
+      time: 0,
+      relatedTag: [],
+      isRunning: false,
+      dateStart: getTodayDate(),
+    }
+    setCardEditing(newCard)
+    setEditMode(true)
+  }, [])
 
   /**
    * カードを追加または更新する
@@ -179,6 +191,22 @@ export const useCards = () => {
       }
       return newCardList
     })
+  }, [])
+
+  /**
+   * タグリストへタグ追加
+   *
+   * @param tag {TTag} タグのオブジェクト
+   * @return 同じ名前のtagがtagListにあった時のindex なければ-1
+   *
+   */
+  const handleTagList = useCallback((tag: TTag) => {
+    let index = -1
+    setTagList(prev => {
+      index = [...prev].findIndex(el => el.name === tag.name)
+      return index >= 0 ? [...prev] : [tag, ...prev]
+    })
+    return index
   }, [])
 
   /**
@@ -256,6 +284,8 @@ export const useCards = () => {
 
   return {
     cards,
+    tagList,
+    setTagList,
     editMode,
     setEditMode,
     cardEditing,
@@ -266,6 +296,7 @@ export const useCards = () => {
     handleEditCard,
     updateCard,
     deleteCard,
+    handleTagList,
     handleArchive,
     handleCheckTag,
   }

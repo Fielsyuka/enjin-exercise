@@ -106,39 +106,33 @@ label {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     background: rgba(0,0,0,0.6);
     margin: auto;
+    padding-top: 124px;
     color: #fff;
     font-size: 9vw;
     font-size: bold;
     z-index: 2;
      @media screen and (min-width: 768px) {
-       /* top: 0;
-       left: 210px; */
+       padding-top: 0;
+       padding-left: 210px;
      }
   }
 }
 
 .container {
   position: relative;
+  width: 100%;
   min-height: 100%;
   padding: 40px 24px 40px;
   @media screen and (min-width: 768px){
     padding: 40px;
   }
-}
-
-.pomodoroTimer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100%;
 }
 
 /* Utility
