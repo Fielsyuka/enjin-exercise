@@ -129,21 +129,24 @@ const SButtonWrap = styled.div`
 
 const SBox = styled.div`
   overflow: auto;
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: 10%;
   right: 0;
   bottom: 0;
   left: 0;
   width: 90%;
-  max-height: 80%;
+  height: calc(100% - 124px);
   margin: auto;
   padding: 32px 0;
   background-color: ${color.grayBg};
   box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.1);
   z-index: 20;
   @media screen and (min-width: 768px) {
-    width: 50%;
+    top: 0;
+    left: calc(124px + 15%);
+    width: 40%;
     min-width: 320px;
+    height: 80%;
   }
   .row {
     margin-bottom: 1em;

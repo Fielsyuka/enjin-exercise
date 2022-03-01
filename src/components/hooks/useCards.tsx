@@ -141,18 +141,21 @@ export const useCards = () => {
    * @param cardId 編集するカードのid undefinedなら新規作成
    *
    */
-  const handleEditCard = useCallback((cardId?: number | string) => {
-    const newCard = cardList.find(card => card.id == cardId) || {
-      id: Date.now(),
-      title: '',
-      time: 0,
-      relatedTag: [],
-      isRunning: false,
-      dateStart: getTodayDate(),
-    }
-    setCardEditing(newCard)
-    setEditMode(true)
-  }, [])
+  const handleEditCard = useCallback(
+    (cardId?: number | string) => {
+      const newCard = cardList.find(card => card.id === cardId) || {
+        id: Date.now(),
+        title: '',
+        time: 0,
+        relatedTag: [],
+        isRunning: false,
+        dateStart: getTodayDate(),
+      }
+      setCardEditing(newCard)
+      setEditMode(true)
+    },
+    [cardList],
+  )
 
   /**
    * カードを追加または更新する
@@ -254,7 +257,9 @@ export const useCards = () => {
     (cards: TCard[], date: Date) => {
       return archiveMode
         ? cards
-        : cards.filter(({ dateStart }) => dateStart.getDate() == date.getDate())
+        : cards.filter(
+            ({ dateStart }) => dateStart.getDate() === date.getDate(),
+          )
     },
     [cardList, archiveMode],
   )
@@ -269,7 +274,7 @@ export const useCards = () => {
     (cards: TCard[]) => {
       if (checkedTags.length > 0) {
         return cards.filter(({ relatedTag }) =>
-          checkedTags.some(id => relatedTag.some(tag => tag.id == id)),
+          checkedTags.some(id => relatedTag.some(tag => tag.id === id)),
         )
       } else {
         return cards

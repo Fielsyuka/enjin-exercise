@@ -19,7 +19,7 @@ const PomodoroTimer: React.VFC<Props> = props => {
 
   useEffect(() => {
     const tick: NodeJS.Timer = setInterval(() => {
-      if (status == pomodoroStatus.stop) {
+      if (status === pomodoroStatus.stop) {
         return
       }
       if (timeRef.current > 0) {

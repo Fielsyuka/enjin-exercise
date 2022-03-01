@@ -6,6 +6,7 @@ export const SCheckBox = styled.input.attrs({
 })`
   display: none;
   + span {
+    cursor: pointer;
     padding-left: 25px;
     margin-right: 16px;
     position: relative;

@@ -97,14 +97,13 @@ const PomodoroIcon = styled(_PomodoroIcon)`
   height: 27px;
 `
 const SAppTitle = styled.h1`
-  display: inline-block;
-  position: relative;
-  margin: 16px auto 1em;
-  color: #fff;
-  font-size: 16px;
-  letter-spacing: 0.02em;
-  text-align: center;
+  display: none;
   @media screen and (min-width: 768px) {
+    display: inline-block;
+    position: relative;
+    color: #fff;
+    letter-spacing: 0.02em;
+    text-align: center;
     margin: 40px 1em 1em;
     font-size: 18px;
   }
