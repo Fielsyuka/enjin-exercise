@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
+// import { localKeys } from '../../constants/constants'
 import { getTodayDate } from '../../utils/utils'
 import type { TCard } from '../../types/TCard'
 import type { TTag } from '../../types/TTag'
@@ -7,72 +8,75 @@ const today = getTodayDate()
 export const useCards = () => {
   /**--- State ---**/
   // カードリスト
-  const [cardList, setCardList] = useState<TCard[]>([
-    {
-      id: 0,
-      title: 'トップページコーディング',
-      relatedTag: [],
-      time: 0,
-      isRunning: false,
-      dateStart: new Date('December 17, 2021 00:00:00'),
-    },
-    {
-      id: 1,
-      title: '下層コーディング',
-      relatedTag: [
-        {
-          id: 0,
-          name: 'Project A',
-          color: 'primary',
-        },
-      ],
-      time: 0,
-      isRunning: false,
-      dateStart: today,
-    },
-    {
-      id: 2,
-      title: 'CSS設計',
-      relatedTag: [
-        {
-          id: 1,
-          name: 'Project B',
-          color: 'tagPink',
-        },
-      ],
-      time: 0,
-      isRunning: false,
-      dateStart: new Date('January 10, 2022 00:00:00'),
-    },
-    {
-      id: 3,
-      title: 'ミーティング',
-      relatedTag: [
-        {
-          id: 1,
-          name: 'Project B',
-          color: 'tagPink',
-        },
-      ],
-      time: 0,
-      isRunning: false,
-      dateStart: today,
-    },
-  ])
+  const [cardList, setCardList] = useState<TCard[]>([])
+
+  // const [cardList, setCardList] = useState<TCard[]>([
+  //   {
+  //     id: 0,
+  //     title: 'トップページコーディング',
+  //     relatedTag: [],
+  //     time: 0,
+  //     isRunning: false,
+  //     dateStart: new Date('December 17, 2021 00:00:00'),
+  //   },
+  //   {
+  //     id: 1,
+  //     title: '下層コーディング',
+  //     relatedTag: [
+  //       {
+  //         id: 0,
+  //         name: 'Project A',
+  //         color: 'primary',
+  //       },
+  //     ],
+  //     time: 0,
+  //     isRunning: false,
+  //     dateStart: today,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'CSS設計',
+  //     relatedTag: [
+  //       {
+  //         id: 1,
+  //         name: 'Project B',
+  //         color: 'tagPink',
+  //       },
+  //     ],
+  //     time: 0,
+  //     isRunning: false,
+  //     dateStart: new Date('January 10, 2022 00:00:00'),
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'ミーティング',
+  //     relatedTag: [
+  //       {
+  //         id: 1,
+  //         name: 'Project B',
+  //         color: 'tagPink',
+  //       },
+  //     ],
+  //     time: 0,
+  //     isRunning: false,
+  //     dateStart: today,
+  //   },
+  // ])
 
   // タグリスト
-  const [tagList, setTagList] = useState<TTag[]>([
-    {
-      id: 0,
-      name: 'Project A',
-      color: 'primary',
-    },
-    {
-      id: 1,
-      name: 'Project B',
-      color: 'tagPink',
-    },
-  ])
+  const [tagList, setTagList] = useState<TTag[]>([])
+  // const [tagList, setTagList] = useState<TTag[]>([
+  //   {
+  //     id: 0,
+  //     name: 'Project A',
+  //     color: 'primary',
+  //   },
+  //   {
+  //     id: 1,
+  //     name: 'Project B',
+  //     color: 'tagPink',
+  //   },
+  // ])
 
   // カードの追加または編集モード
   const [editMode, setEditMode] = useState<boolean>(false)
@@ -180,7 +184,7 @@ export const useCards = () => {
   /**
    * カードの削除
    *
-   * @param cardId 編集するカードのid
+   * @param cardId 削除するカードのid
    *
    */
 
@@ -203,13 +207,30 @@ export const useCards = () => {
    * @return 同じ名前のtagがtagListにあった時のindex なければ-1
    *
    */
-  const handleTagList = useCallback((tag: TTag) => {
+  const addTagList = useCallback((tag: TTag) => {
     let index = -1
     setTagList(prev => {
       index = [...prev].findIndex(el => el.name === tag.name)
       return index >= 0 ? [...prev] : [tag, ...prev]
     })
     return index
+  }, [])
+
+  /**
+   * タグリストからタグを削除
+   *
+   * @param tagId 削除するタグのID
+   *
+   */
+  const removeTagList = useCallback((id: number) => {
+    setTagList(prev => {
+      const newTagList = [...prev]
+      const index = newTagList.findIndex(tag => tag.id === id)
+      if (index >= 0) {
+        newTagList.splice(index, 1)
+      }
+      return newTagList
+    })
   }, [])
 
   /**
@@ -287,6 +308,23 @@ export const useCards = () => {
   const filterdCards = filterCardsByDate(cardList, today)
   const cards = filterCardsByTag(filterdCards)
 
+  /**--- 初回にLocalStorageのデータをセット ---**/
+  useEffect(() => {
+    const localCards = localStorage.getItem('cards')
+    const localTags = localStorage.getItem('tags')
+    localCards && setCardList(JSON.parse(localCards))
+    localTags && setTagList(JSON.parse(localTags))
+  }, [])
+
+  /**--- Stateが更新されたらLocalStorageも更新する ---**/
+  useEffect(() => {
+    localStorage.setItem('cards', JSON.stringify(cardList))
+  }, [cardList])
+
+  useEffect(() => {
+    localStorage.setItem('tags', JSON.stringify(tagList))
+  }, [tagList])
+
   return {
     cards,
     tagList,
@@ -301,7 +339,8 @@ export const useCards = () => {
     handleEditCard,
     updateCard,
     deleteCard,
-    handleTagList,
+    addTagList,
+    removeTagList,
     handleArchive,
     handleCheckTag,
   }

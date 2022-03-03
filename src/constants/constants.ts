@@ -1,10 +1,15 @@
 export const pomodoroSettings = {
-  work: 10,
-  break: 5,
+  work: 3000,
+  break: 600,
 }
 
 export const pomodoroStatus = {
   work: 'isWorking',
   break: 'isBreaking',
   stop: 'isStop',
+}
+
+export const localKeys = {
+  cards: 'cards',
+  tags: 'tags',
 }

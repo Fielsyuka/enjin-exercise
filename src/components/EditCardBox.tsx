@@ -10,7 +10,8 @@ import type { TTag } from '../types/TTag'
 
 type Props = {
   tagList: TTag[]
-  handleTagList(tag: TTag): number
+  addTagList(tag: TTag): number
+  removeTagList(id: number): void
   cardEditing: TCard
   onSubmit(card: TCard): void
   onDelete(id: string | number): void
@@ -19,7 +20,14 @@ type Props = {
 const EditCardBox: React.VFC<Props> = props => {
   console.log('Editcardbox is rendered')
 
-  const { tagList, handleTagList, cardEditing, onSubmit, onDelete } = props
+  const {
+    tagList,
+    addTagList,
+    removeTagList,
+    cardEditing,
+    onSubmit,
+    onDelete,
+  } = props
   const [card, setCard] = useState(cardEditing)
 
   // inputの値が変化したらinputのnameに応じたkeyを更新（今はtitleしかないけど）
@@ -86,7 +94,8 @@ const EditCardBox: React.VFC<Props> = props => {
           <label htmlFor="tag">タグ</label>
           <EditTag
             tagList={tagList}
-            handleTagList={handleTagList}
+            addTagList={addTagList}
+            removeTagList={removeTagList}
             relatedTag={card.relatedTag}
             onChooseTag={tag => handleChooseTag(tag)}
             onRemoveTag={tag => handleRemoveTag(tag)}

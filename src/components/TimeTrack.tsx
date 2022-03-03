@@ -31,7 +31,8 @@ const TimeTrack: React.VFC<Props> = props => {
     handleEditCard,
     updateCard,
     deleteCard,
-    handleTagList,
+    addTagList,
+    removeTagList,
     handleArchive,
     handleCheckTag,
   } = useCards()
@@ -63,7 +64,6 @@ const TimeTrack: React.VFC<Props> = props => {
                     relatedTag={card.relatedTag}
                     time={card.time}
                     isRunning={card.isRunning}
-                    dateStart={card.dateStart}
                     updateTime={updateTime}
                     handleRunning={handleRunning}
                     status={status}
@@ -77,7 +77,8 @@ const TimeTrack: React.VFC<Props> = props => {
           <>
             <EditCardBox
               tagList={tagList}
-              handleTagList={handleTagList}
+              addTagList={addTagList}
+              removeTagList={removeTagList}
               cardEditing={cardEditing}
               onSubmit={el => updateCard(el)}
               onDelete={id => deleteCard(id)}
@@ -105,6 +106,9 @@ const SButtonAdd = styled.button.attrs({
   border: 2px dashed #777;
   background-color: transparent;
   color: ${color.accent};
+  @media screen and (min-width: 640px) {
+    min-height: 170px;
+  }
 `
 
 const SPlusIcon = styled(_PlusIcon)`

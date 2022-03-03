@@ -2,19 +2,21 @@
 import React, { memo } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
+import { SButtonBase } from './styled/SButton'
 // import { TagListContext } from './providers/TagListProvider'
 import { STag } from './styled/STag'
 import type { TTag } from '../types/TTag'
 
 type Props = {
   tagList: TTag[]
+  removeTagList(id: number): void
   onChooseTag(el: TTag): void
 }
 
 const TagList: React.VFC<Props> = props => {
   console.log(' TagList is rendered')
 
-  const { tagList, onChooseTag } = props
+  const { tagList, removeTagList, onChooseTag } = props
 
   // const { tagList } = useContext(TagListContext)
 
@@ -31,6 +33,12 @@ const TagList: React.VFC<Props> = props => {
               >
                 {el.name}
               </STag>
+              <SButtonBase
+                className="delete"
+                onClick={() => removeTagList(el.id)}
+              >
+                Delete
+              </SButtonBase>
             </li>
           )
         })}
@@ -46,6 +54,7 @@ const STagCrowd = styled.div`
     padding: 0;
     background-color: #fff;
     li {
+      position: relative;
       display: block;
       padding: 0.4rem 1.5rem;
       border-top: 1px solid ${color.grayBorder};
@@ -54,6 +63,21 @@ const STagCrowd = styled.div`
       }
       ${STag} {
         cursor: pointer;
+      }
+      .delete {
+        display: none;
+      }
+      &:hover > .delete {
+        display: block;
+        position: absolute;
+        text-decoration: underline;
+        right: 1.5rem;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        color: ${color.grayText};
+        font-size: 0.875em;
+        line-height: 1;
       }
     }
   }

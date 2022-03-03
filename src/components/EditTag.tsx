@@ -5,14 +5,15 @@ import { color } from '../theme/GlobalColor'
 // import { TagListContext } from './providers/TagListProvider'
 import InputTag from './InputTag'
 import TagList from './TagList'
-import AddTag from './AddTag'
 import { SInputWrap } from './styled/SInputWrap'
 import { STagDelete } from './styled/STag'
+import { STag } from './styled/STag'
 import { TTag } from '../types/TTag'
 
 type Props = {
   tagList: TTag[]
-  handleTagList(tag: TTag): number
+  addTagList(tag: TTag): number
+  removeTagList(id: number): void
   relatedTag: TTag[]
   onChooseTag(tag: TTag): void
   onRemoveTag(tag: TTag): void
@@ -21,7 +22,14 @@ type Props = {
 const EditTag: React.VFC<Props> = props => {
   console.log(' EditTag is rendered')
 
-  const { tagList, handleTagList, relatedTag, onChooseTag, onRemoveTag } = props
+  const {
+    tagList,
+    addTagList,
+    removeTagList,
+    relatedTag,
+    onChooseTag,
+    onRemoveTag,
+  } = props
 
   // InputTagで入力中の値
   const [tag, setTag] = useState('')
@@ -39,7 +47,7 @@ const EditTag: React.VFC<Props> = props => {
       name: tag,
       color: 'tagDefault',
     }
-    const index = handleTagList(newTag)
+    const index = addTagList(newTag)
     setTag('')
 
     // 同じ名前のタグがタグリストにあればそれを選択、なければ新しいタグを選択
@@ -73,9 +81,15 @@ const EditTag: React.VFC<Props> = props => {
       </InputTag>
       <STagListTtl>タグ一覧から選択 または 新規追加</STagListTtl>
       {tag == '' ? (
-        <TagList tagList={tagList} onChooseTag={tag => onChooseTag(tag)} />
+        <TagList
+          tagList={tagList}
+          removeTagList={removeTagList}
+          onChooseTag={tag => onChooseTag(tag)}
+        />
       ) : (
-        <AddTag value={tag} />
+        <SNewTagWrap>
+          <STag>{tag}</STag>
+        </SNewTagWrap>
       )}
     </SEditTagWrap>
   )
@@ -93,6 +107,11 @@ const STagListTtl = styled.p`
   padding: 0 1.5rem 0.4rem;
   color: ${color.grayText};
   font-size: 0.75em;
+`
+const SNewTagWrap = styled.div`
+  padding: 0.4rem 1.5rem;
+  border-top: 1px solid ${color.grayBorder};
+  background: #fff;
 `
 
 export default EditTag

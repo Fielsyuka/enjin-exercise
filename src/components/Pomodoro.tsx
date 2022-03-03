@@ -49,13 +49,13 @@ const Pomodoro: React.VFC<Props> = props => {
                 <span className="icon">
                   <WorkingIcon />
                 </span>
-                {pomodoroSettings.work} <span className="min">min</span>
+                {pomodoroSettings.work / 60} <span className="min">min</span>
               </p>
               <p className="break">
                 <span className="icon">
                   <BreakingIcon />
                 </span>
-                {pomodoroSettings.break} <span className="min">min</span>
+                {pomodoroSettings.break / 60} <span className="min">min</span>
               </p>
             </SPomodoroMessage>
             <PomodoroTimer

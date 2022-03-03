@@ -29,7 +29,7 @@ export const printTime = (i: number, type: string) => {
   let time
   if (type == 'hour') {
     const hour = formatTime(Math.floor(i / 3600))
-    const minute = formatTime(Math.floor(i / 60))
+    const minute = formatTime(Math.floor((i % 3600) / 60))
     const sec = formatTime(i % 60)
     time = `${hour}:${minute}:${sec}`
   } else if (type == 'minutes') {
@@ -38,4 +38,25 @@ export const printTime = (i: number, type: string) => {
     time = `${minute}:${sec}`
   }
   return time
+}
+
+/**
+ * LocalStorage
+ *
+ * @param key
+ */
+export function getItem(key: string) {
+  const value = localStorage.getItem(key)
+  if (value !== null) {
+    return value
+  }
+  return ''
+}
+
+export function removeItem(key: string) {
+  localStorage.removeItem(key)
+}
+
+export function setItem(key: string, value: any) {
+  localStorage.setItem(key, value)
 }

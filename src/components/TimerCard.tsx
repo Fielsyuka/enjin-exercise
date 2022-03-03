@@ -18,7 +18,6 @@ type Props = {
   relatedTag: TTag[]
   time: number
   isRunning: boolean
-  dateStart: Date
   updateTime(cardId: number | string): void
   handleRunning(cardId: number | string, running: boolean): void
   status: string
@@ -32,7 +31,6 @@ const TimerCard: React.VFC<Props> = props => {
     relatedTag,
     time,
     isRunning,
-    dateStart,
     updateTime,
     handleRunning,
     status,
@@ -71,15 +69,12 @@ const TimerCard: React.VFC<Props> = props => {
             })}
         </ul>
         <h3 className="title">{title}</h3>
-        <p>
-          {dateStart.getMonth() + 1}/{dateStart.getDate()}
-        </p>
       </div>
       <div className="body">
         {!isRunning && (
-          <p className="edit" onClick={() => onClickEdit(id)}>
+          <SButtonBase className="edit" onClick={() => onClickEdit(id)}>
             Edit
-          </p>
+          </SButtonBase>
         )}
         <p className="time">
           <TimeIcon />
