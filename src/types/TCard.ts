@@ -5,5 +5,5 @@ export type TCard = {
   time: number
   relatedTag: TTag[]
   isRunning: boolean
-  dateStart: Date
+  dateStart: string
 }

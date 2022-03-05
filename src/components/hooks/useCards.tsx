@@ -1,14 +1,20 @@
 import { useState, useCallback, useEffect } from 'react'
 // import { localKeys } from '../../constants/constants'
-import { getTodayDate } from '../../utils/utils'
+import { getDateString } from '../../utils/utils'
 import type { TCard } from '../../types/TCard'
 import type { TTag } from '../../types/TTag'
 
-const today = getTodayDate()
+const today = getDateString(new Date())
+const localCardList = localStorage.getItem('cards')
+const localTagList = localStorage.getItem('tags')
+
+const initialCardList = localCardList ? JSON.parse(localCardList) : []
+const initialTagList = localTagList ? JSON.parse(localTagList) : []
+
 export const useCards = () => {
   /**--- State ---**/
   // カードリスト
-  const [cardList, setCardList] = useState<TCard[]>([])
+  const [cardList, setCardList] = useState<TCard[]>(initialCardList)
 
   // const [cardList, setCardList] = useState<TCard[]>([
   //   {
@@ -64,7 +70,7 @@ export const useCards = () => {
   // ])
 
   // タグリスト
-  const [tagList, setTagList] = useState<TTag[]>([])
+  const [tagList, setTagList] = useState<TTag[]>(initialTagList)
   // const [tagList, setTagList] = useState<TTag[]>([
   //   {
   //     id: 0,
@@ -88,7 +94,7 @@ export const useCards = () => {
     time: 0,
     relatedTag: [],
     isRunning: false,
-    dateStart: getTodayDate(),
+    dateStart: today,
   })
 
   // フィルター用 アーカイブ（全ての日時）
@@ -153,7 +159,7 @@ export const useCards = () => {
         time: 0,
         relatedTag: [],
         isRunning: false,
-        dateStart: getTodayDate(),
+        dateStart: today,
       }
       setCardEditing(newCard)
       setEditMode(true)
@@ -275,12 +281,10 @@ export const useCards = () => {
    * @return フィルター後のcards
    */
   const filterCardsByDate = useCallback(
-    (cards: TCard[], date: Date) => {
+    (cards: TCard[], date: string) => {
       return archiveMode
         ? cards
-        : cards.filter(
-            ({ dateStart }) => dateStart.getDate() === date.getDate(),
-          )
+        : cards.filter(({ dateStart }) => dateStart === date)
     },
     [cardList, archiveMode],
   )

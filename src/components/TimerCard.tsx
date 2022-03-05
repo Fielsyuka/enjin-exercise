@@ -159,7 +159,7 @@ const STimerCard = styled.div`
   .body {
     display: flex;
     align-items: center;
-    margin-top: auto;
+    margin-top: 2rem;
     .time {
       display: flex;
       align-items: center;
