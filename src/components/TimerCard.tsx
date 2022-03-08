@@ -1,6 +1,8 @@
 import React, { memo, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
+import { useSelector, useDispatch } from 'react-redux'
+import { State } from '../reducer'
 import { pomodoroStatus } from '../constants/constants'
 import { SButtonBase } from './styled/SButton'
 import {
@@ -17,44 +19,36 @@ type Props = {
   title: string
   relatedTag: TTag[]
   time: number
-  isRunning: boolean
-  updateTime(cardId: number | string): void
-  handleRunning(cardId: number | string, running: boolean): void
   status: string
-  onClickEdit(cardId: number | string): void
+  onEdit(): void
 }
 
 const TimerCard: React.VFC<Props> = props => {
-  const {
-    id,
-    title,
-    relatedTag,
-    time,
-    isRunning,
-    updateTime,
-    handleRunning,
-    status,
-    onClickEdit,
-  } = props
+  const { id, title, relatedTag, time, status, onEdit } = props
 
   console.log('Timercard is rendered: ', id)
 
+  const activeCardID = useSelector((state: State) => state.activeCardID)
+  const dispatch = useDispatch()
   const tickRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    if (isRunning && status !== pomodoroStatus.break) {
+    if (activeCardID === id && status !== pomodoroStatus.break) {
       const tick = setInterval(() => {
-        updateTime(id)
+        dispatch({
+          type: 'cardList.updateTime',
+          payload: id,
+        })
       }, 1000)
       tickRef.current = tick
     } else {
       clearInterval(tickRef.current as NodeJS.Timeout)
     }
     return () => clearInterval(tickRef.current as NodeJS.Timeout)
-  }, [isRunning, status])
+  }, [activeCardID, status])
 
   return (
-    <STimerCard data-id={id} className={isRunning ? 'is-active' : ''}>
+    <STimerCard data-id={id} className={activeCardID === id ? 'is-active' : ''}>
       <div className="head">
         <ul className="tagCrowd">
           {relatedTag &&
@@ -71,8 +65,8 @@ const TimerCard: React.VFC<Props> = props => {
         <h3 className="title">{title}</h3>
       </div>
       <div className="body">
-        {!isRunning && (
-          <SButtonBase className="edit" onClick={() => onClickEdit(id)}>
+        {activeCardID !== id && (
+          <SButtonBase className="edit" onClick={onEdit}>
             Edit
           </SButtonBase>
         )}
@@ -82,12 +76,23 @@ const TimerCard: React.VFC<Props> = props => {
         </p>
       </div>
       <div className="buttons">
-        {isRunning ? (
-          <SButtonBase onClick={() => handleRunning(id, false)}>
+        {activeCardID === id ? (
+          <SButtonBase
+            onClick={() =>
+              dispatch({
+                type: 'activeCardID.setActiveCardID',
+                payload: undefined,
+              })
+            }
+          >
             <StopIcon />
           </SButtonBase>
         ) : (
-          <SButtonBase onClick={() => handleRunning(id, true)}>
+          <SButtonBase
+            onClick={() =>
+              dispatch({ type: 'activeCardID.setActiveCardID', payload: id })
+            }
+          >
             <PlayIcon />
           </SButtonBase>
         )}

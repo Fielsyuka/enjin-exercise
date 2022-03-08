@@ -1,14 +1,12 @@
 import React, { memo } from 'react'
-// import React, { useContext } from 'react'
+import { useSelector } from 'react-redux'
+import { State } from '../reducer'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
-// import { TagListContext } from './providers/TagListProvider'
 import { SCheckBox } from './styled/SCheckBox'
-import { TTag } from '../types/TTag'
 
 type Props = {
   archiveMode: boolean
-  tagList: TTag[]
   checkedTags: number[]
   handleCheckTag(id: number): void
   handleArchive(archive: boolean): void
@@ -16,9 +14,9 @@ type Props = {
 
 const TimeTrackHeader: React.VFC<Props> = props => {
   console.log('TimeTrackHeader is rendered')
-  const { archiveMode, tagList, checkedTags, handleCheckTag, handleArchive } =
-    props
-  // const { tagList } = useContext(TagListContext)
+  const { archiveMode, checkedTags, handleCheckTag, handleArchive } = props
+
+  const tagList = useSelector((state: State) => state.tagList)
 
   return (
     <STimeTrackHeader>
@@ -40,21 +38,22 @@ const TimeTrackHeader: React.VFC<Props> = props => {
         </button>
       </div>
       <div className="row">
-        {tagList.map((tag, index) => {
-          return (
-            <label key={index}>
-              <SCheckBox
-                type="checkbox"
-                onChange={() => handleCheckTag(tag.id)}
-                value={tag.name}
-                name={tag.name}
-                id={tag.name}
-                checked={checkedTags.includes(tag.id)}
-              />
-              <span>{tag.name}</span>
-            </label>
-          )
-        })}
+        {tagList.length > 0 &&
+          tagList.map((tag, index) => {
+            return (
+              <label key={index}>
+                <SCheckBox
+                  type="checkbox"
+                  onChange={() => handleCheckTag(tag.id)}
+                  value={tag.name}
+                  name={tag.name}
+                  id={tag.name}
+                  checked={checkedTags.includes(tag.id)}
+                />
+                <span>{tag.name}</span>
+              </label>
+            )
+          })}
       </div>
     </STimeTrackHeader>
   )

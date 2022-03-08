@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
-import { useCards } from './hooks/useCards'
+import { useSelector, useDispatch } from 'react-redux'
+import { State } from '../reducer'
+import { initialCard } from '../constants/constants'
+import { useFilter } from './hooks/useFilter'
 import TimeTrackHeader from './TimeTrackHeader'
 import TimerCard from './TimerCard'
 import EditCardBox from './EditCardBox'
@@ -18,44 +21,53 @@ const TimeTrack: React.VFC<Props> = props => {
 
   const { status } = props
 
-  const {
-    cards,
-    tagList,
-    editMode,
-    setEditMode,
-    cardEditing,
-    archiveMode,
-    checkedTags,
-    handleRunning,
-    updateTime,
-    handleEditCard,
-    updateCard,
-    deleteCard,
-    addTagList,
-    removeTagList,
-    handleArchive,
-    handleCheckTag,
-  } = useCards()
+  const cardList = useSelector((state: State) => state.cardList)
+  const modalContent = useSelector((state: State) => state.modalContent)
+  const dispatch = useDispatch()
+
+  const { archiveMode, checkedTags, handleArchive, handleCheckTag } =
+    useFilter()
+
+  const onClickAddCard = useCallback(() => {
+    dispatch({
+      type: 'editingCard.setEditingCard',
+      payload: initialCard,
+    })
+    dispatch({
+      type: 'modalContent.setModalContent',
+      payload: 'editCard',
+    })
+  }, [])
+
+  const onEditCard = useCallback(card => {
+    dispatch({
+      type: 'editingCard.setEditingCard',
+      payload: card,
+    })
+    dispatch({
+      type: 'modalContent.setModalContent',
+      payload: 'editCard',
+    })
+  }, [])
 
   return (
     <section id="timeTrack" className="timeTrack mainContent js-switchScreen">
       <div className="container">
         <TimeTrackHeader
           archiveMode={archiveMode}
-          tagList={tagList}
           checkedTags={checkedTags}
           handleCheckTag={handleCheckTag}
           handleArchive={handleArchive}
         />
         <SGrid>
           <SGridItem>
-            <SButtonAdd onClick={() => handleEditCard()}>
+            <SButtonAdd onClick={onClickAddCard}>
               <SPlusIcon />
               新規追加
             </SButtonAdd>
           </SGridItem>
-          {cards &&
-            cards.map((card, index) => {
+          {cardList.length > 0 &&
+            cardList.map((card, index) => {
               return (
                 <SGridItem key={index}>
                   <TimerCard
@@ -63,27 +75,24 @@ const TimeTrack: React.VFC<Props> = props => {
                     title={card.title}
                     relatedTag={card.relatedTag}
                     time={card.time}
-                    isRunning={card.isRunning}
-                    updateTime={updateTime}
-                    handleRunning={handleRunning}
                     status={status}
-                    onClickEdit={handleEditCard}
+                    onEdit={() => onEditCard(card)}
                   />
                 </SGridItem>
               )
             })}
         </SGrid>
-        {editMode && (
+        {modalContent === 'editCard' && (
           <>
-            <EditCardBox
-              tagList={tagList}
-              addTagList={addTagList}
-              removeTagList={removeTagList}
-              cardEditing={cardEditing}
-              onSubmit={el => updateCard(el)}
-              onDelete={id => deleteCard(id)}
+            <EditCardBox />
+            <SOverlay
+              onClick={() =>
+                dispatch({
+                  type: 'modalContent.setModalContent',
+                  payload: undefined,
+                })
+              }
             />
-            <SOverlay onClick={() => setEditMode(false)} />
           </>
         )}
       </div>
