@@ -13,8 +13,6 @@ type Props = {
 }
 
 export const InputTag: React.VFC<Props> = props => {
-  console.log('inputTag is rendered')
-
   const { id, name, inputTagValue, autoComplete, onChange, onEnter, children } =
     props
 

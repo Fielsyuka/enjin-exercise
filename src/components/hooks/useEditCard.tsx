@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { State } from '../../reducer'
-import { TTag } from '../../types/TTag'
+import type { TTag } from '../../types/TTag'
 
 export const useEditCard = () => {
   const editingCard = useSelector((state: State) => state.editingCard)
@@ -33,7 +33,7 @@ export const useEditCard = () => {
   const updateRelatedTag = useCallback(
     (tag: TTag) => {
       const newRelatedTag = [...editingCard!.relatedTag]
-      if (newRelatedTag.indexOf(tag) < 0) {
+      if (!newRelatedTag.find(el => el.id === tag.id)) {
         dispatch({
           type: 'editingCard.updateEditingCard',
           payload: {

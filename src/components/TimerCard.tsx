@@ -12,32 +12,30 @@ import {
 } from './Icon'
 import { STag } from './styled/STag'
 import type { TTag } from '../types/TTag'
+import type { TCard } from '../types/TCard'
 import { printTime } from '../utils/utils'
 
 type Props = {
-  id: number | string
-  title: string
-  relatedTag: TTag[]
-  time: number
+  card: TCard
   status: string
   onEdit(): void
 }
 
 const TimerCard: React.VFC<Props> = props => {
-  const { id, title, relatedTag, time, status, onEdit } = props
+  const { card, status, onEdit } = props
 
-  console.log('Timercard is rendered: ', id)
+  console.log('Timercard is rendered: ', card.id)
 
   const activeCardID = useSelector((state: State) => state.activeCardID)
   const dispatch = useDispatch()
   const tickRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    if (activeCardID === id && status !== pomodoroStatus.break) {
+    if (activeCardID === card.id && status !== pomodoroStatus.break) {
       const tick = setInterval(() => {
         dispatch({
           type: 'cardList.updateTime',
-          payload: id,
+          payload: card.id,
         })
       }, 1000)
       tickRef.current = tick
@@ -48,11 +46,14 @@ const TimerCard: React.VFC<Props> = props => {
   }, [activeCardID, status])
 
   return (
-    <STimerCard data-id={id} className={activeCardID === id ? 'is-active' : ''}>
+    <STimerCard
+      data-id={card.id}
+      className={activeCardID === card.id ? 'is-active' : ''}
+    >
       <div className="head">
         <ul className="tagCrowd">
-          {relatedTag &&
-            relatedTag.map((tag, index) => {
+          {card.relatedTag &&
+            card.relatedTag.map((tag: TTag, index) => {
               return (
                 <li key={index}>
                   <STag data-id={tag.id} className={tag.color}>
@@ -62,21 +63,21 @@ const TimerCard: React.VFC<Props> = props => {
               )
             })}
         </ul>
-        <h3 className="title">{title}</h3>
+        <h3 className="title">{card.title}</h3>
       </div>
       <div className="body">
-        {activeCardID !== id && (
+        {activeCardID !== card.id && (
           <SButtonBase className="edit" onClick={onEdit}>
             Edit
           </SButtonBase>
         )}
         <p className="time">
           <TimeIcon />
-          {printTime(time, 'hour')}
+          {printTime(card.time, 'hour')}
         </p>
       </div>
       <div className="buttons">
-        {activeCardID === id ? (
+        {activeCardID === card.id ? (
           <SButtonBase
             onClick={() =>
               dispatch({
@@ -90,7 +91,10 @@ const TimerCard: React.VFC<Props> = props => {
         ) : (
           <SButtonBase
             onClick={() =>
-              dispatch({ type: 'activeCardID.setActiveCardID', payload: id })
+              dispatch({
+                type: 'activeCardID.setActiveCardID',
+                payload: card.id,
+              })
             }
           >
             <PlayIcon />

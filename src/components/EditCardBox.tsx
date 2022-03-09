@@ -24,7 +24,7 @@ const EditCardBox = () => {
     updateCard,
   } = useEditCard()
 
-  console.log('Editcardbox is rendered. Editing:' + editingCard)
+  console.log('Editcardbox is rendered.')
 
   return (
     <>

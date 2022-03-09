@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { memo, useCallback } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
 import { useSelector, useDispatch } from 'react-redux'
@@ -21,11 +21,10 @@ const TimeTrack: React.VFC<Props> = props => {
 
   const { status } = props
 
-  const cardList = useSelector((state: State) => state.cardList)
   const modalContent = useSelector((state: State) => state.modalContent)
   const dispatch = useDispatch()
 
-  const { archiveMode, checkedTags, handleArchive, handleCheckTag } =
+  const { cards, archiveMode, checkedTags, handleArchive, handleCheckTag } =
     useFilter()
 
   const onClickAddCard = useCallback(() => {
@@ -66,15 +65,12 @@ const TimeTrack: React.VFC<Props> = props => {
               新規追加
             </SButtonAdd>
           </SGridItem>
-          {cardList.length > 0 &&
-            cardList.map((card, index) => {
+          {cards.length > 0 &&
+            cards.map((card, index) => {
               return (
                 <SGridItem key={index}>
                   <TimerCard
-                    id={card.id as string}
-                    title={card.title}
-                    relatedTag={card.relatedTag}
-                    time={card.time}
+                    card={card}
                     status={status}
                     onEdit={() => onEditCard(card)}
                   />
@@ -126,4 +122,4 @@ const SPlusIcon = styled(_PlusIcon)`
   margin-right: 1em;
 `
 
-export default TimeTrack
+export default memo(TimeTrack)

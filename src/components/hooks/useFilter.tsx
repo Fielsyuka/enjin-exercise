@@ -1,22 +1,14 @@
-import { useState, useCallback } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { State } from '../../reducer'
-// import { localKeys } from '../../constants/constants'
-// import { getDateString } from '../../utils/utils'
-// import type { TCard } from '../../types/TCard'
-// import type { TTag } from '../../types/TTag'
+import { getDateString } from '../../utils/utils'
+import type { TCard } from '../../types/TCard'
 
-// const dispatch = useDispatch()
-// const today = getDateString(new Date())
-// const localCardList = localStorage.getItem('cards')
-// const localTagList = localStorage.getItem('tags')
-
-// const initialCardList = localCardList ? JSON.parse(localCardList) : []
-// const initialTagList = localTagList ? JSON.parse(localTagList) : []
+const today = getDateString(new Date())
 
 export const useFilter = () => {
   const cardList = useSelector((state: State) => state.cardList)
-  console.log(cardList)
+
   // アーカイブ（全ての日時）
   const [archiveMode, setArchiveMode] = useState<boolean>(false)
 
@@ -63,14 +55,14 @@ export const useFilter = () => {
    * @param date 絞り込むDate
    * @return フィルター後のcards
    */
-  // const filterCardsByDate = useCallback(
-  //   (cards: TCard[], date: string) => {
-  //     return archiveMode
-  //       ? cards
-  //       : cards.filter(({ dateStart }) => dateStart === date)
-  //   },
-  //   [cardList, archiveMode],
-  // )
+  const filterCardsByDate = useCallback(
+    (cards: TCard[], date: string) => {
+      return archiveMode
+        ? cards
+        : cards.filter(({ dateStart }) => dateStart === date)
+    },
+    [cardList, archiveMode],
+  )
 
   /**
    * カードリストをtagFilterValueでフィルター
@@ -78,45 +70,34 @@ export const useFilter = () => {
    * @param cards TCardの配列
    * @return フィルター後のcards
    */
-  // const filterCardsByTag = useCallback(
-  //   (cards: TCard[]) => {
-  //     if (checkedTags.length > 0) {
-  //       return cards.filter(({ relatedTag }) =>
-  //         checkedTags.some(id => relatedTag.some(tag => tag.id === id)),
-  //       )
-  //     } else {
-  //       return cards
-  //     }
-  //   },
-  //   [cardList, checkedTags],
-  // )
+  const filterCardsByTag = useCallback(
+    (cards: TCard[]) => {
+      if (checkedTags.length > 0) {
+        return cards.filter(({ relatedTag }) =>
+          checkedTags.some(id => relatedTag.some(tag => tag.id === id)),
+        )
+      } else {
+        return cards
+      }
+    },
+    [cardList, checkedTags],
+  )
 
   /**--- カードのフィルター ---**/
-  // const filterdCards = filterCardsByDate(cardList, today)
-  // const cards = filterCardsByTag(filterdCards)
-
-  /**--- 初回にLocalStorageのデータをセット ---**/
-  // useEffect(() => {
-  //   const localCards = localStorage.getItem('cards')
-  //   const localTags = localStorage.getItem('tags')
-  //   localCards && setCardList(JSON.parse(localCards))
-  //   localTags && setTagList(JSON.parse(localTags))
-  // }, [])
-
-  /**--- Stateが更新されたらLocalStorageも更新する ---**/
-  // useEffect(() => {
-  //   localStorage.setItem('cards', JSON.stringify(cardList))
-  // }, [cardList])
-
-  // useEffect(() => {
-  //   localStorage.setItem('tags', JSON.stringify(tagList))
-  // }, [tagList])
+  const filterdCards = useMemo(
+    () => filterCardsByDate(cardList, today),
+    [cardList, archiveMode],
+  )
+  const cards = useMemo(
+    () => filterCardsByTag(filterdCards),
+    [cardList, checkedTags],
+  )
 
   return {
     archiveMode,
     checkedTags,
     handleArchive,
     handleCheckTag,
-    // cards,
+    cards,
   }
 }
