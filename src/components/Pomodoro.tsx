@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import type { State } from '../reducer'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
-import { pomodoroSettings, pomodoroStatus } from '../constants/constants'
+import { convertMinToSec } from '../utils/utils'
+import { pomodoroStatus } from '../constants/constants'
 import PomodoroTimer from './PomodoroTimer'
 import PomodoroSetting from './PomodoroSetting'
 import { SButtonRadius } from './styled/SButton'
@@ -18,22 +21,29 @@ type Props = {
 const Pomodoro: React.VFC<Props> = props => {
   console.log('Pomodoro is rendered')
   const { status, onChangeStatus, onCountOver } = props
-  // const [status, setStatus] = useState(pomodoroStatus.stop)
-  const [timeSetting, setTimeSetting] = useState<number>(pomodoroSettings.work)
+
+  const pomodoroWorkTime = useSelector((state: State) => state.pomodoroWorkTime)
+  const pomodoroBreakTime = useSelector(
+    (state: State) => state.pomodoroBreakTime,
+  )
+
+  const [timeSetting, setTimeSetting] = useState<number>(
+    convertMinToSec(pomodoroWorkTime),
+  )
 
   // statusに合わせてタイマーの時間を変更
   useEffect(() => {
     switch (status) {
       case 'isWorking':
-        setTimeSetting(pomodoroSettings.work)
+        setTimeSetting(convertMinToSec(pomodoroWorkTime))
         break
       case 'isBreaking':
-        setTimeSetting(pomodoroSettings.break)
+        setTimeSetting(convertMinToSec(pomodoroBreakTime))
         break
       default:
-        setTimeSetting(pomodoroSettings.work)
+        setTimeSetting(convertMinToSec(pomodoroWorkTime))
     }
-  }, [status])
+  }, [status, pomodoroWorkTime, pomodoroBreakTime])
 
   return (
     <>
@@ -49,13 +59,13 @@ const Pomodoro: React.VFC<Props> = props => {
                 <span className="icon">
                   <WorkingIcon />
                 </span>
-                {pomodoroSettings.work / 60} <span className="min">min</span>
+                {pomodoroWorkTime} <span className="min">min</span>
               </p>
               <p className="break">
                 <span className="icon">
                   <BreakingIcon />
                 </span>
-                {pomodoroSettings.break / 60} <span className="min">min</span>
+                {pomodoroBreakTime} <span className="min">min</span>
               </p>
             </SPomodoroMessage>
             <PomodoroTimer

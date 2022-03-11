@@ -42,22 +42,10 @@ export const printTime = (i: number, type: string) => {
 }
 
 /**
- * LocalStorage
- *
- * @param key
+ * 分を秒に変換する
+ * @param minutes 分数
+ * @return seconds 分数
  */
-export function getItem(key: string) {
-  const value = localStorage.getItem(key)
-  if (value !== null) {
-    return value
-  }
-  return ''
-}
-
-export function removeItem(key: string) {
-  localStorage.removeItem(key)
-}
-
-export function setItem(key: string, value: any) {
-  localStorage.setItem(key, value)
+export const convertMinToSec = (minutes: number) => {
+  return minutes * 60
 }

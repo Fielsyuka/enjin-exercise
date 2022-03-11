@@ -9,19 +9,27 @@ export type State = {
   activeCardID?: number
   editingCard?: TCard
   modalContent?: string
+  pomodoroWorkTime: number
+  pomodoroBreakTime: number
 }
 
 const localCardList = localStorage.getItem('cardList')
 const localTagList = localStorage.getItem('tagList')
+const localWorkTime = localStorage.getItem('workTime')
+const localBreakTime = localStorage.getItem('breakTime')
 
 const persistedCardsState = localCardList ? JSON.parse(localCardList) : []
 const persistedTagsState = localTagList ? JSON.parse(localTagList) : []
+const persistedWorkTime = localWorkTime ? JSON.parse(localWorkTime) : 25
+const persistedBreakTime = localBreakTime ? JSON.parse(localBreakTime) : 5
 
 const initialState = {
   activeCardID: undefined,
   editingCard: initialCard,
   cardList: persistedCardsState,
   tagList: persistedTagsState,
+  pomodoroWorkTime: persistedWorkTime,
+  pomodoroBreakTime: persistedBreakTime,
 }
 
 export type Action =
@@ -66,6 +74,14 @@ export type Action =
   | {
       type: 'modalContent.setModalContent'
       payload: string | undefined
+    }
+  | {
+      type: 'pomodoroWorkTime.setPomodoroWorkTime'
+      payload: number
+    }
+  | {
+      type: 'pomodoroBreakTime.setPomodoroBreakTime'
+      payload: number
     }
 
 export const reducer: Reducer<State, Action> = (
@@ -158,6 +174,18 @@ export const reducer: Reducer<State, Action> = (
       return {
         ...state,
         modalContent: action.payload,
+      }
+    }
+    case 'pomodoroWorkTime.setPomodoroWorkTime': {
+      return {
+        ...state,
+        pomodoroWorkTime: action.payload,
+      }
+    }
+    case 'pomodoroBreakTime.setPomodoroBreakTime': {
+      return {
+        ...state,
+        pomodoroBreakTime: action.payload,
       }
     }
     default:

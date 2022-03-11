@@ -2,7 +2,7 @@ import React, { memo, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
 import { useSelector, useDispatch } from 'react-redux'
-import { State } from '../reducer'
+import type { State } from '../reducer'
 import { pomodoroStatus } from '../constants/constants'
 import { SButtonBase } from './styled/SButton'
 import {

@@ -128,7 +128,9 @@ label {
 .container {
   position: relative;
   width: 100%;
+  max-width: 1080px;
   min-height: 100%;
+  margin: 0 auto;
   padding: 40px 24px 40px;
   @media screen and (min-width: 768px){
     padding: 40px;

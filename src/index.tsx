@@ -10,6 +10,14 @@ const store = createStore(reducer)
 store.subscribe(() => {
   localStorage.setItem('cardList', JSON.stringify(store.getState().cardList))
   localStorage.setItem('tagList', JSON.stringify(store.getState().tagList))
+  localStorage.setItem(
+    'workTime',
+    JSON.stringify(store.getState().pomodoroWorkTime),
+  )
+  localStorage.setItem(
+    'breakTime',
+    JSON.stringify(store.getState().pomodoroBreakTime),
+  )
 })
 console.log(store.getState().cardList)
 
