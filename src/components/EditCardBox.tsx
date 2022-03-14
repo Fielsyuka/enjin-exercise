@@ -14,17 +14,19 @@ const EditCardBox = () => {
   const {
     editingCard,
     tagList,
-    dispatch,
     inputTagValue,
     setInputTagValue,
     onChangeValue,
     updateRelatedTag,
     removeRelatedTag,
     handleAddTag,
+    removeTag,
     updateCard,
+    removeCard,
   } = useEditCard()
 
   console.log('Editcardbox is rendered.')
+  console.log(editingCard)
 
   return (
     <>
@@ -83,12 +85,7 @@ const EditCardBox = () => {
                         </STag>
                         <SButtonBase
                           className="delete"
-                          onClick={() =>
-                            dispatch({
-                              type: 'TagList.removeTag',
-                              payload: el,
-                            })
-                          }
+                          onClick={() => removeTag(el)}
                         >
                           Delete?
                         </SButtonBase>
@@ -106,14 +103,7 @@ const EditCardBox = () => {
         </div>
 
         <SButtonWrap>
-          <SButtonBase
-            onClick={() =>
-              dispatch({
-                type: 'cardList.deleteCard',
-                payload: editingCard!.id,
-              })
-            }
-          >
+          <SButtonBase onClick={() => removeCard(editingCard!)}>
             <DeleteIcon />
             <span className="visuallyHidden">Delete</span>
           </SButtonBase>

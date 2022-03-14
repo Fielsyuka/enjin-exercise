@@ -1,5 +1,5 @@
 import { Reducer } from 'redux'
-import { initialCard } from './constants/constants'
+import { getInitialCard } from './utils/utils'
 import type { TTag } from './types/TTag'
 import type { TCard } from './types/TCard'
 
@@ -25,7 +25,7 @@ const persistedBreakTime = localBreakTime ? JSON.parse(localBreakTime) : 5
 
 const initialState = {
   activeCardID: undefined,
-  editingCard: initialCard,
+  editingCard: getInitialCard(),
   cardList: persistedCardsState,
   tagList: persistedTagsState,
   pomodoroWorkTime: persistedWorkTime,
@@ -90,16 +90,16 @@ export const reducer: Reducer<State, Action> = (
 ) => {
   switch (action.type) {
     case 'TagList.addTag': {
-      const index = [...state.tagList!].findIndex(
+      const index = [...state.tagList].findIndex(
         tag => tag.name === action.payload.name,
       )
       if (index >= 0) {
         return state
       }
-      return { ...state, tagList: [action.payload, ...state.tagList!] }
+      return { ...state, tagList: [action.payload, ...state.tagList] }
     }
     case 'TagList.removeTag': {
-      const newTagList = [...state.tagList!]
+      const newTagList = [...state.tagList]
       const index = newTagList.findIndex(tag => tag.id === action.payload.id)
       if (index < 0) {
         return state
@@ -111,7 +111,7 @@ export const reducer: Reducer<State, Action> = (
       }
     }
     case 'cardList.removeCard': {
-      const newCardList = [...state.cardList!]
+      const newCardList = [...state.cardList]
       const index = newCardList.findIndex(card => card.id === action.payload.id)
       if (index < 0) {
         return state
@@ -123,7 +123,7 @@ export const reducer: Reducer<State, Action> = (
       }
     }
     case 'cardList.updateCard': {
-      const newCardList = [...state.cardList!]
+      const newCardList = [...state.cardList]
       const index = newCardList.findIndex(card => card.id === action.payload.id)
       if (index >= 0) {
         newCardList[index] = action.payload.card
@@ -136,7 +136,7 @@ export const reducer: Reducer<State, Action> = (
       }
     }
     case 'cardList.updateTime': {
-      const newCardList = [...state.cardList!]
+      const newCardList = [...state.cardList]
       const targetCard = newCardList.find(card => card.id === action.payload)
       if (targetCard) {
         targetCard.time += 1

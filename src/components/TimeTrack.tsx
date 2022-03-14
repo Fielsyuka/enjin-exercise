@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
 import { useSelector, useDispatch } from 'react-redux'
 import type { State } from '../reducer'
-import { initialCard } from '../constants/constants'
+import { getInitialCard } from '../utils/utils'
 import { useFilter } from './hooks/useFilter'
 import TimeTrackHeader from './TimeTrackHeader'
 import TimerCard from './TimerCard'
@@ -30,7 +30,7 @@ const TimeTrack: React.VFC<Props> = props => {
   const onClickAddCard = useCallback(() => {
     dispatch({
       type: 'editingCard.setEditingCard',
-      payload: initialCard,
+      payload: getInitialCard(),
     })
     dispatch({
       type: 'modalContent.setModalContent',

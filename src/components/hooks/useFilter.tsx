@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { State } from '../../reducer'
 import { getDateString } from '../../utils/utils'
@@ -84,14 +84,8 @@ export const useFilter = () => {
   )
 
   /**--- カードのフィルター ---**/
-  const filterdCards = useMemo(
-    () => filterCardsByDate(cardList, today),
-    [cardList, archiveMode],
-  )
-  const cards = useMemo(
-    () => filterCardsByTag(filterdCards),
-    [cardList, checkedTags],
-  )
+  const filterdCards = filterCardsByDate(cardList, today)
+  const cards = filterCardsByTag(filterdCards)
 
   return {
     archiveMode,

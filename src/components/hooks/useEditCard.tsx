@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { State } from '../../reducer'
 import type { TTag } from '../../types/TTag'
+import type { TCard } from '../../types/TCard'
 
 export const useEditCard = () => {
   const editingCard = useSelector((state: State) => state.editingCard)
@@ -99,6 +100,20 @@ export const useEditCard = () => {
   }, [inputTagValue])
 
   /**
+   * タグを削除する
+   *
+   * @param {TTag} tag
+   */
+  const removeTag = (tag: TTag) => {
+    const result = window.confirm(`${tag.name}\nこのタグを完全に削除しますか？`)
+    if (!result) return
+    dispatch({
+      type: 'TagList.removeTag',
+      payload: tag,
+    })
+  }
+
+  /**
    * カードを新規追加または更新する
    */
   const updateCard = () => {
@@ -118,16 +133,40 @@ export const useEditCard = () => {
     })
   }
 
+  /**
+   * カードを削除する
+   *
+   * @param {TCard} card
+   */
+  const removeCard = (card: TCard) => {
+    const result = window.confirm(
+      `${card.title}\nこのカードを完全に削除しますか？`,
+    )
+    if (!result) return
+    dispatch({
+      type: 'cardList.removeCard',
+      payload: {
+        id: editingCard!.id,
+        card: card.id,
+      },
+    })
+    dispatch({
+      type: 'modalContent.setModalContent',
+      payload: undefined,
+    })
+  }
+
   return {
     editingCard,
     tagList,
-    dispatch,
     inputTagValue,
     setInputTagValue,
     onChangeValue,
     updateRelatedTag,
     removeRelatedTag,
     handleAddTag,
+    removeTag,
     updateCard,
+    removeCard,
   }
 }

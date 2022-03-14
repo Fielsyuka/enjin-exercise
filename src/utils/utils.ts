@@ -49,3 +49,17 @@ export const printTime = (i: number, type: string) => {
 export const convertMinToSec = (minutes: number) => {
   return minutes * 60
 }
+
+/**
+ * 新規登録のカード初期情報
+ * @return TCard
+ */
+export const getInitialCard = () => {
+  return {
+    id: Date.now(),
+    title: '',
+    time: 0,
+    relatedTag: [],
+    dateStart: getDateString(new Date()),
+  }
+}
