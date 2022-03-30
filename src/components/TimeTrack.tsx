@@ -1,5 +1,6 @@
-import React, { memo, useCallback } from 'react'
+import React, { memo, useCallback, useContext } from 'react'
 import styled from 'styled-components'
+import { StatusContext } from './providers/statusProvider'
 import { color } from '../theme/GlobalColor'
 import { useSelector, useDispatch } from 'react-redux'
 import type { State } from '../reducer'
@@ -12,14 +13,10 @@ import { SOverlay } from './styled/SOverlay'
 import { SGrid, SGridItem } from './styled/SGrid'
 import { PlusIcon as _PlusIcon } from './Icon'
 
-type Props = {
-  status: string
-}
-
-const TimeTrack: React.VFC<Props> = props => {
+const TimeTrack = () => {
   console.log('TimeTrack is rendered')
 
-  const { status } = props
+  const { status } = useContext(StatusContext)
 
   const modalContent = useSelector((state: State) => state.modalContent)
   const dispatch = useDispatch()
@@ -50,7 +47,10 @@ const TimeTrack: React.VFC<Props> = props => {
   }, [])
 
   return (
-    <section id="timeTrack" className="timeTrack mainContent js-switchScreen">
+    <section
+      id="timeTrack"
+      className={status + ' timeTrack mainContent js-switchScreen'}
+    >
       <div className="container">
         <TimeTrackHeader
           archiveMode={archiveMode}

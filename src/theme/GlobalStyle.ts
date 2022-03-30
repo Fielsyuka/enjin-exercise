@@ -98,7 +98,7 @@ label {
   }
 }
 
-.main.isBreaking >.timeTrack{
+.timeTrack.isBreaking{
   overflow: hidden;
   &:after {
     content: "BREAK TIME!";

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import type { State } from '../reducer'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
 import { convertMinToSec } from '../utils/utils'
 import { pomodoroStatus } from '../constants/constants'
+import { StatusContext } from './providers/statusProvider'
 import PomodoroTimer from './PomodoroTimer'
 import PomodoroSetting from './PomodoroSetting'
 import { SButtonRadius } from './styled/SButton'
@@ -13,14 +14,9 @@ import {
   BreakingIcon as _BreakingIcon,
 } from './Icon'
 
-type Props = {
-  status: string
-  onChangeStatus(status: string): void
-  onCountOver(): void
-}
-const Pomodoro: React.VFC<Props> = props => {
+const Pomodoro = () => {
   console.log('Pomodoro is rendered')
-  const { status, onChangeStatus, onCountOver } = props
+  const { status, setStatus } = useContext(StatusContext)
 
   const pomodoroWorkTime = useSelector((state: State) => state.pomodoroWorkTime)
   const pomodoroBreakTime = useSelector(
@@ -68,25 +64,17 @@ const Pomodoro: React.VFC<Props> = props => {
                 {pomodoroBreakTime} <span className="min">min</span>
               </p>
             </SPomodoroMessage>
-            <PomodoroTimer
-              status={status}
-              timeSetting={timeSetting}
-              onCountOver={onCountOver}
-            />
+            <PomodoroTimer timeSetting={timeSetting} />
           </SPomodoroTimerWrap>
           <div className="algn-c">
             {(status == pomodoroStatus.work ||
               status == pomodoroStatus.break) && (
-              <SButtonRadius
-                onClick={() => onChangeStatus(pomodoroStatus.stop)}
-              >
+              <SButtonRadius onClick={() => setStatus(pomodoroStatus.stop)}>
                 リセット
               </SButtonRadius>
             )}
             {status == pomodoroStatus.stop && (
-              <SButtonRadius
-                onClick={() => onChangeStatus(pomodoroStatus.work)}
-              >
+              <SButtonRadius onClick={() => setStatus(pomodoroStatus.work)}>
                 スタート
               </SButtonRadius>
             )}

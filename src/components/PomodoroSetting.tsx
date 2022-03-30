@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import type { State } from '../reducer'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
+import { pomodoroStatus } from '../constants/constants'
 import { SSelectBox } from './styled/SSelectBox'
 import BGMSetting from './BGMSetting'
 import {
@@ -88,7 +89,16 @@ const PomodoroSetting = () => {
         </div>
       </STimeSetting>
       <STitle>BGM設定</STitle>
-      <BGMSetting />
+      <STitleLv4>作業用BGM</STitleLv4>
+      <BGMSetting
+        defaultUrl="https://www.youtube.com/watch?v=-AC-5ZSroJs"
+        type={pomodoroStatus.work}
+      />
+      <STitleLv4>休憩用BGM</STitleLv4>
+      <BGMSetting
+        defaultUrl="https://www.youtube.com/watch?v=ut4DQVgUpjI"
+        type={pomodoroStatus.break}
+      />
     </>
   )
 }
@@ -110,6 +120,9 @@ const STitle = styled.h3`
   margin-top: 0;
   padding-bottom: 0.2em;
   border-bottom: 1px solid #ccc;
+`
+const STitleLv4 = styled.h4`
+  margin: 1em 0;
 `
 
 const STimeSetting = styled.div`

@@ -1,19 +1,19 @@
-import React, { memo, useState, useEffect, useRef } from 'react'
+import React, { memo, useState, useEffect, useRef, useContext } from 'react'
 import styled from 'styled-components'
+import { StatusContext } from './providers/statusProvider'
 import { color } from '../theme/GlobalColor'
 import { pomodoroStatus } from '../constants/constants'
 import { printTime } from '../utils/utils'
 
 type Props = {
-  status: string
   timeSetting: number
-  onCountOver(): void
 }
 
 const PomodoroTimer: React.VFC<Props> = props => {
   console.log('PomodoroTimer is rendered')
 
-  const { status, timeSetting, onCountOver } = props
+  const { timeSetting } = props
+  const { status, setStatus } = useContext(StatusContext)
   const [timer, setTimer] = useState(timeSetting)
   const timeRef = useRef(timer)
 
@@ -26,7 +26,11 @@ const PomodoroTimer: React.VFC<Props> = props => {
         setTimer(prev => prev - 1)
       } else {
         clearInterval(tick)
-        onCountOver()
+        setStatus(prev => {
+          return prev == pomodoroStatus.break
+            ? pomodoroStatus.work
+            : pomodoroStatus.break
+        })
       }
     }, 1000)
     return () => {

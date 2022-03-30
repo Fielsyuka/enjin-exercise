@@ -1,44 +1,65 @@
-import React, { useState, memo } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  memo,
+  useRef,
+  useContext,
+} from 'react'
+import ReactPlayer from 'react-player/lazy'
 import styled from 'styled-components'
+import { StatusContext } from './providers/statusProvider'
 import { color } from '../theme/GlobalColor'
 import { SButton } from './styled/SButton'
 
-const BGMSetting = () => {
+type Props = {
+  defaultUrl: string
+  type: string
+}
+
+const BGMSetting: React.VFC<Props> = props => {
   console.log('rendered BGMSetting')
-  const [url, setUrl] = useState('')
-  const [id, setId] = useState('')
+
+  const { defaultUrl, type } = props
+  const [value, setValue] = useState(defaultUrl)
+  const url = useRef(value)
+  const [playing, setPlaying] = useState(false)
+  const { status } = useContext(StatusContext)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setUrl(event.target.value)
+    setValue(event.target.value)
   }
 
-  const handleClick = (): void => {
-    const youtubeID = url.split(/watch\?v=/)[1]
-    if (!youtubeID) return
-    setId(youtubeID)
-  }
+  const handleClick = useCallback((): void => {
+    url.current = value
+  }, [])
+
+  useEffect(() => {
+    if (status === type) {
+      setPlaying(true)
+    } else {
+      setPlaying(false)
+    }
+  }, [status])
 
   return (
-    <>
-      <label htmlFor="bgm">YoutubeのURLから作業用BGMを読み込みます。</label>
+    <SBgmWrap>
+      <label htmlFor="bgm">動画のURLからBGMを読み込みます。</label>
       <div className="flex">
-        <SInput id="bgm" value={url} onChange={handleChange} />
+        <SInput id="bgm" value={value} onChange={handleChange} />
         <SButton onClick={handleClick}>Load</SButton>
       </div>
-      <SworkBgmWrap>
-        {id && (
-          <SIframe
-            src={`https://www.youtube.com/embed/${id}?autoplay=1`}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></SIframe>
+      <SYoutubeWrap>
+        {url && (
+          <ReactPlayer url={url.current} playing={playing} controls={true} />
         )}
-      </SworkBgmWrap>
-    </>
+      </SYoutubeWrap>
+    </SBgmWrap>
   )
 }
+const SBgmWrap = styled.div`
+  margin-bottom: 64px;
+`
 const SInput = styled.input.attrs({
   type: 'text',
 })`
@@ -51,20 +72,21 @@ const SInput = styled.input.attrs({
   background-color: #fff;
 `
 
-const SworkBgmWrap = styled.div`
+const SYoutubeWrap = styled.div`
   aspect-ratio: 16 / 9;
   width: 100%;
   max-width: 600px;
   margin: 24px 0;
   border: 1px dashed ${color.grayBorder};
   background: #fff;
-`
-
-const SIframe = styled.iframe`
-  aspect-ratio: 16 / 9;
-  width: 100%;
-  max-width: 600px;
-  vertical-align: middle;
+  > div {
+    max-width: 100%;
+  }
+  iframe {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    vertical-align: middle;
+  }
 `
 
 export default memo(BGMSetting)
