@@ -13,6 +13,7 @@ const generateSvg = (d: string) => {
 
 const SVGBase = styled.svg`
   display: inline-block;
+  vertical-align: bottom;
 `
 
 export const PlayIcon = generateSvg(

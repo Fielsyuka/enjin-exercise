@@ -42,22 +42,24 @@ export const printTime = (i: number, type: string) => {
 }
 
 /**
- * LocalStorage
- *
- * @param key
+ * 分を秒に変換する
+ * @param minutes 分数
+ * @return seconds 分数
  */
-export function getItem(key: string) {
-  const value = localStorage.getItem(key)
-  if (value !== null) {
-    return value
+export const convertMinToSec = (minutes: number) => {
+  return minutes * 60
+}
+
+/**
+ * 新規登録のカード初期情報
+ * @return TCard
+ */
+export const getInitialCard = () => {
+  return {
+    id: Date.now(),
+    title: '',
+    time: 0,
+    relatedTag: [],
+    dateStart: getDateString(new Date()),
   }
-  return ''
-}
-
-export function removeItem(key: string) {
-  localStorage.removeItem(key)
-}
-
-export function setItem(key: string, value: any) {
-  localStorage.setItem(key, value)
 }

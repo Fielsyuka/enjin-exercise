@@ -1,81 +1,32 @@
-import React, { useState, useCallback } from 'react'
+import React from 'react'
+import { useEditCard } from './hooks/useEditCard'
 import styled from 'styled-components'
 import { color } from '../theme/GlobalColor'
 import InputText from './InputText'
-import EditTag from './EditTag'
 import { DeleteIcon as _DeleteIcon } from './Icon'
+import { InputTag } from './InputTag'
 import { SButton, SButtonBase } from './styled/SButton'
-import type { TCard } from '../types/TCard'
-import type { TTag } from '../types/TTag'
+import { SInputWrap } from './styled/SInputWrap'
+import { STagDelete } from './styled/STag'
+import { STag } from './styled/STag'
 
-type Props = {
-  tagList: TTag[]
-  addTagList(tag: TTag): number
-  removeTagList(id: number): void
-  cardEditing: TCard
-  onSubmit(card: TCard): void
-  onDelete(id: string | number): void
-}
-
-const EditCardBox: React.VFC<Props> = props => {
-  console.log('Editcardbox is rendered')
-
+const EditCardBox = () => {
   const {
+    editingCard,
     tagList,
-    addTagList,
-    removeTagList,
-    cardEditing,
-    onSubmit,
-    onDelete,
-  } = props
-  const [card, setCard] = useState(cardEditing)
+    inputTagValue,
+    setInputTagValue,
+    onChangeValue,
+    updateRelatedTag,
+    removeRelatedTag,
+    handleAddTag,
+    removeTag,
+    updateCard,
+    removeCard,
+  } = useEditCard()
 
-  // inputの値が変化したらinputのnameに応じたkeyを更新（今はtitleしかないけど）
-  const handleChangeInput = useCallback(e => {
-    const target = e.target
-    setCard(prev => {
-      return { ...prev, [target.id]: target.value }
-    })
-  }, [])
-
-  /**
-   * 選択されたタグがrelatedTagになければ追加
-   *
-   * @param tag EditTag > TagListから選択したタグobject
-   */
-  const handleChooseTag = useCallback((tag: TTag) => {
-    tag &&
-      setCard(prev => {
-        if (prev.relatedTag.indexOf(tag) < 0) {
-          return { ...prev, relatedTag: [...prev.relatedTag, tag] }
-        } else {
-          return { ...prev }
-        }
-      })
-  }, [])
-
-  /**
-   * 選択されたタグをrelatedTagから削除
-   *
-   * @param tag EditTag > InputTag > STagDelete
-   */
-  const handleRemoveTag = useCallback((tag: TTag) => {
-    tag &&
-      setCard(prev => {
-        const index = prev.relatedTag.findIndex(val => val === tag)
-        const newArr = [...prev.relatedTag]
-        newArr.splice(index, 1)
-        return { ...prev, relatedTag: newArr }
-      })
-  }, [])
-
-  // カード追加（親へ渡す）
-  const addCard = () => {
-    if (card.title === '') {
-      return
-    }
-    onSubmit(card)
-  }
+  console.log('Editcardbox is rendered.')
+  console.log(editingCard)
 
   return (
     <>
@@ -85,31 +36,80 @@ const EditCardBox: React.VFC<Props> = props => {
           <InputText
             id="title"
             autoComplete="on"
-            value={card.title}
-            onChange={e => handleChangeInput(e)}
+            value={editingCard!.title}
+            onChange={e => onChangeValue(e)}
           />
         </div>
 
         <div className="row">
           <label htmlFor="tag">タグ</label>
-          <EditTag
-            tagList={tagList}
-            addTagList={addTagList}
-            removeTagList={removeTagList}
-            relatedTag={card.relatedTag}
-            onChooseTag={tag => handleChooseTag(tag)}
-            onRemoveTag={tag => handleRemoveTag(tag)}
-          />
+          <SEditTagWrap>
+            <InputTag
+              id="tag"
+              name="tagId"
+              inputTagValue={inputTagValue}
+              autoComplete="off"
+              onChange={e => setInputTagValue(e.target.value)}
+              onEnter={() => handleAddTag()}
+            >
+              {editingCard!.relatedTag.length > 0
+                ? Array.from(editingCard!.relatedTag).map((tag, index) => {
+                    return (
+                      <STagDelete
+                        className={tag.color}
+                        key={index}
+                        data-id={tag.id}
+                        onClick={() => removeRelatedTag(tag)}
+                      >
+                        {tag.name}
+                      </STagDelete>
+                    )
+                  })
+                : ''}
+            </InputTag>
+            {tagList !== undefined && (
+              <STagListTtl>タグ一覧から選択 または 新規追加</STagListTtl>
+            )}
+            {inputTagValue == '' ? (
+              <STagList>
+                <ul>
+                  {tagList!.map((el, index) => {
+                    return (
+                      <li key={index}>
+                        <STag
+                          data-id={el.id}
+                          className={el.color}
+                          onClick={() => updateRelatedTag(el)}
+                        >
+                          {el.name}
+                        </STag>
+                        <SButtonBase
+                          className="delete"
+                          onClick={() => removeTag(el)}
+                        >
+                          Delete?
+                        </SButtonBase>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </STagList>
+            ) : (
+              <SNewTagWrap>
+                <STag>{inputTagValue}</STag>
+              </SNewTagWrap>
+            )}
+          </SEditTagWrap>
         </div>
 
         <SButtonWrap>
-          <SButtonBase onClick={() => onDelete(card.id)}>
+          <SButtonBase onClick={() => removeCard(editingCard!)}>
             <DeleteIcon />
             <span className="visuallyHidden">Delete</span>
           </SButtonBase>
           <SButton
-            onClick={() => addCard()}
-            disabled={card.title !== '' ? false : true}
+            onClick={() => updateCard()}
+            disabled={editingCard!.title !== '' ? false : true}
           >
             完了
           </SButton>
@@ -168,6 +168,60 @@ const SBox = styled.div`
     color: ${color.grayText};
     font-size: 0.75em;
   }
+`
+const SEditTagWrap = styled.div`
+  &:focus-within {
+    > ${SInputWrap} {
+      border-color: ${color.primary};
+    }
+  }
+`
+const STagListTtl = styled.p`
+  margin: 1em 0 0;
+  padding: 0 1.5rem 0.4rem;
+  color: ${color.grayText};
+  font-size: 0.75em;
+`
+const STagList = styled.div`
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    li {
+      position: relative;
+      display: block;
+      padding: 0.4rem 1.5rem;
+      border-top: 1px solid ${color.grayBorder};
+      &:last-child {
+        border-bottom: 1px solid ${color.grayBorder};
+      }
+      ${STag} {
+        cursor: pointer;
+      }
+      .delete {
+        display: none;
+      }
+      &:hover > .delete {
+        display: block;
+        position: absolute;
+        text-decoration: underline;
+        right: 1.5rem;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        color: ${color.grayText};
+        font-size: 0.875em;
+        line-height: 1;
+      }
+    }
+  }
+`
+
+const SNewTagWrap = styled.div`
+  padding: 0.4rem 1.5rem;
+  border-top: 1px solid ${color.grayBorder};
+  background: #fff;
 `
 
 export default EditCardBox

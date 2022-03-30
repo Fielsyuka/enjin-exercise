@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { memo, useCallback, useContext } from 'react'
 import styled from 'styled-components'
+import { StatusContext } from './providers/statusProvider'
 import { color } from '../theme/GlobalColor'
-import { useCards } from './hooks/useCards'
+import { useSelector, useDispatch } from 'react-redux'
+import type { State } from '../reducer'
+import { getInitialCard } from '../utils/utils'
+import { useFilter } from './hooks/useFilter'
 import TimeTrackHeader from './TimeTrackHeader'
 import TimerCard from './TimerCard'
 import EditCardBox from './EditCardBox'
@@ -9,81 +13,82 @@ import { SOverlay } from './styled/SOverlay'
 import { SGrid, SGridItem } from './styled/SGrid'
 import { PlusIcon as _PlusIcon } from './Icon'
 
-type Props = {
-  status: string
-}
-
-const TimeTrack: React.VFC<Props> = props => {
+const TimeTrack = () => {
   console.log('TimeTrack is rendered')
 
-  const { status } = props
+  const { status } = useContext(StatusContext)
 
-  const {
-    cards,
-    tagList,
-    editMode,
-    setEditMode,
-    cardEditing,
-    archiveMode,
-    checkedTags,
-    handleRunning,
-    updateTime,
-    handleEditCard,
-    updateCard,
-    deleteCard,
-    addTagList,
-    removeTagList,
-    handleArchive,
-    handleCheckTag,
-  } = useCards()
+  const modalContent = useSelector((state: State) => state.modalContent)
+  const dispatch = useDispatch()
+
+  const { cards, archiveMode, checkedTags, handleArchive, handleCheckTag } =
+    useFilter()
+
+  const onClickAddCard = useCallback(() => {
+    dispatch({
+      type: 'editingCard.setEditingCard',
+      payload: getInitialCard(),
+    })
+    dispatch({
+      type: 'modalContent.setModalContent',
+      payload: 'editCard',
+    })
+  }, [])
+
+  const onEditCard = useCallback(card => {
+    dispatch({
+      type: 'editingCard.setEditingCard',
+      payload: card,
+    })
+    dispatch({
+      type: 'modalContent.setModalContent',
+      payload: 'editCard',
+    })
+  }, [])
 
   return (
-    <section id="timeTrack" className="timeTrack mainContent js-switchScreen">
+    <section
+      id="timeTrack"
+      className={status + ' timeTrack mainContent js-switchScreen'}
+    >
       <div className="container">
         <TimeTrackHeader
           archiveMode={archiveMode}
-          tagList={tagList}
           checkedTags={checkedTags}
           handleCheckTag={handleCheckTag}
           handleArchive={handleArchive}
         />
         <SGrid>
           <SGridItem>
-            <SButtonAdd onClick={() => handleEditCard()}>
+            <SButtonAdd onClick={onClickAddCard}>
               <SPlusIcon />
               新規追加
             </SButtonAdd>
           </SGridItem>
-          {cards &&
+          {cards.length > 0 &&
             cards.map((card, index) => {
               return (
                 <SGridItem key={index}>
                   <TimerCard
-                    id={card.id as string}
-                    title={card.title}
-                    relatedTag={card.relatedTag}
-                    time={card.time}
-                    isRunning={card.isRunning}
-                    updateTime={updateTime}
-                    handleRunning={handleRunning}
+                    card={card}
                     status={status}
-                    onClickEdit={handleEditCard}
+                    onEdit={() => onEditCard(card)}
                   />
                 </SGridItem>
               )
             })}
         </SGrid>
-        {editMode && (
+        {modalContent === 'editCard' && (
           <>
-            <EditCardBox
-              tagList={tagList}
-              addTagList={addTagList}
-              removeTagList={removeTagList}
-              cardEditing={cardEditing}
-              onSubmit={el => updateCard(el)}
-              onDelete={id => deleteCard(id)}
+            <EditCardBox />
+            <SOverlay
+              onClick={() =>
+                dispatch({
+                  type: 'modalContent.setModalContent',
+                  payload: undefined,
+                })
+              }
             />
-            <SOverlay onClick={() => setEditMode(false)} />
           </>
         )}
       </div>
@@ -117,4 +122,4 @@ const SPlusIcon = styled(_PlusIcon)`
   margin-right: 1em;
 `
 
-export default TimeTrack
+export default memo(TimeTrack)

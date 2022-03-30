@@ -14,7 +14,6 @@ type Props = {
 }
 
 const InputText: React.VFC<Props> = props => {
-  console.log('input is rendered')
   const { id, value, autoComplete, placeholder, onChange } = props
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {

@@ -1,16 +1,13 @@
-import React, { memo, useCallback } from 'react'
+import React, { memo, useCallback, useContext } from 'react'
 import styled from 'styled-components'
+import { StatusContext } from './providers/statusProvider'
 import { color } from '../theme/GlobalColor'
 import { TrackingIcon as _TrackingIcon } from './Icon'
 import { SettingIcon as _SettingIcon } from './Icon'
 import { PomodoroIcon as _PomodoroIcon } from './Icon'
 
-type Props = {
-  status: string
-}
-
-const Header: React.VFC<Props> = props => {
-  const { status } = props
+const Header = () => {
+  const { status } = useContext(StatusContext)
 
   // ナビゲーションクリックで画面切り替え
   const handleSwitchScreen = useCallback(

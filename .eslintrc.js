@@ -25,6 +25,7 @@ module.exports = {
     // note you must disable the base rule as it can report incorrect errors
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['warn', { varsIgnorePattern: '_$' }],
+    '@typescript-eslint/no-non-null-assertion': 'off',
   },
   settings: {
     react: {

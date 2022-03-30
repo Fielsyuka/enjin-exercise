@@ -4,18 +4,17 @@ import { SInputWrap, SInput } from './styled/SInputWrap'
 
 type Props = {
   id: string
-  value: string
   name?: string
+  inputTagValue: string
   autoComplete?: string
-  onChange(e: React.ChangeEvent<HTMLInputElement>): void
+  onChange?(e: React.ChangeEvent<HTMLInputElement>): void
   onEnter(): void
   children?: React.ReactNode
 }
 
-const InputTag: React.VFC<Props> = props => {
-  console.log('inputTag is rendered')
-
-  const { id, value, name, autoComplete, onChange, onEnter, children } = props
+export const InputTag: React.VFC<Props> = props => {
+  const { id, name, inputTagValue, autoComplete, onChange, onEnter, children } =
+    props
 
   // 日本語変換の監視
   const [composing, setComposing] = useState(false)
@@ -35,7 +34,7 @@ const InputTag: React.VFC<Props> = props => {
 
   // 入力が終わりEnterしたら親へ通知
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key !== 'Enter' || composing || value == '') {
+    if (e.key !== 'Enter' || composing || inputTagValue == '') {
       return
     }
     onEnter()
@@ -53,20 +52,18 @@ const InputTag: React.VFC<Props> = props => {
           type="text"
           id={id}
           name={name}
-          value={value}
-          onChange={e => onChange(e)}
+          value={inputTagValue}
           autoComplete={autoComplete}
           onCompositionStart={() => setComposing(true)}
           onCompositionEnd={() => setComposing(false)}
           onKeyDown={e => handleEnter(e)}
+          onChange={e => onChange?.(e)}
           onBlur={onEnter}
         />
       </SInputWrap>
     </>
   )
 }
-
-export default InputTag
 
 const STagWrap = styled.div`
   display: flex;
