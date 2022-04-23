@@ -6,7 +6,7 @@ import React, {
   useRef,
   useContext,
 } from 'react'
-import ReactPlayer from 'react-player/lazy'
+import ReactPlayer from 'react-player/youtube'
 import styled from 'styled-components'
 import { StatusContext } from './providers/statusProvider'
 import { color } from '../theme/GlobalColor'
@@ -21,17 +21,14 @@ const BGMSetting: React.VFC<Props> = props => {
   console.log('rendered BGMSetting')
 
   const { defaultUrl, type } = props
-  const [value, setValue] = useState(defaultUrl)
-  const url = useRef(value)
+  const inputEl = useRef<HTMLInputElement>(null)
+  const [url, setUrl] = useState(defaultUrl)
   const [playing, setPlaying] = useState(false)
   const { status } = useContext(StatusContext)
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setValue(event.target.value)
-  }
-
   const handleClick = useCallback((): void => {
-    url.current = value
+    if (inputEl.current === null) return
+    setUrl(inputEl.current.value)
   }, [])
 
   useEffect(() => {
@@ -46,13 +43,11 @@ const BGMSetting: React.VFC<Props> = props => {
     <SBgmWrap>
       <label htmlFor="bgm">動画のURLからBGMを読み込みます。</label>
       <div className="flex">
-        <SInput id="bgm" value={value} onChange={handleChange} />
+        <SInput id="bgm" ref={inputEl} />
         <SButton onClick={handleClick}>Load</SButton>
       </div>
       <SYoutubeWrap>
-        {url && (
-          <ReactPlayer url={url.current} playing={playing} controls={true} />
-        )}
+        {url && <ReactPlayer url={url} playing={playing} controls={true} />}
       </SYoutubeWrap>
     </SBgmWrap>
   )
